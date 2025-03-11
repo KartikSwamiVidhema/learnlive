@@ -37,6 +37,7 @@ import RelatedProducts from "@/components/RelatedProducts";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+
 const stripePromise = loadStripe(
   "pk_test_51Q2TfeRpVqbYsgvrnKeVR5alcP24hdcpm53etjSTZ8iGhZDS2Uy4fUE44vRfg33TzIOVXruQiieNQ1e1Ki5xAhga00bQNh9MCq"
 ); // Replace with your Stripe publishable key
@@ -52,7 +53,7 @@ const createCheckoutSession = async (productId) => {
 const ImageSlideshow = ({ images }) => {
   // Flattening the array
   const flattenedImages = images.flat();
-
+  const [isLoading, setIsLoading] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
 
   if (!Array.isArray(flattenedImages) || flattenedImages.length === 0) {
@@ -71,13 +72,26 @@ const ImageSlideshow = ({ images }) => {
     );
   };
 
+  useEffect(() => {
+    // Set a timeout to stop showing the skeleton loader after 2 seconds
+    const timeout = setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+
+    return () => clearTimeout(timeout); // Cleanup the timeout
+  }, []);
+
   return (
     <div className="relative w-full  ">
+       {isLoading ? (
+        <div className="animate-pulse bg-gray-300 w-full h-48 rounded-t-lg"></div>
+      ) : (
       <img
         src={flattenedImages[currentIndex]}
         alt={`Slide ${currentIndex + 1}`}
         className="w-full h-49  object-contain rounded-t-lg"
       />
+      )}
       <Button
         variant="outline"
         className="absolute top-1/2 left-2 transform -translate-y-1/2"
@@ -177,7 +191,9 @@ const PurchaseInfo = ({ product, seller, onBuyNow }) => {
 
     if (product.webUrl.includes(".app")) {
       window.open(`/demo?id=${product._id}`, "_blank");
-    } else if (product.webUrl.includes(".xyz")) {
+    } else if (product.webUrl.includes(".xyz") || product.webUrl.includes(".firebaseapp.com"))
+
+       {
       window.open(`/webiframe?url=${product._id}`, "_blank");
     } else {
       console.error("Unknown URL type");
@@ -194,11 +210,11 @@ const PurchaseInfo = ({ product, seller, onBuyNow }) => {
             Buy Now
           </Button>
         </Link>
-       
-          <Button className="w-full mb-5"onClick={handleClick}>
-            Demo
-          </Button>
-      
+
+        <Button className="w-full mb-5" onClick={handleClick}>
+          Demo
+        </Button>
+
         <ul className="space-y-2 text-sm mb-6">
           <li className="flex items-center">
             <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
@@ -264,7 +280,7 @@ const ProductDetail = ({ productData }) => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Header />
+     
       <main className="flex-grow bg-gray-100 py-8">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">

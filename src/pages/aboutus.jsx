@@ -5,7 +5,7 @@ import Footer from "@/components/Footer";
 export default function AboutUs() {
   return (
     <>
-    <Header/>
+  
     <div className="container mx-auto p-8">
       {/* Breadcrumb */}
       <div className="text-gray-500 text-sm mb-4">

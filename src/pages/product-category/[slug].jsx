@@ -197,7 +197,7 @@ const MarketplaceFilter = ({ categoryData, productData }) => {
   return (
     <div className="min-h-screen flex flex-col">
      <ToastContainer autoClose={3000} /> 
-      <Header />
+   
       <main className="flex-grow bg-gray-100 py-8">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row gap-8 ">
@@ -302,8 +302,8 @@ const MarketplaceFilter = ({ categoryData, productData }) => {
                     </CardContent>
                     <CardFooter>
                       <Button className="w-full" asChild>
-                        <Link href={`/productdetail/${product.slug}`}>
-                          Buy Now
+                      <Link href={`/productdetail/${product.slug}`}>
+                      Buy Now
                         </Link>
                       </Button>
                     </CardFooter>

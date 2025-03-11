@@ -45,7 +45,7 @@ const CartPage = () => {
 
   return (
     <>
-      <Header />
+  
       <div className=" mx-auto p-6 container ">
         <h2 className="text-2xl font-semibold mb-4">Cart</h2>
 

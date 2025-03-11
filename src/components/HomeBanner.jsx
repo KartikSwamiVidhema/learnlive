@@ -10,7 +10,7 @@ const HomeBanner = () => {
   const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   const [searchValue, setSearchValue] = useState("");
   const [searchslug, setSearchSlug] = useState("");
-
+  const [bannerImage, setDesktopBanner] = useState("");
   const [categories, setCategories] = useState([]);
   const [filteredCategories, setFilteredCategories] = useState([]);
   const [dropdownVisible, setDropdownVisible] = useState(false);
@@ -48,6 +48,10 @@ const HomeBanner = () => {
     const fetchCategories = async () => {
       try {
         const response = await axios.get(`${apiBaseUrl}/categories`);
+        const desktopBannerResponse = await axios.get(
+          `${apiBaseUrl}/gethomepage`
+        );
+        setDesktopBanner(desktopBannerResponse.data.data);
         setCategories(response.data.data || []);
         setFilteredCategories(response.data.data.slice(0, 3)); // Show first 3 categories by default
       } catch (error) {
@@ -97,8 +101,17 @@ const HomeBanner = () => {
     }
   };
 
+
+
   return (
-    <section className="relative bg-gradient-to-r from-[#b0c4ff] via-[#d7ecff] to-[#c2bfff] py-10 text-primary px-6 md:px-12 flex justify-center items-center">
+    <section
+      className="relative py-10 text-primary px-6 md:px-12 flex justify-center items-center"
+      style={{
+        backgroundImage: `url(${bannerImage[0]?.desktopBanner})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    >
       <div className="absolute inset-0 bg-blue-900/30"></div>
       <div className="relative z-10 container mx-auto flex flex-col items-center text-center space-y-8">
         <div className="max-w-2xl">
@@ -132,21 +145,22 @@ const HomeBanner = () => {
                   />
                   {dropdownVisible && (
                     <div className="absolute left-0 w-full bg-white border border-gray-300 mt-2 rounded-md shadow-md">
-                       <div className="border-b px-4 py-2">
-                        <h3 className="font-bold text-gray-600 text-left ml-4">Categories</h3>
-                      <ul>
-                        {filteredCategories.map((option, index) => (
-                          <li
-                            key={`category-${option._id || index}`}
-                            className="p-2 hover:bg-gray-100 cursor-pointer text-left ml-4"
-                            onClick={() => handleSelectOption(option)}
-                          >
-                            {option.name}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-
+                      <div className="border-b px-4 py-2">
+                        <h3 className="font-bold text-gray-600 text-left ml-4">
+                          Categories
+                        </h3>
+                        <ul>
+                          {filteredCategories.map((option, index) => (
+                            <li
+                              key={`category-${option._id || index}`}
+                              className="p-2 hover:bg-gray-100 cursor-pointer text-left ml-4"
+                              onClick={() => handleSelectOption(option)}
+                            >
+                              {option.name}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
                     </div>
                   )}
                 </div>

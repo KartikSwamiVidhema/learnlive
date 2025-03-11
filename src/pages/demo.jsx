@@ -32,7 +32,7 @@ export default function Demo() {
   
   return (
     <>
-    <Header />
+   
     <div className="container">
       <div className="flex items-center justify-center min-h-screen p-6">
         {/* Content Section */}

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import Header from "../components/Header";
@@ -39,8 +39,8 @@ import ThemeMarketplace from "@/components/ThemeMarketPlace";
 import CartPage from "./cartpage";
 import { useCart } from "../../context/CartContext";
 import { ArrowRight } from "lucide-react";
-import Skeleton from "react-loading-skeleton";
-import "react-loading-skeleton/dist/skeleton.css";
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 const StarRating = ({ rating }) => {
   const fullStars = Math.floor(rating);
@@ -64,13 +64,30 @@ const StarRating = ({ rating }) => {
 const ProductCard = ({ product }) => {
   const router = useRouter();
   const { addToCart } = useCart();
+
   const handleNavigate = () => {
-    router.push(`productdetail/${product.slug}`);
+    if (product?.slug) {
+      router.push(`productdetail/${product.slug}`);
+    }
   };
 
+  if (!product) {
+    return (
+      <Card className="shadow-md">
+        <Skeleton height={160} className="rounded-t-lg" />
+        <CardContent className="p-4">
+          <Skeleton height={20} width="75%" className="mb-2" />
+          <Skeleton height={15} width="50%" className="mb-3" />
+          <Skeleton height={20} width="25%" />
+          <Skeleton height={40} className="mt-3" />
+        </CardContent>
+      </Card>
+    );
+  }
+
   return (
-    <Card key={product.id}>
-      <CardHeader onClick={handleNavigate}>
+    <Card key={product.id} className="shadow-md">
+      <CardHeader onClick={handleNavigate} className="cursor-pointer">
         <img
           src={product.coverImage}
           alt={product.name}
@@ -78,40 +95,30 @@ const ProductCard = ({ product }) => {
         />
       </CardHeader>
       <CardContent>
-        <CardTitle
-          className="mb-2 flex items-center cursor-pointer group"
-          onClick={handleNavigate}
-        >
+        <h3 className="mb-2 flex items-center cursor-pointer group" onClick={handleNavigate}>
           {product.name}
           <ArrowRight className="ml-2 size-4 transition-transform duration-200 translate-x-0 opacity-0 group-hover:translate-x-1 group-hover:opacity-100" />
-        </CardTitle>
-        <div className=" items-center space-x-2 mb-2">
-          <StarRating rating={product?.rating} />
-       
-          <div className="flex items-center gap-1 text-yellow-500">
-                {Array.from({ length: product.rating }, (_, index) => (
-                  <Star key={index} size={16} fill="currentColor" />
-                ))}
-                <span className="text-sm text-gray-500">
-                  ({product.reviews.length} Reviews)
-                </span>
-              </div>
-              <div className="mt-2 ">
-                {/* <span className="text-gray-400 line-through">{product.oldPrice}</span> */}
-                <span className="text-black font-bold ml-2">
-                  ${product.salePrice}
-                </span>
-              </div>
-
+        </h3>
+        <div className="flex items-center gap-1 text-yellow-500">
+          {Array.from({ length: product.rating || 0 }, (_, index) => (
+            <Star key={index} size={16} fill="currentColor" />
+          ))}
+          <span className="text-sm text-gray-500">
+            ({product.reviews?.length || 0} Reviews)
+          </span>
         </div>
-      </CardContent>
-      <CardFooter className="p-4">
-        <Link className="w-full" href="/checkoutform">
+        <div className="mt-2">
+          <span className="text-black font-bold ml-2">${product.salePrice}</span>
+        </div>
+        <Link href="/checkoutform">
           <Button className="w-full" onClick={() => addToCart(product)}>
             Buy Now
           </Button>
         </Link>
-      </CardFooter>
+      </CardContent>
+      
+      
+    
     </Card>
   );
 };
@@ -198,7 +205,7 @@ const Index = ({ initialProducts, initialTab, categoriesData }) => {
     setActiveTab(selectedCategory);
 
 
-  
+
     try {
       const response = await axios.get(
         `${apiBaseUrl}/getProductByCategorySlug/${selectedCategory}`
@@ -213,12 +220,12 @@ const Index = ({ initialProducts, initialTab, categoriesData }) => {
     activeTab === "all"
       ? products
       : products.filter((product) =>
-          product.categories?.some((category) => category.slug === activeTab)
-        );
+        product.categories?.some((category) => category.slug === activeTab)
+      );
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Header />
+     
       <HomeBanner />
       <ThemeMarketplace />
 
@@ -249,15 +256,33 @@ const Index = ({ initialProducts, initialTab, categoriesData }) => {
                     <p>No categories available</p> // Fallback message or loading state
                   )
                 }
+
+                {/* {categories.data.map((category) => (
+                  <TabsTrigger
+                    key={category._id} 
+                    value={category.slug} 
+                    onClick={() => handleCategoryClick(category.slug)}
+                  >
+                    {category.name} 
+                  </TabsTrigger>
+                ))} */}
+
               </TabsList>
+
               <TabsContent value={activeTab}>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
-                  {filteredProducts.slice(0, 4).map((product) => (
-                    <ProductCard key={product.id} product={product} />
-                  ))}
+                  {filteredProducts.length > 0 ? (
+                    filteredProducts.slice(0, 4).map((product) => (
+                      <ProductCard key={product.id} product={product} />
+                    ))
+                  ) : (
+                    // Show skeletons while loading
+                    [...Array(4)].map((_, index) => <ProductCard key={index} product={null} />)
+                  )}
                 </div>
               </TabsContent>
             </Tabs>
+
           </div>
         </section>
         <BestSellingProducts filteredProducts={filteredProducts} />
@@ -273,7 +298,7 @@ const Index = ({ initialProducts, initialTab, categoriesData }) => {
   );
 };
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps() {
   const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   try {
     const initialTab = "ionic-3";
@@ -291,7 +316,7 @@ export async function getServerSideProps(context) {
     const initialProducts = response.data || [];
 
     return {
-      props: { initialProducts, initialTab, categoriesData},
+      props: { initialProducts, initialTab, categoriesData },
     };
   } catch (error) {
     console.error("Error fetching products on server:", error);

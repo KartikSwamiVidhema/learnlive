@@ -1,16 +1,27 @@
 import { useEffect, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Star } from "lucide-react";
+import { Star, ArrowRight } from "lucide-react";
 import axios from "axios";
 import { useCart } from "../../context/CartContext";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { ArrowRight } from "lucide-react";
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 
+const SkeletonCard = () => (
+  <Card className="shadow-md">
+    <Skeleton height={160} className="rounded-t-lg" />
+    <CardContent className="p-4">
+      <Skeleton height={20} width="75%" className="mb-2" />
+      <Skeleton height={15} width="50%" className="mb-3" />
+      <Skeleton height={20} width="25%" />
+    </CardContent>
+  </Card>
+);
 
 const BestSellingProducts = () => {
-  const [data, setData] = useState("");
+  const [data, setData] = useState(null);
   const { addToCart } = useCart();
   const router = useRouter();
   const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -19,9 +30,7 @@ const BestSellingProducts = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(`${apiBaseUrl}/product`);
-        const result = response.data;
-
-        setData(result);
+        setData(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -42,42 +51,45 @@ const BestSellingProducts = () => {
       </p>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-5">
-        {data?.data?.slice(4, 8).map((product) => (
-          <Card key={product.id} className="shadow-md">
-            <img
-              src={product.coverImage}
-              alt={product.name}
-              className="w-full aspect-[4/3] object-contain rounded-t-lg bg-white"
-              onClick={() => handleNavigate(product.slug)}
-            />
-            <CardContent className="p-4">
-              <h3 className="text-lg font-semibold flex items-center cursor-pointer group"  onClick={() => handleNavigate(product.slug)}>
-                {product.name}
-                <ArrowRight className="ml-2 size-4 transition-transform duration-200 translate-x-0 opacity-0 group-hover:translate-x-1 group-hover:opacity-100" />
-              </h3>
+        {data ? data?.data?.slice(4, 8).map((product) => (
+              <Card key={product.id} className="shadow-md">
+                <img
+                  src={product.coverImage}
+                  alt={product.name}
+                  className="w-full aspect-[4/3] object-contain rounded-t-lg bg-white"
+                  onClick={() => handleNavigate(product.slug)}
+                />
+                <CardContent className="p-4">
+                  <h3
+                    className="text-lg font-semibold flex items-center cursor-pointer group"
+                    onClick={() => handleNavigate(product.slug)}
+                  >
+                    {product.name}
+                    <ArrowRight className="ml-2 size-4 transition-transform duration-200 translate-x-0 opacity-0 group-hover:translate-x-1 group-hover:opacity-100" />
+                  </h3>
 
-              <div className="flex items-center gap-1 text-yellow-500">
-                {Array.from({ length: product.rating }, (_, index) => (
-                  <Star key={index} size={16} fill="currentColor" />
-                ))}
-                <span className="text-sm text-gray-500">
-                  ({product.reviews.length} Reviews)
-                </span>
-              </div>
-              <div className="mt-2">
-                {/* <span className="text-gray-400 line-through">{product.oldPrice}</span> */}
-                <span className="text-black font-bold ml-2">
-                  ${product.salePrice}
-                </span>
-              </div>
-              <Link href="/checkoutform">
-                <Button className="w-full" onClick={() => addToCart(product)}>
-                  Buy Now
-                </Button>
-              </Link>
-            </CardContent>
-          </Card>
-        ))}
+                  <div className="flex items-center gap-1 text-yellow-500">
+                    {Array.from({ length: product.rating }, (_, index) => (
+                      <Star key={index} size={16} fill="currentColor" />
+                    ))}
+                    <span className="text-sm text-gray-500">
+                      ({product.reviews.length} Reviews)
+                    </span>
+                  </div>
+                  <div className="mt-2">
+                    <span className="text-black font-bold ml-2">
+                      ${product.salePrice}
+                    </span>
+                  </div>
+                  <Link href="/checkoutform">
+                    <Button className="w-full" onClick={() => addToCart(product)}>
+                      Buy Now
+                    </Button>
+                  </Link>
+                </CardContent>
+              </Card>
+            ))
+          : Array.from({ length: 4 }).map((_, index) => <SkeletonCard key={index} />)}
       </div>
     </div>
   );

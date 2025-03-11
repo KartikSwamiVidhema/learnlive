@@ -2,14 +2,17 @@ import { useState, useEffect } from "react";
 import { X } from "lucide-react";
 import { useRouter } from "next/router";
 import axios from "axios";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import { Button } from "@/components/ui/button";
 
 const IframeWebViewer = () => {
   const [visible, setVisible] = useState(true);
   const [weburl, setWeburl] = useState("");
+  const [slug, setslug]= useState("");
   const router = useRouter();
   const { url: productid } = router.query; // Extracting `url` instead of `productid`
 
-  console.log(productid, "uuuuuuuuuuuuuuuuuuu"); // Should log the correct product ID now
 
   useEffect(() => {
     if (!productid) return; // Prevent API call if productid is not available
@@ -20,7 +23,9 @@ const IframeWebViewer = () => {
         const response = await axios.get(
           `${apiBaseUrl}/product?filter={"_id":"${encodeURIComponent(productid)}"}`
         );
-        
+        console.log(response.data.data[0].slug,"responseee");
+        setslug(response.data.data[0].slug)
+
         if (response.data.data.length > 0) {
           setWeburl(response.data.data[0].webUrl);
         } else {
@@ -36,23 +41,32 @@ const IframeWebViewer = () => {
 
   if (!visible) return null; // Return null when modal is closed
 
-  return (
-    <div className="relative flex justify-center items-center w-[1000px] h-[800px] border-2 border-gray-300 rounded-lg shadow-lg overflow-hidden">
-      {/* Close Button */}
-      <button
-        className="absolute top-2 right-2 bg-white p-2 rounded-full shadow-md hover:bg-gray-200 transition"
-        onClick={() => setVisible(false)}
-      >
-        <X className="w-5 h-5 text-gray-600" />
-      </button>
+  const handleNavigate =()=>{
+    router.push(`/productdetail/${slug}`)
+  }
 
-      {/* Iframe */}
-      <iframe
-        src={weburl}
-        className="w-full h-full border-none"
-        allowFullScreen
-      />
-    </div>
+  return (
+    <>
+   
+     <div className="container">
+     <div className="flex justify-end">
+      <Button className=" mt-2 ml-auto my-[30px]" onClick={handleNavigate}>Buy Now</Button>
+      </div>
+     </div>
+      <div className="flex justify-center items-center mb-4 container">
+        <div className="relative flex justify-center  w-full h-[700px] border-2 border-gray-300 rounded-lg shadow-lg overflow-hidden">
+
+
+          {/* Iframe */}
+          <iframe
+            src={weburl}
+            className="w-full h-full border-none"
+            allowFullScreen
+          />
+        </div>
+      </div>
+      <Footer />
+    </>
   );
 };
 

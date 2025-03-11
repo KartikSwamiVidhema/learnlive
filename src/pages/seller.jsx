@@ -141,7 +141,7 @@ const Seller = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Header />
+   
       <SellerBanner seller={seller} />
       <SearchAndMenu
         categories={categories}

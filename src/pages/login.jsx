@@ -58,7 +58,7 @@ const Login = () => {
   return (
     <div className="min-h-screen flex flex-col">
     <ToastContainer autoClose={3000} /> 
-      <Header />
+    
       <main className="flex-grow bg-gray-100 flex items-center justify-center py-12">
         <Card className="w-full max-w-md">
           <CardHeader>

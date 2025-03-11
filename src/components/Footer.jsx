@@ -1,4 +1,5 @@
 import React from "react";
+import { Facebook, Linkedin, Instagram } from "lucide-react";
 
 const Footer = () => {
   return (
@@ -7,18 +8,33 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* About Section */}
           <div>
-          <img
-  src="../transperant-logo.png"
-  alt="ithemes"
-  className="w-40 mb-4 filter brightness-0 invert"
-/>
+            <img
+              src="../transperant-logo.png"
+              alt="ithemes"
+              className="w-40 mb-4 filter brightness-0 invert"
+            />
 
             <p className="text-gray-400 text-sm">
               Discover a diverse collection of responsive mobile and website
               themes for your app. Look through our resources for beautiful
               design and user-friendly layouts.
             </p>
+
+            <div className="flex mt-2 space-x-4">
+              <a href="https://www.facebook.com/profile.php?id=61550882554964&mibextid=2JQ9oc" target="_blank" rel="noopener noreferrer">
+                <Facebook className="w-6 h-6 text-gray-400 hover:text-white" />
+              </a>
+              <a href="https://www.linkedin.com/company/i-theme/" target="_blank" rel="noopener noreferrer">
+                <Linkedin className="w-6 h-6 text-gray-400 hover:text-white" />
+              </a>
+              <a href="https://www.instagram.com/ithemes02/?igshid=OGQ5ZDc2ODk2ZA%3D%3D" target="_blank" rel="noopener noreferrer">
+                <Instagram className="w-6 h-6 text-gray-400 hover:text-white" />
+              </a>
+            </div>
+
           </div>
+
+
 
           {/* Products Section */}
           <div>
@@ -30,17 +46,26 @@ const Footer = () => {
                 </a>
               </li>
               <li>
-                <a href="/productdetail/ionic-5-ui-component/" className="hover:text-white">
+                <a
+                  href="/productdetail/ionic-5-ui-component/"
+                  className="hover:text-white"
+                >
                   Ionic 5 UI Starter Pack
                 </a>
               </li>
               <li>
-                <a href="/productdetail/urbanclape-clone-framework-7-clap-app-v1/" className="hover:text-white">
+                <a
+                  href="/productdetail/urbanclape-clone-framework-7-clap-app-v1/"
+                  className="hover:text-white"
+                >
                   Clap App Framework 7
                 </a>
               </li>
               <li>
-                <a href="/productdetail/driveease/" className="hover:text-white">
+                <a
+                  href="/productdetail/driveease/"
+                  className="hover:text-white"
+                >
                   Ionic 3 Cab Application Theme
                 </a>
               </li>
@@ -52,7 +77,10 @@ const Footer = () => {
             <h3 className="text-lg font-semibold mb-4">Latest Products</h3>
             <ul className="space-y-2 text-gray-400">
               <li>
-                <a href="/productdetail/get-by-travel/" className="hover:text-white">
+                <a
+                  href="/productdetail/get-by-travel/"
+                  className="hover:text-white"
+                >
                   GetBus
                 </a>
               </li>
@@ -62,7 +90,10 @@ const Footer = () => {
                 </a>
               </li>
               <li>
-                <a href="/productdetail/fooddelivery-app/" className="hover:text-white">
+                <a
+                  href="/productdetail/fooddelivery-app/"
+                  className="hover:text-white"
+                >
                   Delivery App
                 </a>
               </li>
@@ -89,12 +120,12 @@ const Footer = () => {
                 </a>
               </li>
               <li>
-                <a href="/terms" className="hover:text-white">
+                <a href="/termsandconditions" className="hover:text-white">
                   Terms and Conditions
                 </a>
               </li>
               <li>
-                <a href="/refund_returns" className="hover:text-white">
+                <a href="/cancellationpolicy" className="hover:text-white">
                   Cancellation Policy
                 </a>
               </li>

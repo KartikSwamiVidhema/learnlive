@@ -6,11 +6,13 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
-
+.next/
 node_modules
 dist
 dist-ssr
+~/
 *.local
+~/
 # public/wp-content/uploads
 # Editor directories and files
 .vscode/*

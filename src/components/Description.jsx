@@ -52,7 +52,11 @@ const Description = ({ product }) => {
         productId,
         status: "inactive",
       });
-      toast.success("Review submitted successfully!");
+      toast.success("Review submitted successfully!", {
+        onClose: () => {
+          window.location.reload(); // Refresh the page
+        },
+      });
     } catch (error) {
       toast.error("Failed to submit review.");
     }

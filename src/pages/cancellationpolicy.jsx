@@ -4,7 +4,7 @@ import Header from "@/components/Header";
 const CancellationPolicy = () => {
   return (
     <>
-      <Header />
+    
       <div className="max-w-5xl mx-auto p-6 text-gray-700">
         <h1 className="text-3xl font-bold mb-4 text-black">Refund and Returns Policy</h1>
         <p className="text-gray-500 text-sm">Home / Refund and Returns Policy</p>

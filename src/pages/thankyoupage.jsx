@@ -10,12 +10,12 @@ const ThankYouPage = () => {
   const router = useRouter();
 
   const handleNavigate = () => {
-    router.push("/");
+    router.push("/dashboard");
   };
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-grey to-indigo-600">
-      <Header />
+     
       <main className="flex-grow flex items-center justify-center py-12">
         <div className="container mx-auto px-4">
           <Card className="shadow-2xl bg-white rounded-2xl p-8 max-w-xl mx-auto">
@@ -36,7 +36,7 @@ const ThankYouPage = () => {
                 onClick={handleNavigate}
                 className="mt-6 px-6 py-3 text-white rounded-lg transition-all"
               >
-                Go to Home Page
+                Go to Dashboard
               </Button>
             </CardContent>
           </Card>

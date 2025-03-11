@@ -1,103 +1,132 @@
+import { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { useCart } from "../../context/CartContext";
-import Link from "next/link";
-import PayPalButton from "@/components/PaypalButton";
-import { useState,useEffect } from "react";
-import { useRouter } from "next/router";
 import { Trash2 } from "lucide-react";
 import StripePayment from "@/components/StripePayment";
+import { useRouter } from "next/router";
 
-
-const CheckoutForm = ()=> {
-  // const { subtotal } = useCart();
-  const [showPayPal, setShowPayPal] = useState(false);
-
-  const { cart, updateCart } = useCart();
+const CheckoutForm = () => {
+  const [showStripe, setShowStripe] = useState(false);
+  const { cart, updateCart, removeFromCart, clearCart } = useCart();
   const [cartItems, setCartItems] = useState([]);
-  const { removeFromCart } = useCart();
   const { subtotal, setSubtotal } = useCart();
+  const [userEmail, setUserEmail] = useState("");
+  const [userId, setUserId] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(true); // Track login status
   const router = useRouter();
-  const [form, setForm] = useState({
-    firstName: "",
-    lastName: "",
-    country: "",
-    streetAddress: "",
-    city: "",
-    state: "",
-    pinCode: "",
-    phone: "",
-    email: "",
-  });
+console.log(cartItems,"cartcart");
 
-  
-  
+  // Fetch user email & ID from localStorage on mount
+  useEffect(() => {
+    const userData = JSON.parse(localStorage.getItem("userdata"));
+    if (userData?.email) {
+      setUserEmail(userData.email);
+      setUserId(userData._id);
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
+    }
+  }, []);
 
-  
-  
+  // Redirect to login if not logged in
+  useEffect(() => {
+    if (!isLoggedIn) {
+      setTimeout(() => {
+        router.push("/login"); // Redirect to login page
+      }, 3000);
+    }
+  }, [isLoggedIn, router]);
 
-  const handlePlaceOrder = () => {
-    setShowPayPal(true);
-  };
-
-  //========================>>
-
+  // Update cart items when cart changes
   useEffect(() => {
     setCartItems(cart);
   }, [cart]);
 
-  // Update Quantity
-  const updateQuantity = (_id, newQuantity) => {
-    if (newQuantity < 1) return;
-
-    const updatedCart = cartItems.map((item) =>
-      item._id === _id ? { ...item, quantity: newQuantity } : item
-    );
-
-    setCartItems(updatedCart);
-    updateCart(updatedCart);
-  };
-
-  const removeItem = (_id) => {
-    removeFromCart(_id);
-  };
-
-   // Calculate Subtotal and Update Context
-   useEffect(() => {
+  // Calculate subtotal
+  useEffect(() => {
     const newSubtotal = cartItems.reduce(
       (sum, item) => sum + item.salePrice * item.quantity,
       0
     );
-    console.log(newSubtotal,"newSubtotal");
-    
-    setSubtotal(newSubtotal); // Update subtotal in context
+    setSubtotal(newSubtotal);
   }, [cartItems, setSubtotal]);
 
-  const handleNavigate = () =>{
-    router.push(`productdetail/${cartItems[0].slug}`)
+  // Handle placing order and show Stripe payment
+  const handlePlaceOrder = () => {
+    setShowStripe(true);
+  };
+
+  // Save payment details & Create Order
+  const savePaymentDetails = async (paymentInfo) => {
+    localStorage.setItem("paymentDetails", JSON.stringify(paymentInfo));
+
+    const orderData = {
+      transaction_id: paymentInfo.transaction_id,
+      customer: userId,
+      items: cartItems.map((item) => ({
+        item_id: item._id,
+        item_quantity: item.quantity,
+        item_price: item.salePrice,
+      })),
+      payment_method: "Card",
+      tax: 0.0,
+      discount: 0.0,
+      sub_total: subtotal,
+      grand_total: subtotal,
+      order_note: "",
+      billing_address: {
+        street: "123 Main St",
+        city: "New York",
+        zip: "10001",
+      },
+      phone_no: "9876543210",
+    };
+
+    try {
+      const response = await fetch("/order", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(orderData),
+      });
+
+      const data = await response.json();
+      if (data.success) {
+        console.log("Order created:", data.data);
+        clearCart(); // Clear cart after successful order
+      } else {
+        console.error("Order creation failed:", data.message);
+      }
+    } catch (error) {
+      console.error("Error placing order:", error);
+    }
+  };
+
+  if (!isLoggedIn) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen">
+        <h2 className="text-xl font-bold text-red-600">
+          Please log in first to proceed to checkout.
+        </h2>
+        <p className="text-gray-500 mt-2">Redirecting to login page...</p>
+      </div>
+    );
   }
 
-  const isFormValid = Object.values(form).every((val) => val.trim() !== "");
-
-  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
-  
   return (
     <>
-    <Header/>
-    <div className="container mx-auto py-10 grid grid-cols-1 md:grid-cols-3 gap-6">
-      <div className="md:col-span-2 space-y-6">
-        <h2 className="text-2xl font-bold">Checkout</h2>
-        {/* <div className="ml-[84%]">
-        <Button ><Link href="/cartpage">Visit CartPage</Link></Button>
-        </div> */}
-        <div className="overflow-x-auto flex-1 bg-white shadow-md rounded-lg p-4 ">
+    
+      <div className="container mx-auto py-10 grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="md:col-span-2 space-y-6">
+          <h2 className="text-2xl font-bold">Checkout</h2>
+
+          <div className="overflow-x-auto flex-1 bg-white shadow-md rounded-lg p-4">
             <table className="w-full border-collapse">
               <thead>
                 <tr className="bg-gray-100 text-left">
@@ -111,40 +140,28 @@ const CheckoutForm = ()=> {
               </thead>
               <tbody>
                 {cartItems.map((item) => (
-                  <tr key={item.id} className="border-t">
-                    <td className="p-3" onClick={handleNavigate}>
+                  <tr key={item._id} className="border-t">
+                    <td className="p-3">
                       <img
                         src={item.coverImage}
                         alt={item.name}
                         className="w-16 h-16 rounded-md object-cover"
                       />
                     </td>
-                    <td className="p-3">
-                      <p className="font-medium">{item.name}</p>
-                      {item.seller && (
-                        <p className="text-sm text-gray-500">
-                          Sold By: {item.seller}
-                        </p>
-                      )}
-                    </td>
+                    <td className="p-3">{item.name}</td>
                     <td className="p-3">${item.salePrice}</td>
                     <td className="p-3">
                       <input
                         type="number"
                         value={item.quantity}
                         min="1"
-                        // onChange={(e) =>
-                        //   updateQuantity(item._id, parseInt(e.target.value))
-                        // }
                         className="w-16 border rounded-md p-1 text-center"
                       />
                     </td>
-                    <td className="p-3">
-                      ${(item.salePrice * item.quantity)}
-                    </td>
+                    <td className="p-3">${item.salePrice * item.quantity}</td>
                     <td className="p-3">
                       <button
-                        onClick={() => removeItem(item._id)}
+                        onClick={() => removeFromCart(item._id)}
                         className="text-red-500 hover:text-red-700"
                       >
                         <Trash2 size={18} />
@@ -156,69 +173,45 @@ const CheckoutForm = ()=> {
             </table>
           </div>
 
-   
           <Card>
-        <CardHeader><CardTitle>Billing details</CardTitle></CardHeader>
-        <CardContent className="grid gap-4">
-          <div className="grid grid-cols-2 gap-4">
-            <div><Label>First name *</Label><Input name="firstName" onChange={handleChange} /></div>
-            <div><Label>Last name *</Label><Input name="lastName" onChange={handleChange} /></div>
-          </div>
-          <div>
-            <Label>Country / Region *</Label>
-            <Select onValueChange={(val) => setForm({ ...form, country: val })}>
-              <SelectTrigger><SelectValue placeholder="Select a country" /></SelectTrigger>
-              <SelectContent><SelectItem value="india">India</SelectItem></SelectContent>
-            </Select>
-          </div>
-          <div>
-            <Label>Street address *</Label>
-            <Input name="streetAddress" onChange={handleChange} />
-          </div>
-          <div>
-            <Label>Town / City *</Label>
-            <Input name="city" onChange={handleChange} />
-          </div>
-          <div>
-            <Label>State *</Label>
-            <Select onValueChange={(val) => setForm({ ...form, state: val })}>
-              <SelectTrigger><SelectValue placeholder="Select a state" /></SelectTrigger>
-              <SelectContent><SelectItem value="rajasthan">Rajasthan</SelectItem></SelectContent>
-            </Select>
-          </div>
-          <div><Label>PIN Code *</Label><Input name="pinCode" onChange={handleChange} /></div>
-          <div><Label>Phone *</Label><Input name="phone" onChange={handleChange} /></div>
-          <div><Label>Email address *</Label><Input name="email" onChange={handleChange} /></div>
-        </CardContent>
-      </Card>
+            <CardHeader>
+              <CardTitle>Additional Information</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Label>Order notes (optional)</Label>
+              <Input placeholder="Notes about your order, e.g. special notes for delivery." />
+            </CardContent>
+          </Card>
+        </div>
 
-        <Card>
+        <Card className="z-0">
           <CardHeader>
-            <CardTitle>Additional Information</CardTitle>
+            <CardTitle>Your order</CardTitle>
           </CardHeader>
           <CardContent>
-            <Label>Order notes (optional)</Label>
-            <Input placeholder="Notes about your order, e.g. special notes for delivery." />
+            <div className="border-b pb-4 mb-4">
+              <p>Product Subtotal</p>
+              <p className="text-right font-bold">${subtotal}</p>
+            </div>
+            <p className="text-sm text-gray-500">Billing Email: {userEmail}</p>
+            <Button className="mt-4 w-full" onClick={handlePlaceOrder}>
+              Place order
+            </Button>
+            {showStripe && (
+              <StripePayment
+                amount={subtotal}
+                email={userEmail}
+                sellerid={cartItems?.[0]?.vendor?.[0] ?? ""}
+                userId={userId}
+                onSuccess={(paymentInfo) => savePaymentDetails(paymentInfo)}
+              />
+            )}
           </CardContent>
         </Card>
       </div>
-      <Card className="z-0">
-        <CardHeader>
-          <CardTitle>Your order</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="border-b pb-4 mb-4">
-            <p>Product Subtotal</p>
-            <p className="text-right font-bold">${subtotal}</p>
-          </div>
-        
-          <Button className="mt-4 w-full"  onClick={handlePlaceOrder}  disabled={!isFormValid}>Go for payment</Button>
-          {showPayPal && <StripePayment amount={subtotal} form={form} />}
-        </CardContent>
-      </Card>
-    </div>
-    <Footer/>
+      <Footer />
     </>
   );
-}
+};
+
 export default CheckoutForm;

@@ -12,7 +12,6 @@ const Header = () => {
   const [userRole, setUserRole] = useState('');
   const router = useRouter();
 
-
   useEffect(() => {
     const userData = localStorage.getItem('userdata');
     if (userData) {
@@ -22,12 +21,12 @@ const Header = () => {
     }
   }, []);
 
-  // const handleSearch = (e) => {
-  //   e.preventDefault();
-  //   if (searchQuery.trim()) {
-  //     router(`/marketplace?search=${encodeURIComponent(searchQuery.trim())}`);
-  //   }
-  // };
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      router.push(`/product-category/all?search=${encodeURIComponent(searchQuery.trim())}`);
+    }
+  };
 
   const handleLogout = () => {
     localStorage.removeItem("userdata"); // Remove user data
@@ -50,7 +49,7 @@ const Header = () => {
           <Link href="/" className="text-2xl font-bold">
             <img className='max-w-40 h-[45px] object-contain' src="../logo.png" alt="logo" />
           </Link>
-          {/* <form onSubmit={handleSearch} className="relative">
+          <form onSubmit={handleSearch} className="relative">
             <Input
               type="text"
               placeholder="Search products..."
@@ -60,19 +59,15 @@ const Header = () => {
             />
             <SearchIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
             <Button type="submit" className="sr-only">Search</Button>
-          </form> */}
+          </form>
         </div>
         <nav>
           <ul className="flex space-x-4">
             <li><Button variant="ghost" asChild><Link href="/product-category/all">Explore</Link></Button></li>
-
             {/* Conditionally render "Start Selling" button only if user is not authenticated */}
             {!isAuthenticated && (
               <li><Button variant="secondary" asChild><Link href="/pricing">Start Selling</Link></Button></li>
             )}
-
-           {userRole === "USER" && (<li><Button variant="secondary" asChild><Link href="/pricing">Start Selling</Link></Button></li>)}
-
             {isAuthenticated && (
               <>
                 {/* Show Dashboard button for authenticated users */}
