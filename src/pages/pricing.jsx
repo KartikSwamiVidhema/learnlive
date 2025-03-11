@@ -15,10 +15,7 @@ const PricingTier = ({ name, price, features, recommended }) => (
   {recommended && (
     <div className="absolute top-[-15px] left-1/2 transform -translate-x-1/2 bg-primary text-white w-4/5 text-center py-1 text-sm font-semibold rounded-md shadow-md">
       Recommended
-      {/* Left Triangle */}
-      <div className="absolute left-[-10px] top-full w-0 h-0 border-8 border-transparent border-r-primary"></div>
-      {/* Right Triangle */}
-      <div className="absolute right-[-10px] top-full w-0 h-0 border-8 border-transparent border-l-primary"></div>
+    
     </div>
   )}
 

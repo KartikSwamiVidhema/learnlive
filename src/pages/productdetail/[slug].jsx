@@ -251,7 +251,7 @@ const PurchaseInfo = ({ product, seller, onBuyNow }) => {
                 <BadgeCheck className="w-4 h-4 text-blue-500 ml-1" />
               )}
             </Link> */}
-              <p className="text-sm text-gray-600">Seller</p>
+              {/* <p className="text-sm text-gray-600">Seller</p> */}
             </div>
           </div>
         </div>

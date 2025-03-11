@@ -57,7 +57,7 @@ const RelatedProducts = ({product}) => {
             <img
               src={product.coverImage}
               alt={product.name}
-              className="w-full aspect-[4/3] object-contain rounded-t-lg bg-white"
+              className="w-full mt-3 aspect-[4/3] object-contain rounded-t-lg bg-white"
               onClick={() => handleNavigate(product.slug)}
             />
             <CardContent className="p-4">
