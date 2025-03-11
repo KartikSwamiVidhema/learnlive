@@ -47,7 +47,7 @@ const Header = () => {
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
         <div className="flex items-center space-x-4">
           <Link href="/" className="text-2xl font-bold">
-            <img className='max-w-40 h-[45px] object-contain' src="../logo.png" alt="logo" />
+            <img className='max-w-40 h-[45px] object-contain' src="https://res.cloudinary.com/drsh5gjtv/image/upload/v1741677507/logo_vae3xb.png" alt="logo" />
           </Link>
           <form onSubmit={handleSearch} className="relative">
             <Input

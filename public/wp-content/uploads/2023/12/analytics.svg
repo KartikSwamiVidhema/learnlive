@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 360 240">
+  <defs>
+    <style>.cls-1,.cls-10,.cls-2,.cls-3,.cls-7,.cls-9{fill:none;}.cls-1,.cls-10,.cls-2,.cls-3{stroke:#a6abb0;}.cls-1,.cls-2,.cls-3,.cls-4,.cls-7,.cls-9{stroke-linecap:round;}.cls-1,.cls-9{stroke-linejoin:round;}.cls-1,.cls-2,.cls-3,.cls-7,.cls-9{stroke-width:4px;}.cls-10,.cls-2,.cls-3,.cls-4,.cls-7{stroke-miterlimit:10;}.cls-10,.cls-11,.cls-2,.cls-3{opacity:0.3;}.cls-3{stroke-dasharray:2 8;}.cls-4,.cls-6{fill:#fff;}.cls-4,.cls-7,.cls-9{stroke:#81b441;}.cls-4{stroke-width:3px;}.cls-5,.cls-8{fill:#81b441;}.cls-8{opacity:0.22;}.cls-10{stroke-width:2px;}.cls-11{fill:#a6abb0;}</style>
+  </defs>
+  <title>Analytics</title>
+  <path class="cls-1" d="M156.71,67.08H272.78a7.49,7.49,0,0,1,7.47,7.47V175.61a7.49,7.49,0,0,1-7.47,7.47H91.71a7.49,7.49,0,0,1-7.47-7.47V74.55a7.49,7.49,0,0,1,7.47-7.47h18.53"></path>
+  <line class="cls-2" x1="328.39" y1="210.87" x2="251.27" y2="210.87"></line>
+  <line class="cls-2" x1="203.71" y1="210.87" x2="191.71" y2="210.87"></line>
+  <line class="cls-2" x1="177.3" y1="210.87" x2="118.12" y2="210.87"></line>
+  <line class="cls-2" x1="75.24" y1="210.87" x2="34.92" y2="210.87"></line>
+  <polyline class="cls-3" points="47.01 175.69 114.44 128.81 160.44 150.88 206.44 105.2 265 125.08 314.11 85.47"></polyline>
+  <circle class="cls-4" cx="205.38" cy="104.59" r="5.75"></circle>
+  <circle class="cls-4" cx="314.11" cy="85.48" r="5.75"></circle>
+  <circle class="cls-4" cx="115.05" cy="128.08" r="5.75"></circle>
+  <circle class="cls-4" cx="159.77" cy="149.48" r="5.75"></circle>
+  <path class="cls-5" d="M49.51,180.84,47,178.26l2.57-2.5a1.78,1.78,0,0,0-2.48-2.55l-2.57,2.5L42,173.14a1.78,1.78,0,0,0-2.55,2.48l2.5,2.57-2.57,2.5a1.78,1.78,0,1,0,2.48,2.55l2.57-2.5,2.5,2.57a1.78,1.78,0,0,0,2.55-2.48Z"></path>
+  <line class="cls-2" x1="129.45" y1="100.1" x2="97.7" y2="100.1"></line>
+  <line class="cls-2" x1="160.72" y1="109.27" x2="97.7" y2="109.27"></line>
+  <line class="cls-2" x1="140.11" y1="81.74" x2="97.7" y2="81.74"></line>
+  <line class="cls-2" x1="155.02" y1="81.74" x2="148.53" y2="81.74"></line>
+  <line class="cls-2" x1="178.77" y1="81.74" x2="167.53" y2="81.74"></line>
+  <circle class="cls-6" cx="277.02" cy="172.6" r="25.75"></circle>
+  <circle class="cls-7" cx="278.14" cy="173.04" r="20.59"></circle>
+  <circle class="cls-8" cx="280.98" cy="176.48" r="21.47"></circle>
+  <polyline class="cls-9" points="269.71 174.77 274.18 179.24 286.58 166.84"></polyline>
+  <circle class="cls-10" cx="140.11" cy="52.45" r="4"></circle>
+  <path class="cls-11" d="M281.55,37.08h-3V34a1.5,1.5,0,0,0-3,0v3h-3a1.5,1.5,0,0,0,0,3h3v3a1.5,1.5,0,1,0,3,0v-3h3a1.5,1.5,0,0,0,0-3Z"></path>
+  <line class="cls-2" x1="224.11" y1="166.74" x2="181.7" y2="166.74"></line>
+  <line class="cls-2" x1="239.02" y1="166.74" x2="232.53" y2="166.74"></line>
+</svg>

@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "name": "John Doe",
+    "avatar": "/placeholder.svg",
+    "bannerImage": "/placeholder.svg",
+    "slogan": "Creating amazing digital products",
+    "verified": true,
+    "products": [1, 2, 3]
+  },
+  {
+    "id": 2,
+    "name": "Jane Smith",
+    "avatar": "/placeholder.svg",
+    "bannerImage": "/placeholder.svg",
+    "slogan": "Empowering businesses with innovative solutions",
+    "verified": false,
+    "products": [4, 5]
+  }
+]

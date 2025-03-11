@@ -103,48 +103,51 @@ const Description = ({ product }) => {
         </CardContent>
       </Card>
 
-      <div className="flex items-start space-x-4 p-4 border border-gray-200 rounded-lg shadow-sm mt-9">
-        {/* Review Content */}
-        {product.reviews.map((item, index) => (
-          <div
-            key={index}
-            className="p-4 border border-gray-200 rounded-lg shadow-sm mb-4"
-          >
-            <div className="flex items-start space-x-4">
-              {/* User Avatar (Placeholder) */}
-              <div className="w-12 h-12 bg-purple-200 text-white rounded flex items-center justify-center text-lg font-semibold">
-                {item.name.charAt(0).toUpperCase()}
+      {product.reviews && product.reviews.length > 0 && (
+  <div className="flex flex-col space-y-4 p-4 border border-gray-200 rounded-lg shadow-sm mt-9">
+    <h2 className="text-lg font-semibold">Customer Reviews</h2>
+    {product.reviews.map((item, index) => (
+      <div
+        key={index}
+        className="p-4 border border-gray-200 rounded-lg shadow-sm"
+      >
+        <div className="flex items-start space-x-4">
+          {/* User Avatar (Placeholder) */}
+          <div className="w-12 h-12 bg-purple-200 text-white rounded flex items-center justify-center text-lg font-semibold">
+            {item.name.charAt(0).toUpperCase()}
+          </div>
+
+          <div className="w-full">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="font-semibold text-gray-800">{item.name}</h3>
+                <p className="text-sm text-gray-500">
+                  {formatDate(item.createdAt)}
+                </p>
               </div>
 
-              <div className="w-full">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h3 className="font-semibold text-gray-800">{item.name}</h3>
-                    <p className="text-sm text-gray-500">
-                      {formatDate(item.createdAt)}
-                    </p>
-                  </div>
-
-                  {/* Star Rating */}
-                  <div className="flex space-x-1 text-yellow-500">
-                    {[...Array(item.rating)].map((_, i) => (
-                      <Star
-                        key={i}
-                        size={16}
-                        fill="currentColor"
-                        stroke="none"
-                      />
-                    ))}
-                  </div>
-                </div>
-
-                {/* Review Text */}
-                <p className="mt-2 text-gray-700">{item.message}</p>
+              {/* Star Rating */}
+              <div className="flex space-x-1 text-yellow-500">
+                {[...Array(item.rating)].map((_, i) => (
+                  <Star
+                    key={i}
+                    size={16}
+                    fill="currentColor"
+                    stroke="none"
+                  />
+                ))}
               </div>
             </div>
+
+            {/* Review Text */}
+            <p className="mt-2 text-gray-700">{item.message}</p>
           </div>
-        ))}
+        </div>
       </div>
+    ))}
+  </div>
+)}
+
 
       <div ref={reviewRef} className="mt-12 p-6 border rounded-lg bg-gray-50">
         <h2 className="text-lg font-semibold">Be the first to review</h2>
