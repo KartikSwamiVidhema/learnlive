@@ -1,0 +1,94 @@
+
+---Upload files---
+Content file was not uploaded. Error: No file provided.
+
+---Upload files---
+Customizer file was not uploaded. Error: No file provided.
+
+---Upload files---
+Redux file was not uploaded. Error: No file provided.
+
+---Upload files---
+The import files were successfully uploaded!
+Initial max execution time = 180
+Files info:
+Site URL = http://localhost/freetheme
+Data file = not defined!
+Widget file = /var/www/html/freetheme/wp-content/uploads/2023/10/widgets-1.wie
+Customizer file = not defined!
+Redux files:
+not defined!
+
+---ocdi/before_widgets_import---
+
+
+---Importing widgets---
+Sidebar Default : 
+
+Block - No Title - Imported
+Block - No Title - Imported
+Block - No Title - Imported
+Block - No Title - Imported
+Block - No Title - Imported
+
+Services filter sidebar : 
+
+Apus Show Elementor Template Widget - No Title - Imported
+
+Service single sidebar : 
+
+Service Single:: Service Price - No Title - Imported
+Service Single:: Service Author - About The Seller - Imported
+
+Projects filter sidebar : 
+
+Apus Show Elementor Template Widget - No Title - Imported
+
+Project single sidebar : 
+
+Project Single:: Project Price - No Title - Imported
+Project Single:: Project Author - About Seller - Imported
+
+Jobs filter sidebar : 
+
+Apus Show Elementor Template Widget - No Title - Imported
+Job Alert Form - Job Alert - Imported
+
+Freelancers filter sidebar : 
+
+Apus Show Elementor Template Widget - No Title - Imported
+
+Freelancer single sidebar : 
+
+Freelancer Detail:: Information - No Title - Imported
+Freelancer Detail:: Tags - My Skills - Imported
+
+Employers filter sidebar : 
+
+Apus Show Elementor Template Widget - No Title - Imported
+
+Employer single sidebar : 
+
+Employer Detail:: Information - About Me - Imported
+
+User Profile sidebar : 
+
+Apus User Short Profile - No Title - Imported
+
+Blog sidebar : 
+
+Apus Search Widget - No Title - Imported
+Block - No Title - Imported
+Apus Recent Posts Widget - Recent Posts - Imported
+Block - No Title - Imported
+
+Shop sidebar : 
+
+Apus Search Widget - No Title - Imported
+Block - No Title - Imported
+Block - No Title - Imported
+
+
+
+---ocdi/after_import---
+

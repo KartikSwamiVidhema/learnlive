@@ -1,0 +1,83 @@
+
+---Upload files---
+Customizer file was not uploaded. Error: No file provided.
+
+---Upload files---
+Redux file was not uploaded. Error: No file provided.
+
+---Upload files---
+The import files were successfully uploaded!
+Initial max execution time = 180
+Files info:
+Site URL = http://localhost/freetheme
+Data file = /var/www/html/freetheme/wp-content/uploads/2023/10/dummy-data-1.xml
+Widget file = /var/www/html/freetheme/wp-content/uploads/2023/10/widgets.wie
+Customizer file = not defined!
+Redux files:
+not defined!
+
+------
+New AJAX call!
+
+
+------
+New AJAX call!
+
+
+------
+New AJAX call!
+
+
+------
+New AJAX call!
+
+
+------
+New AJAX call!
+
+
+------
+New AJAX call!
+
+
+------
+New AJAX call!
+[ERROR] Failed to import "Attachment Image" (Media)
+[ERROR] Failed to import "Attachment Image" (Media)
+
+
+------
+New AJAX call!
+[ERROR] Failed to import "Attachment Image" (Media)
+[ERROR] Failed to import "Attachment Image" (Media)
+
+
+------
+New AJAX call!
+[ERROR] Failed to import "Attachment Image" (Media)
+[ERROR] Failed to import "Attachment Image" (Media)
+
+
+------
+New AJAX call!
+[ERROR] Failed to import "Attachment Image" (Media)
+[ERROR] Failed to import "Attachment Image" (Media)
+
+
+------
+New AJAX call!
+[ERROR] Failed to import "Attachment Image" (Media)
+[ERROR] Failed to import "Attachment Image" (Media)
+
+
+------
+New AJAX call!
+[ERROR] Failed to import "Attachment Image" (Media)
+[ERROR] Failed to import "Attachment Image" (Media)
+
+
+------
+New AJAX call!
+[ERROR] Failed to import "Attachment Image" (Media)
+[ERROR] Failed to import "Attachment Image" (Media)
+
