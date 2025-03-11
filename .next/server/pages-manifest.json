@@ -1,1 +1,6 @@
-{"/_app":"pages/_app.js","/_error":"pages/_error.js","/aboutus":"pages/aboutus.html","/cancellationpolicy":"pages/cancellationpolicy.html","/cartpage":"pages/cartpage.html","/checkoutform":"pages/checkoutform.html","/contactus":"pages/contactus.html","/demo":"pages/demo.html","/login":"pages/login.html","/pricing":"pages/pricing.html","/privacypolicy":"pages/privacypolicy.html","/register":"pages/register.html","/seller":"pages/seller.html","/termsandconditions":"pages/termsandconditions.html","/thankyou":"pages/thankyou.html","/thankyoupage":"pages/thankyoupage.html","/webiframe":"pages/webiframe.html","/demoproduct":"pages/demoproduct.js","/":"pages/index.js","/product-category/[slug]":"pages/product-category/[slug].js","/productdetail/[slug]":"pages/productdetail/[slug].js","/_document":"pages/_document.js","/dashboard":"pages/dashboard.js","/404":"pages/404.html"}
+{
+  "/_app": "pages/_app.js",
+  "/_error": "pages/_error.js",
+  "/_document": "pages/_document.js",
+  "/": "pages/index.js"
+}
