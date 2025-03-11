@@ -6,6 +6,7 @@ import { Tag } from "lucide-react";
 import axios from "axios";
 import { useRouter } from "next/router";
 
+
 const HomeBanner = () => {
   const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   const [searchValue, setSearchValue] = useState("");
@@ -90,7 +91,7 @@ const HomeBanner = () => {
         setDropdownVisible(false);
       }
     };
-
+    
     document.addEventListener("click", handleOutsideClick);
     return () => document.removeEventListener("click", handleOutsideClick);
   }, []);
@@ -127,9 +128,7 @@ const HomeBanner = () => {
           <CardContent className="p-6 space-y-4">
             <div className="flex flex-col md:flex-row items-end space-y-4 md:space-y-0 md:space-x-4">
               <div className="w-full md:w-[90%] relative">
-                <label className="block text-primary text-sm mb-1 text-start">
-                  Search for categories
-                </label>
+               
                 <div className="relative dropdown-container">
                   <Input
                     type="text"

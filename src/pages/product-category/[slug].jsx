@@ -64,29 +64,29 @@ const MarketplaceFilter = ({ categoryData, productData }) => {
   const [availableTags, setAvailableTags] = useState([]);
   const router = useRouter();
   const { slug } = router.query;
-  // const [currentPage, setCurrentPage] = useState(1);
-  // const itemsPerPage = 12;
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 12;
 
   // Calculate total pages
-  // const totalPages = Math.ceil(products.length / itemsPerPage);
+  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
 
   // Slice the products for the current page
-  // const currentProducts = products.slice(
-  //   (currentPage - 1) * itemsPerPage,
-  //   currentPage * itemsPerPage
-  // );
+  const currentProducts = filteredProducts.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
   // Handle pagination
-  // const nextPage = () => {
-  //   console.log("test");
+  const nextPage = () => {
+    console.log("test");
 
-  //   if (currentPage < totalPages) setCurrentPage(currentPage + 1);
-  // };
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+  };
 
-  // const prevPage = () => {
+  const prevPage = () => {
 
-  //   if (currentPage > 1) setCurrentPage(currentPage - 1);
-  // };
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
 
   useEffect(() => {
     if (slug && categoryData?.data) {
@@ -123,7 +123,7 @@ const MarketplaceFilter = ({ categoryData, productData }) => {
 
   const applyFilters = (filters) => {
     let filtered = products;
-
+  
     if (filters.Category?.length > 0) {
       filtered = filtered.filter((product) =>
         product.categories.some((category) =>
@@ -133,8 +133,7 @@ const MarketplaceFilter = ({ categoryData, productData }) => {
     }
     if (filters.Price?.length > 0) {
       filtered = filtered.filter((product) => {
-        let productPrice = Number(product?.salePrice); // Convert price to number
-
+        let productPrice = Number(product?.salePrice);
         return filters.Price.some((filterPrice) => {
           if (filterPrice === "Under $20") {
             return productPrice == null || productPrice < 20;
@@ -145,7 +144,6 @@ const MarketplaceFilter = ({ categoryData, productData }) => {
           } else if (filterPrice === "Over $100") {
             return productPrice > 100;
           } else if (filterPrice.includes("-")) {
-            // Extract min and max values for range filters
             const [min, max] = filterPrice
               .replace("$", "")
               .split(" - ")
@@ -158,7 +156,7 @@ const MarketplaceFilter = ({ categoryData, productData }) => {
     }
     if (filters.Rating?.length > 0) {
       filtered = filtered.filter((product) => {
-        let productRating = Number(product?.rating); // Convert rating to number
+        let productRating = Number(product?.rating);
         return filters.Rating.some((filterRating) => {
           if (filterRating === "4 stars & up") {
             return productRating >= 4;
@@ -171,8 +169,9 @@ const MarketplaceFilter = ({ categoryData, productData }) => {
         });
       });
     }
-
+  
     setFilteredProducts(filtered);
+    setCurrentPage(1); // Reset to the first page when filters change
   };
 
   const filters = [
@@ -259,7 +258,7 @@ const MarketplaceFilter = ({ categoryData, productData }) => {
             {/* Right side with product results */}
             <div className="w-full md:w-3/4">
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredProducts?.map((product) => (
+                {currentProducts?.map((product) => (
                   <Card key={product.id}>
                     <CardHeader onClick={() => handleNavigate(product.slug)}>
                       <img
@@ -313,7 +312,7 @@ const MarketplaceFilter = ({ categoryData, productData }) => {
             </div>
           </div>
           {/* Pagination Controls */}
-          {/* <div className="flex justify-center mt-4">
+          <div className="flex justify-center mt-4">
             <button
               onClick={prevPage}
               disabled={currentPage === 1}
@@ -331,7 +330,7 @@ const MarketplaceFilter = ({ categoryData, productData }) => {
             >
               Next
             </button>
-          </div> */}
+          </div>
         </div>
       </main>
       <Footer />
