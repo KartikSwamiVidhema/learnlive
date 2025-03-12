@@ -1,6 +1,7 @@
 import React from "react";
 import { Facebook, Linkedin, Instagram } from "lucide-react";
 
+let currentYear = new Date().getFullYear();
 const Footer = () => {
   return (
     <footer className="bg-gray-900 text-white py-12">
@@ -21,20 +22,29 @@ const Footer = () => {
             </p>
 
             <div className="flex mt-2 space-x-4">
-              <a href="https://www.facebook.com/profile.php?id=61550882554964&mibextid=2JQ9oc" target="_blank" rel="noopener noreferrer">
+              <a
+                href="https://www.facebook.com/profile.php?id=61550882554964&mibextid=2JQ9oc"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <Facebook className="w-6 h-6 text-gray-400 hover:text-white" />
               </a>
-              <a href="https://www.linkedin.com/company/i-theme/" target="_blank" rel="noopener noreferrer">
+              <a
+                href="https://www.linkedin.com/company/i-theme/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <Linkedin className="w-6 h-6 text-gray-400 hover:text-white" />
               </a>
-              <a href="https://www.instagram.com/ithemes02/?igshid=OGQ5ZDc2ODk2ZA%3D%3D" target="_blank" rel="noopener noreferrer">
+              <a
+                href="https://www.instagram.com/ithemes02/?igshid=OGQ5ZDc2ODk2ZA%3D%3D"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <Instagram className="w-6 h-6 text-gray-400 hover:text-white" />
               </a>
             </div>
-
           </div>
-
-
 
           {/* Products Section */}
           <div>
@@ -139,8 +149,21 @@ const Footer = () => {
         </div>
 
         {/* Copyright Section */}
-        <div className="mt-8 pt-6 border-t border-gray-700 text-center text-gray-400 text-sm">
-          &copy; 2024 Marketplace. All rights reserved.
+
+        <div className="mt-8 pt-6 border-t border-gray-700 text-gray-400 text-sm flex justify-between items-center">
+          <p>&copy; {currentYear} IThemes. All rights reserved.</p>
+          <div className="text-right flex gap-4">
+            <p>
+              Email:{" "}
+              <a
+                href="mailto:info@ithemes.xyz"
+                className="text-blue-600 underline hover:text-blue-800"
+              >
+                info@ithemes.xyz
+              </a>
+            </p>
+            <p className="text-white">Phone: (+91) 882 985 1547</p>
+          </div>
         </div>
       </div>
     </footer>
