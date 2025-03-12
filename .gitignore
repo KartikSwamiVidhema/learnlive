@@ -11,7 +11,7 @@ node_modules
 dist
 dist-ssr
 ~/
-*.local
+*.local 
 ~/
 # public/wp-content/uploads
 # Editor directories and files

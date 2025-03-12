@@ -187,7 +187,7 @@ const MarketplaceFilter = ({ categoryData, productData }) => {
       name: "Rating",
       options: ["4 stars & up", "3 stars & up", "2 stars & up"],
     },
-    { name: "Tags", options: availableTags },
+    // { name: "Tags", options: availableTags },
   ];
   const handleNavigate = (slug) => {
     router.push(`/productdetail/${slug}`);
@@ -206,6 +206,8 @@ const MarketplaceFilter = ({ categoryData, productData }) => {
                 <CardHeader>
                   <CardTitle>Filters</CardTitle>
                 </CardHeader>
+                <hr className="my-4 h-px border-t-0 bg-transparent bg-gradient-to-r from-transparent via-neutral-500 to-transparent opacity-25 dark:opacity-100" />
+
                 <CardContent>
                   {/* <Input
                     type="text"

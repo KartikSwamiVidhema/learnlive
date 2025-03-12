@@ -91,7 +91,7 @@ const HomeBanner = () => {
         setDropdownVisible(false);
       }
     };
-    
+
     document.addEventListener("click", handleOutsideClick);
     return () => document.removeEventListener("click", handleOutsideClick);
   }, []);
@@ -124,7 +124,7 @@ const HomeBanner = () => {
           </p>
         </div>
         {/* <div className="relative z-10 container mx-auto flex flex-col items-center text-center space-y-8"> */}
-        <Card className="w-[700px] bg-white/10 shadow-lg backdrop-blur-lg">
+        <Card className="md:w-[700px] bg-white/10 shadow-lg backdrop-blur-lg">
           <CardContent className="p-6 space-y-4">
             <div className="flex flex-col md:flex-row items-end space-y-4 md:space-y-0 md:space-x-4">
               <div className="w-full md:w-[90%] relative">
@@ -166,7 +166,7 @@ const HomeBanner = () => {
               </div>
 
               <Button
-                className="mt-3 transition duration-200"
+                className="w-full md:w-auto mt-2 md:mt-0 transition duration-200"
                 onClick={handleNavigate}
               >
                 Find
