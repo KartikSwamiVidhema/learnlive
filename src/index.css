@@ -109,6 +109,7 @@
   white-space: nowrap;
   animation: marquee 10s linear infinite;
 }
+
 /* In your CSS file or styled component */
 
 /* Red asterisk style for required fields */

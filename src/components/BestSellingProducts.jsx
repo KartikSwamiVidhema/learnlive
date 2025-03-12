@@ -56,7 +56,7 @@ const BestSellingProducts = () => {
                 <img
                   src={product.coverImage}
                   alt={product.name}
-                  className="w-full aspect-[4/3] object-contain rounded-t-lg bg-white"
+                  className="w-full aspect-[4/3] mt-5 object-contain rounded-t-lg bg-white"
                   onClick={() => handleNavigate(product.slug)}
                 />
                 <CardContent className="p-4">

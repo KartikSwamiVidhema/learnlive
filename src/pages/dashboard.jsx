@@ -32,7 +32,6 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 function Sidebar({ setActiveTab }) {
   const [role, setRole] = useState(""); // Capitalized 'setRole' for consistency
-console.log(role,"sdfghjm");
 
   useEffect(() => {
     const storedUserData = localStorage.getItem("userdata");
@@ -49,35 +48,35 @@ console.log(role,"sdfghjm");
     }
   }, []);
   return (
-    <div className="bg-primary text-white p-4 w-[15%] sm:block rounded-lg">
-      <h2 className="text-xl font-bold mb-6">Dashboard</h2>
+    <div className="bg-primary text-white p-4 md:w-[15%] w-[20%] sm:block rounded-lg">
+      <h2 className="text-xl font-bold mb-6 md:block hidden">Dashboard</h2>
       <nav className="flex flex-col space-y-4">
-        <Button variant="ghost" className="flex items-center space-x-2" onClick={() => setActiveTab("profile")}>
-          <User size={20} />
-          <span>Profile</span>
+        <Button variant="ghost" className="flex items-center justify-start space-x-2" onClick={() => setActiveTab("profile")}>
+          <User className="w-6 h-6 md:w-5 md:h-5" />
+          <span className="md:block hidden">Profile</span>
         </Button>
         {role !== "USER" && (
-  <Button variant="ghost" className="flex items-center space-x-2" onClick={() => setActiveTab("product")}>
-    <FileText size={20} />
-    <span>Product</span>
+  <Button variant="ghost" className="flex items-center justify-start space-x-2" onClick={() => setActiveTab("product")}>
+     <FileText className="w-6 h-6 md:w-5 md:h-5" />
+    <span className="md:block hidden">Product</span>
   </Button>
 )}
  {role !== "USER" && (
-        <Button variant="ghost" className="flex items-center space-x-2" onClick={() => setActiveTab("plans")}>
-          <ListOrdered size={20} />
-          <span>Orders</span>
+        <Button variant="ghost" className="flex items-center justify-start space-x-2" onClick={() => setActiveTab("plans")}>
+          <ListOrdered className="w-6 h-6 md:w-5 md:h-5"/>
+          <span className="md:block hidden">Orders</span>
         </Button>
  )}
  {role !== "VENDOR" && (
-        <Button variant="ghost" className="flex items-center space-x-2" onClick={() => setActiveTab("download")}>
-          <Download size={20} />
-          <span>Download</span>
+        <Button variant="ghost" className="flex items-center justify-start space-x-2" onClick={() => setActiveTab("download")}>
+          <Download className="w-6 h-6 md:w-5 md:h-5"/>
+          <span className="md:block hidden">Download</span>
         </Button>
  )}
  {role !== "USER" && (
-        <Button variant="ghost" className="flex items-center space-x-2" onClick={() => setActiveTab("settings")}>
-          <SquareUserRound size={20} />
-          <span>Plans</span>
+        <Button variant="ghost" className="flex items-center justify-start space-x-2" onClick={() => setActiveTab("settings")}>
+          <SquareUserRound className="w-6 h-6 md:w-5 md:h-5" />
+          <span className="md:block hidden">Plans</span>
         </Button>
         )}
       </nav>
@@ -162,7 +161,7 @@ function ProfileForm() {
         <div className="md:w-[99%] mx-auto">
           <Card className="rounded-xl shadow-md">
             <CardContent className="p-6">
-              <h2 className="text-2xl font-semibold mb-4">My Profile</h2>
+              <h2 className="md:text-2xl font-semibold mb-4">My Profile</h2>
               {successMessage && (
                 <div className="flex items-center bg-green-100 text-green-700 p-4 rounded-lg mb-4">
                   {/* Success Icon */}
@@ -298,9 +297,9 @@ console.log(products,"productsproducts");
   
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-6">
+    <div className="flex flex-col items-center  min-h-screen bg-gray-100 md:p-6 p-3 ">
       <div className="bg-white p-6 rounded-lg shadow-lg text-center w-full max-w-4xl">
-        <h2 className="text-2xl font-semibold mb-4">Download Your Report</h2>
+        <h2 className="md:text-2xl text-[18px] font-semibold mb-4">Download Your Report</h2>
 
         {/* Display Loading/Error Messages */}
         {loading && <p className="mt-6 text-gray-500">Loading products...</p>}
@@ -800,7 +799,7 @@ const ProductContent = ({ categorydata }) => {
     }));
   };
   return (
-    <div className="container mx-auto p-3">
+    <div className="container mx-auto p-3 mt-0">
       <div className="md:w-[99%] mx-auto">
         <Card className="rounded-xl shadow-md">
           <CardContent className="p-6">
@@ -1522,9 +1521,9 @@ export default function Dashboard({ userdata, categorydata }) {
   return (
     <>
     
-      <div className="container flex py-4">
+      <div className="container flex py-4 px-3">
         <Sidebar setActiveTab={setActiveTab}  />
-        <div className="md:w-[85%] px-6">
+        <div className="md:w-[85%] w-[80%] md:px-6 ">
           <Card className="rounded-0">
             <CardContent>{renderContent()}</CardContent>
           </Card>

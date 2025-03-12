@@ -145,9 +145,9 @@ const ProductTabs = ({ product }) => {
     <Tabs defaultValue="description">
       <TabsList>
         <TabsTrigger value="description">Description</TabsTrigger>
-        <TabsTrigger value="features">Features</TabsTrigger>
+     
         <TabsTrigger value="reviews">Reviews</TabsTrigger>
-        <TabsTrigger value="view">View</TabsTrigger>
+  
       </TabsList>
 
       {/* Description Tab */}
@@ -251,7 +251,7 @@ const PurchaseInfo = ({ product, seller, onBuyNow }) => {
                 <BadgeCheck className="w-4 h-4 text-blue-500 ml-1" />
               )}
             </Link> */}
-              <p className="text-sm text-gray-600">Seller</p>
+        
             </div>
           </div>
         </div>
@@ -261,7 +261,7 @@ const PurchaseInfo = ({ product, seller, onBuyNow }) => {
 };
 
 const ProductDetail = ({ productData }) => {
-  console.log(productData, "00000000000YYYY");
+
 
   const router = useRouter();
   const { slug } = router.query;
@@ -273,6 +273,8 @@ const ProductDetail = ({ productData }) => {
   }
 
   const product = productData.data[0];
+  console.log(product,"ggggggg990");
+  
 
   const handleBuyNow = () => {
     setIsDialogOpen(true);

@@ -91,7 +91,7 @@ const ProductCard = ({ product }) => {
         <img
           src={product.coverImage}
           alt={product.name}
-          className="w-full aspect-[4/3] object-contain rounded-t-lg bg-white"
+          className="w-full aspect-[4/3] object-contain rounded-t-lg bg-white mt-4"
         />
       </CardHeader>
       <CardContent>

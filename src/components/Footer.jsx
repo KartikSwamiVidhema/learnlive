@@ -150,19 +150,19 @@ const Footer = () => {
 
         {/* Copyright Section */}
 
-        <div className="mt-8 pt-6 border-t border-gray-700 text-gray-400 text-sm flex justify-between items-center">
+        <div className="mt-8 pt-6 border-t border-gray-700 text-gray-400 text-sm flex flex-col md:flex-row justify-between items-center text-center md:text-left">
           <p>&copy; {currentYear} IThemes. All rights reserved.</p>
-          <div className="text-right flex gap-4">
+          <div className="mt-2 md:mt-0 flex flex-col md:flex-row gap-2 md:gap-4">
             <p>
               Email:{" "}
               <a
                 href="mailto:info@ithemes.xyz"
-                className="text-blue-600 underline hover:text-blue-800"
+                className="text-grey-400 underline hover:text-white"
               >
                 info@ithemes.xyz
               </a>
             </p>
-            <p className="text-white">Phone: (+91) 882 985 1547</p>
+            <p className="text-grey-400">Phone: (+91) 882 985 1547</p>
           </div>
         </div>
       </div>

@@ -32,10 +32,10 @@ export default function Demo() {
   
   return (
     <>
+   <section className="py-8 md:py-12">
+   <div className="container mx-auto md:px-6 px-4">
+      <div className="md:flex items-center justify-center min-h-screen md:p-6">
    
-    <div className="container">
-      <div className="flex items-center justify-center min-h-screen p-6">
-        {/* Content Section */}
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-gray-800">Doc App Clone</h1>
           <img
@@ -62,7 +62,7 @@ export default function Demo() {
           </div>
         </div>
 
-        {/* iPhone Frame Section */}
+   
         <div className="relative w-[375px] h-[750px] ms-auto">
           <img
             className="absolute w-full"
@@ -78,6 +78,7 @@ export default function Demo() {
         </div>
       </div>
     </div>
+    </section>
     <Footer />
     </>
   );

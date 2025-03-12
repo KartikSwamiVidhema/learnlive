@@ -8,6 +8,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Filter } from "lucide-react";
 
 import {
   Card,
@@ -46,15 +48,16 @@ const StarRating = ({ rating }) => {
 const MarketplaceFilter = ({ categoryData, productData }) => {
   useEffect(() => {
     if (localStorage.getItem("loginSuccess") === "true") {
-        toast.success("Login successful! 🎉"); // ✅ Show success message
-        localStorage.removeItem("loginSuccess"); // ✅ Remove it to prevent repeated toasts
+      toast.success("Login successful! 🎉"); // ✅ Show success message
+      localStorage.removeItem("loginSuccess"); // ✅ Remove it to prevent repeated toasts
     }
-}, []);
+  }, []);
   const Products = productData.data;
 
   const [products, setProducts] = useState(Products);
   const [filteredProducts, setFilteredProducts] = useState(Products);
   const [searchTerm, setSearchTerm] = useState("");
+  const [open, setOpen] = useState(false);
   const [selectedFilters, setSelectedFilters] = useState({
     Category: [],
     Price: [],
@@ -84,7 +87,6 @@ const MarketplaceFilter = ({ categoryData, productData }) => {
   };
 
   const prevPage = () => {
-
     if (currentPage > 1) setCurrentPage(currentPage - 1);
   };
 
@@ -123,7 +125,7 @@ const MarketplaceFilter = ({ categoryData, productData }) => {
 
   const applyFilters = (filters) => {
     let filtered = products;
-  
+
     if (filters.Category?.length > 0) {
       filtered = filtered.filter((product) =>
         product.categories.some((category) =>
@@ -169,7 +171,7 @@ const MarketplaceFilter = ({ categoryData, productData }) => {
         });
       });
     }
-  
+
     setFilteredProducts(filtered);
     setCurrentPage(1); // Reset to the first page when filters change
   };
@@ -195,13 +197,13 @@ const MarketplaceFilter = ({ categoryData, productData }) => {
 
   return (
     <div className="min-h-screen flex flex-col">
-     <ToastContainer autoClose={3000} /> 
-   
+      <ToastContainer autoClose={3000} />
+
       <main className="flex-grow bg-gray-100 py-8">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row gap-8 ">
             {/* Left sidebar with filters */}
-            <aside className=" w-full md:w-1/4 sticky top-[100px] max-h-[calc(100vh-2rem)]">
+            <aside className=" w-full md:w-1/4 sticky top-[100px] max-h-[calc(100vh-2rem)] md:block hidden">
               <Card>
                 <CardHeader>
                   <CardTitle>Filters</CardTitle>
@@ -209,13 +211,6 @@ const MarketplaceFilter = ({ categoryData, productData }) => {
                 <hr className="my-4 h-px border-t-0 bg-transparent bg-gradient-to-r from-transparent via-neutral-500 to-transparent opacity-25 dark:opacity-100" />
 
                 <CardContent>
-                  {/* <Input
-                    type="text"
-                    placeholder="Search products or tags..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="mb-4"
-                  /> */}
                   <ScrollArea className="max-h-[400px] pr-2 overflow-y-auto custom-scroll">
                     {filters.map((filter, index) => (
                       <div>
@@ -257,6 +252,54 @@ const MarketplaceFilter = ({ categoryData, productData }) => {
               </Card>
             </aside>
 
+            <Sheet open={open} onOpenChange={setOpen}>
+              <SheetTrigger asChild>
+                <Button
+                  className="md:hidden flex items-center gap-2"
+                  onClick={() => setOpen(true)}
+                >
+                  <Filter size={18} />
+                  Show Filters
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="left">
+                <h2 className="text-lg font-semibold mb-2">Filters</h2>
+                <ScrollArea className="max-h-[700px] pr-2 overflow-y-auto custom-scroll">
+                  {filters.map((filter, index) => (
+                    <div key={index}>
+                      <div className="mb-4">
+                        <h3 className="font-semibold mb-2">{filter.name}</h3>
+                        {filter.options.map((option, optionIndex) => (
+                          <div
+                            key={optionIndex}
+                            className="flex items-center mb-2"
+                          >
+                            <Checkbox
+                              id={`${filter.name}-${optionIndex}`}
+                              checked={selectedFilters[filter.name]?.includes(
+                                option
+                              )}
+                              onCheckedChange={(checked) =>
+                                handleFilterChange(filter.name, option, checked)
+                              }
+                            />
+                            <label
+                              htmlFor={`${filter.name}-${optionIndex}`}
+                              className="ml-2 text-sm"
+                            >
+                              {option}
+                            </label>
+                          </div>
+                        ))}
+                      </div>
+                      <hr className="my-4 h-px border-t-0 bg-transparent bg-gradient-to-r from-transparent via-neutral-500 to-transparent opacity-25 dark:opacity-100" />
+                    </div>
+                  ))}
+                  <Button onClick={() => setOpen(false)}>Apply Filter</Button>
+                </ScrollArea>
+              </SheetContent>
+            </Sheet>
+
             {/* Right side with product results */}
             <div className="w-full md:w-3/4">
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -266,7 +309,7 @@ const MarketplaceFilter = ({ categoryData, productData }) => {
                       <img
                         src={product.coverImage}
                         alt={product?.title}
-                        className="w-full h-49 max-h-36 object-contain rounded-t-lg"
+                        className="w-full aspect-[4/3] mt-5 object-contain rounded-t-lg bg-white"
                       />
                     </CardHeader>
                     <CardContent>
@@ -289,22 +332,25 @@ const MarketplaceFilter = ({ categoryData, productData }) => {
                         ${product.salePrice}
                       </p>
 
-                      <div className="flex  gap-1">
-                        {product.tags?.split(", ").map((tag, index) => (
-                          <span
-                            key={index}
-                            className="px-2 py-1 rounded-full text-xs bg-gray-100 text-gray-800 flex items-center"
-                          >
-                            <Tag className="w-3 h-3 mr-1" />
-                            {tag}
-                          </span>
-                        ))}
+                      <div className="flex gap-1 flex-wrap">
+                        {product.tags
+                          ?.split(", ")
+                          .slice(0, 3)
+                          .map((tag, index) => (
+                            <span
+                              key={index}
+                              className="px-2 py-1 rounded-full text-xs bg-gray-100 text-gray-800 flex items-center"
+                            >
+                              <Tag className="w-3 h-3 mr-1" />
+                              {tag}
+                            </span>
+                          ))}
                       </div>
                     </CardContent>
                     <CardFooter>
                       <Button className="w-full" asChild>
-                      <Link href={`/productdetail/${product.slug}`}>
-                      Buy Now
+                        <Link href={`/productdetail/${product.slug}`}>
+                          Buy Now
                         </Link>
                       </Button>
                     </CardFooter>
