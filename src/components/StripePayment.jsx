@@ -44,7 +44,10 @@ const StripePayment = ({ amount,email,userId,sellerid }) => {
 
     fetchPaymentIntent();
   }, [amount]);
+
   const handleSubmit = async (e) => {
+    console.log("payment status");
+    
     e.preventDefault();
     if (!stripe || !elements || !clientSecret) return;
   

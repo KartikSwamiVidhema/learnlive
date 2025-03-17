@@ -260,7 +260,9 @@ console.log(products,"productsproducts");
 
   useEffect(() => {
     if (!customerId) return;
-
+  
+    setLoading(true); // Ensure loading state is set before fetching
+  
     fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/orders/${customerId}`)
       .then((response) => response.json())
       .then((data) => {
@@ -268,10 +270,13 @@ console.log(products,"productsproducts");
           // Extract products from orders
           const productsList = data.orders.flatMap(order =>
             order.items.map(item => ({
-              ...item.item_id, // Spread product details
-              quantity: item.item_quantity,
-              price: item.item_price,
-              file: item.item_id.file,
+              id: item.item_id?._id || "",  // Ensure ID exists
+              name: item.item_id?.name || "Unknown Product",
+              file: item.item_id?.file || "",
+              images: item.item_id?.images || [],
+              coverImage: item.item_id?.coverImage || "",
+              quantity: item.item_quantity || 1,
+              price: item.item_price?.$numberDecimal || "0", // Handle price as a string
             }))
           );
           setProducts(productsList);
@@ -281,10 +286,12 @@ console.log(products,"productsproducts");
         setLoading(false);
       })
       .catch((err) => {
+        console.error("Fetch error:", err);
         setError("Error fetching data");
         setLoading(false);
       });
   }, [customerId]);
+  
 
   // Function to handle download
   const handleDownload = (fileUrl) => {
