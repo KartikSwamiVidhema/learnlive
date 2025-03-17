@@ -52,7 +52,7 @@ const HomeBanner = () => {
         const desktopBannerResponse = await axios.get(
           `${apiBaseUrl}/gethomepage`
         );
-        setDesktopBanner(desktopBannerResponse.data.data);
+        setDesktopBanner(desktopBannerResponse.data.data.desktopBanner);
         setCategories(response.data.data || []);
         setFilteredCategories(response.data.data.slice(0, 3)); // Show first 3 categories by default
       } catch (error) {
@@ -108,7 +108,7 @@ const HomeBanner = () => {
     <section
       className="relative py-10 text-primary px-6 md:px-12 flex justify-center items-center"
       style={{
-        backgroundImage: `url(${bannerImage[0]?.desktopBanner})`,
+        backgroundImage: `url(${bannerImage})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}

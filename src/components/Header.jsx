@@ -15,14 +15,32 @@ const Header = () => {
 
   const handleClose = () => setOpen(false);
 
-  useEffect(() => {
+  const checkAuthStatus = () => {
     const userData = localStorage.getItem("userdata");
     if (userData) {
       setIsAuthenticated(true);
       const parsedUserData = JSON.parse(userData);
       setUserRole(parsedUserData.role);
+    } else {
+      setIsAuthenticated(false);
+      setUserRole("");
     }
-  }, []);
+  };
+
+  useEffect(() => {
+    checkAuthStatus();
+
+    // Listen to route changes to update authentication status
+    const handleRouteChange = () => {
+      checkAuthStatus();
+    };
+
+    router.events.on("routeChangeComplete", handleRouteChange);
+
+    return () => {
+      router.events.off("routeChangeComplete", handleRouteChange);
+    };
+  }, [router]);
 
   const handleSearch = (e) => {
     e.preventDefault();

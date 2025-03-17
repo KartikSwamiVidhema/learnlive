@@ -35,7 +35,7 @@ const PricingTier = ({ name, price, features, recommended }) => (
 
   {/* Button */}
   <Button className="w-full" asChild>
-    <Link href="/register">{recommended ? "Start free trial" : "Get started"}</Link>
+    <Link href="/register">{recommended ? "Get Started" : "Start Free Trial"}</Link>
   </Button>
 </div>
 
