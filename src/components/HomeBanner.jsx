@@ -52,6 +52,8 @@ const HomeBanner = () => {
         const desktopBannerResponse = await axios.get(
           `${apiBaseUrl}/gethomepage`
         );
+        console.log(desktopBannerResponse,"desktopBannerResponse");
+        
         setDesktopBanner(desktopBannerResponse.data.data.desktopBanner);
         setCategories(response.data.data || []);
         setFilteredCategories(response.data.data.slice(0, 3)); // Show first 3 categories by default
@@ -116,10 +118,10 @@ const HomeBanner = () => {
       <div className="absolute inset-0 bg-blue-900/30"></div>
       <div className="relative z-10 container mx-auto flex flex-col items-center text-center space-y-8">
         <div className="max-w-2xl">
-          <h1 className="text-4xl md:text-4xl font-bold leading-tight transition-opacity duration-500">
+          <h1 className="text-4xl text-white md:text-4xl font-bold leading-tight transition-opacity duration-500">
             {currentHeadline}
           </h1>
-          <p className="mt-4 text-lg text-primary">
+          <p className="mt-4 text-white text-lg text-primary">
             Discover and compare the best AI and IT service providers worldwide
           </p>
         </div>
