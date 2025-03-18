@@ -5,16 +5,23 @@ import { Mail } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import Footer from '@/components/Footer';
+import axios from 'axios';
 
 const ForgotPassword = () =>{
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
+  const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("test");
     
-    // Simulating API request
-    setMessage('If an account with this email exists, a reset link has been sent.');
+    try {
+      const res = await axios.post(`${apiBaseUrl}/forgot-password`, { email });
+      setMessage(res.data.message);
+    } catch (error) {
+      setMessage(error.response?.data?.message || "Something went wrong");
+    }
   };
 
   return (
