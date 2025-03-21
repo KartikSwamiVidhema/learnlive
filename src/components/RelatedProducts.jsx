@@ -61,11 +61,12 @@ const RelatedProducts = ({product}) => {
               onClick={() => handleNavigate(product.slug)}
             />
             <CardContent className="p-4">
-              <h3 className="text-lg font-semibold flex items-center cursor-pointer group"  onClick={() => handleNavigate(product.slug)}>
+              <h3 className="text-base  font-semibold flex items-center cursor-pointer group"  onClick={() => handleNavigate(product.slug)}>
                 {product.name}
                 <ArrowRight className="ml-2 size-4 transition-transform duration-200 translate-x-0 opacity-0 group-hover:translate-x-1 group-hover:opacity-100" />
               </h3>
 
+              <div className="flex justify-between mb-2">
               <div className="flex items-center gap-1 text-yellow-500">
                 {Array.from({ length: product.rating }, (_, index) => (
                   <Star key={index} size={16} fill="currentColor" />
@@ -79,6 +80,8 @@ const RelatedProducts = ({product}) => {
                 <span className="text-black font-bold ml-2">
                   ${product.salePrice}
                 </span>
+              </div>
+
               </div>
               <Link href="/checkoutform">
                 <Button className="w-full" onClick={() => addToCart(product)}>

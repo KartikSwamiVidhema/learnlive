@@ -19,7 +19,7 @@ const CheckoutForm = () => {
   const [userId, setUserId] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(true); // Track login status
   const router = useRouter();
-console.log(cartItems,"cartcart");
+  console.log(cartItems, "cartcart");
 
   // Fetch user email & ID from localStorage on mount
   useEffect(() => {
@@ -121,93 +121,95 @@ console.log(cartItems,"cartcart");
 
   return (
     <>
-    
-      <div className="container mx-auto py-10 grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="md:col-span-2 space-y-6">
-          <h2 className="text-2xl font-bold">Checkout</h2>
-
-          <div className="overflow-x-auto flex-1 bg-white shadow-md rounded-lg p-4">
-            <table className="w-full border-collapse">
-              <thead>
-                <tr className="bg-gray-100 text-left">
-                  <th className="p-3">Image</th>
-                  <th className="p-3">Product Name</th>
-                  <th className="p-3">Price</th>
-                  <th className="p-3">Quantity</th>
-                  <th className="p-3">Total</th>
-                  <th className="p-3">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {cartItems.map((item) => (
-                  <tr key={item._id} className="border-t">
-                    <td className="p-3">
-                      <img
-                        src={item.coverImage}
-                        alt={item.name}
-                        className="w-16 h-16 rounded-md object-cover"
-                      />
-                    </td>
-                    <td className="p-3">{item.name}</td>
-                    <td className="p-3">${item.salePrice}</td>
-                    <td className="p-3">
-                      <input
-                        type="number"
-                        value={item.quantity}
-                        min="1"
-                        className="w-16 border rounded-md p-1 text-center"
-                      />
-                    </td>
-                    <td className="p-3">${item.salePrice * item.quantity}</td>
-                    <td className="p-3">
-                      <button
-                        onClick={() => removeFromCart(item._id)}
-                        className="text-red-500 hover:text-red-700"
-                      >
-                        <Trash2 size={18} />
-                      </button>
-                    </td>
+      <div className="container mx-auto px-4 ">
+        <div className="py-10 flex flex-col gap-y-7">
+          <div className="md:col-span-2 space-y-6">
+            <h2 className="text-2xl font-bold">Checkout</h2>
+            <div className="overflow-x-auto flex-1 bg-white shadow-md rounded-lg p-4">
+              <table className="w-full border-collapse">
+                <thead>
+                  <tr className="bg-gray-100 text-left">
+                    <th className="p-3 whitespace-nowrap">Image</th>
+                    <th className="p-3 whitespace-nowrap">Product Name</th>
+                    <th className="p-3 whitespace-nowrap">Price</th>
+                    <th className="p-3 whitespace-nowrap">Quantity</th>
+                    <th className="p-3 whitespace-nowrap">Total</th>
+                    <th className="p-3 whitespace-nowrap">Action</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {cartItems.map((item) => (
+                    <tr key={item._id} className="border-t">
+                      <td className="p-3">
+                        <img
+                          src={item.coverImage}
+                          alt={item.name}
+                          className="w-16 h-16 rounded-md object-cover"
+                        />
+                      </td>
+                      <td className="p-3">{item.name}</td>
+                      <td className="p-3">${item.salePrice}</td>
+                      <td className="p-3">
+                        <input
+                          type="number"
+                          value={item.quantity}
+                          min="1"
+                          className="w-16 border rounded-md p-1 text-center"
+                        />
+                      </td>
+                      <td className="p-3">${item.salePrice * item.quantity}</td>
+                      <td className="p-3">
+                        <button
+                          onClick={() => removeFromCart(item._id)}
+                          className="text-red-500 hover:text-red-700"
+                        >
+                          <Trash2 size={18} />
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            <Card >
+              <CardHeader>
+                <CardTitle>Additional Information</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <Label>Order notes (optional)</Label>
+                <Input placeholder="Notes about your order, e.g. special notes for delivery." />
+              </CardContent>
+            </Card>
           </div>
 
-          <Card>
+          <Card className="z-0">
             <CardHeader>
-              <CardTitle>Additional Information</CardTitle>
+              <CardTitle>Your order</CardTitle>
             </CardHeader>
             <CardContent>
-              <Label>Order notes (optional)</Label>
-              <Input placeholder="Notes about your order, e.g. special notes for delivery." />
+              <div className="border-b pb-4 mb-4">
+                <p>Product Subtotal</p>
+                <p className="text-right font-bold">${subtotal}</p>
+              </div>
+              <p className="text-sm text-gray-500">
+                Billing Email: {userEmail}
+              </p>
+              <Button className="mt-4 " onClick={handlePlaceOrder}>
+                Place order
+              </Button>
+              {showStripe && (
+                <StripePayment
+                  amount={subtotal}
+                  email={userEmail}
+                  sellerid={cartItems?.[0]?.vendor?.[0] ?? ""}
+                  userId={userId}
+                  onSuccess={(paymentInfo) => savePaymentDetails(paymentInfo)}
+                />
+              )}
             </CardContent>
           </Card>
         </div>
-
-        <Card className="z-0">
-          <CardHeader>
-            <CardTitle>Your order</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="border-b pb-4 mb-4">
-              <p>Product Subtotal</p>
-              <p className="text-right font-bold">${subtotal}</p>
-            </div>
-            <p className="text-sm text-gray-500">Billing Email: {userEmail}</p>
-            <Button className="mt-4 w-full" onClick={handlePlaceOrder}>
-              Place order
-            </Button>
-            {showStripe && (
-              <StripePayment
-                amount={subtotal}
-                email={userEmail}
-                sellerid={cartItems?.[0]?.vendor?.[0] ?? ""}
-                userId={userId}
-                onSuccess={(paymentInfo) => savePaymentDetails(paymentInfo)}
-              />
-            )}
-          </CardContent>
-        </Card>
       </div>
       <Footer />
     </>

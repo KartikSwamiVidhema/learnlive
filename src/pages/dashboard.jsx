@@ -1242,27 +1242,27 @@ const ViewOrderDetails = ({ order, onClose }) => {
         {/* Left Column */}
         <div className="space-y-4">
           <div className="bg-gray-50 p-4 rounded-lg">
-            <p className="text-sm text-gray-500">Order ID</p>
+            <p className="text-sm text-gray-500 whitespace-nowrap">Order ID</p>
             <p className="font-semibold text-gray-800">{order._id}</p>
           </div>
           <div className="bg-gray-50 p-4 rounded-lg">
-            <p className="text-sm text-gray-500">Transaction ID</p>
+            <p className="text-sm text-gray-500 whitespace-nowrap">Transaction ID</p>
             <p className="font-semibold text-gray-800">{order.transaction_id}</p>
           </div>
           <div className="bg-gray-50 p-4 rounded-lg">
-            <p className="text-sm text-gray-500">Customer Name</p>
+            <p className="text-sm text-gray-500 whitespace-nowrap">Customer Name</p>
             <p className="font-semibold text-gray-800">{order.customer?.name || "N/A"}</p>
           </div>
           <div className="bg-gray-50 p-4 rounded-lg">
-            <p className="text-sm text-gray-500">Payment Method</p>
+            <p className="text-sm text-gray-500 whitespace-nowrap">Payment Method</p>
             <p className="font-semibold text-gray-800">{order.payment_method}</p>
           </div>
           <div className="bg-gray-50 p-4 rounded-lg">
-            <p className="text-sm text-gray-500">Order Status</p>
+            <p className="text-sm text-gray-500 whitespace-nowrap">Order Status</p>
             <p className="font-semibold text-gray-800">{order.order_status}</p>
           </div>
           <div className="bg-gray-50 p-4 rounded-lg">
-            <p className="text-sm text-gray-500">Order Note</p>
+            <p className="text-sm text-gray-500 whitespace-nowrap">Order Note</p>
             <p className="font-semibold text-gray-800">{order.order_note}</p>
           </div>
         </div>
@@ -1490,7 +1490,7 @@ export default function Dashboard({ userdata, categorydata }) {
         return <ProductContent categorydata={categorydata.data} />;
       case "settings":
         return (
-          <div className="flex-grow bg-gray-100 min-h-screen flex items-center justify-center">
+          <div className="flex-grow bg-gray-100 md:min-h-screen flex items-center justify-center">
             <div className="w-full max-w-lg bg-white p-8 rounded-xl shadow-2xl transform hover:scale-105 transition-all duration-300 ease-in-out">
               <div className="text-center mb-6">
                 <h1 className="text-3xl font-semibold text-gray-700 mb-3">

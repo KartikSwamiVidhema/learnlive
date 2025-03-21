@@ -309,19 +309,20 @@ const MarketplaceFilter = ({ categoryData, productData }) => {
                       <img
                         src={product.coverImage}
                         alt={product?.title}
-                        className="w-full aspect-[4/3] mt-5 object-contain rounded-t-lg bg-white"
+                        className="w-full aspect-[4/3]  object-contain rounded-t-lg bg-white"
                       />
                     </CardHeader>
                     <CardContent>
                       <CardTitle
-                        className="mb-2 flex items-center cursor-pointer group"
+                        className="mb-2 capitalize flex items-center cursor-pointer group text-base font-semibold"
                         onClick={() => handleNavigate(product.slug)}
                       >
                         {product.name}
                         <ArrowRight className="ml-2 size-4 transition-transform duration-200 translate-x-0 opacity-0 group-hover:translate-x-1 group-hover:opacity-100" />
                       </CardTitle>
 
-                      <div className="flex items-center mb-2">
+                   <div className="flex justify-between">
+                   <div className="flex items-center mb-2">
                         <StarRating rating={product.rating} />
                         <span className="ml-2 text-sm text-gray-600">
                           ({product.reviewCount} reviews)
@@ -331,6 +332,7 @@ const MarketplaceFilter = ({ categoryData, productData }) => {
                       <p className="text-lg font-semibold mb-2">
                         ${product.salePrice}
                       </p>
+                   </div>
 
                       <div className="flex gap-1 flex-wrap">
                         {product.tags
