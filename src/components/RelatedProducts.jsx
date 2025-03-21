@@ -11,7 +11,7 @@ const RelatedProducts = ({product}) => {
    
  
     
-  const [data, setData] = useState("");
+  const [data, setData] = useState({ data: [] });
   const { addToCart } = useCart();
   const router = useRouter();
   const categoryId = product?.categories[0]?._id;
@@ -43,14 +43,18 @@ const RelatedProducts = ({product}) => {
   const handleNavigate = (slug) => {
     router.push(`/productdetail/${slug}`);
   };
+console.log(data,"related products");
 
   return (
     <div className="container mx-auto px-4">
+    {data.data.length > 0 && (
+      <>
       <h2 className="text-3xl font-bold">Related Products</h2>
       <p className="text-gray-600 mb-6">
         Top picks for you: Best-selling products that speak for themselves.
       </p>
-
+</>
+    )}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-5">
         {data?.data?.slice(4, 8).map((product) => (
           <Card key={product.id} className="shadow-md">

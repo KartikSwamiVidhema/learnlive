@@ -23,7 +23,7 @@ import { Star, StarHalf, Tag } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { ArrowRight } from "lucide-react";
-
+import { useCart } from "../../../context/CartContext";
 const StarRating = ({ rating }) => {
   const numericRating = parseFloat(rating) || 0;
   const fullStars = Math.floor(numericRating);
@@ -48,8 +48,8 @@ const StarRating = ({ rating }) => {
 const MarketplaceFilter = ({ categoryData, productData }) => {
   useEffect(() => {
     if (localStorage.getItem("loginSuccess") === "true") {
-      toast.success("Login successful! 🎉"); // ✅ Show success message
-      localStorage.removeItem("loginSuccess"); // ✅ Remove it to prevent repeated toasts
+      toast.success("Login successful! 🎉"); 
+      localStorage.removeItem("loginSuccess"); 
     }
   }, []);
   const Products = productData.data;
@@ -57,6 +57,7 @@ const MarketplaceFilter = ({ categoryData, productData }) => {
   const [products, setProducts] = useState(Products);
   const [filteredProducts, setFilteredProducts] = useState(Products);
   const [searchTerm, setSearchTerm] = useState("");
+  const [loading, setLoading] = useState(false); 
   const [open, setOpen] = useState(false);
   const [selectedFilters, setSelectedFilters] = useState({
     Category: [],
@@ -66,6 +67,7 @@ const MarketplaceFilter = ({ categoryData, productData }) => {
   });
   const [availableTags, setAvailableTags] = useState([]);
   const router = useRouter();
+    const { addToCart } = useCart();
   const { slug } = router.query;
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 12;
@@ -83,11 +85,27 @@ const MarketplaceFilter = ({ categoryData, productData }) => {
   const nextPage = () => {
     console.log("test");
 
-    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+    if (currentPage < totalPages) {
+      setLoading(true);
+      setCurrentPage(currentPage + 1)
+      window.scrollTo({ top: 0, behavior: "smooth" });
+
+      setTimeout(() => {
+        setLoading(false);
+      },1000);
+    }
   };
 
   const prevPage = () => {
-    if (currentPage > 1) setCurrentPage(currentPage - 1);
+    if (currentPage > 1) {
+      setLoading(true);
+      setCurrentPage(currentPage - 1)
+      window.scrollTo({ top: 0, behavior: "smooth" });
+
+      setTimeout(() => {
+        setLoading(false);
+      },1000);
+    }
   };
 
   useEffect(() => {
@@ -208,7 +226,7 @@ const MarketplaceFilter = ({ categoryData, productData }) => {
                 <CardHeader>
                   <CardTitle>Filters</CardTitle>
                 </CardHeader>
-                <hr className="my-4 h-px border-t-0 bg-transparent bg-gradient-to-r from-transparent via-neutral-500 to-transparent opacity-25 dark:opacity-100" />
+                {/* <hr className="my-4 h-px border-t-0 bg-transparent bg-gradient-to-r from-transparent via-neutral-500 to-transparent opacity-25 dark:opacity-100" /> */}
 
                 <CardContent>
                   <ScrollArea className="max-h-[400px] pr-2 overflow-y-auto custom-scroll">
@@ -295,7 +313,8 @@ const MarketplaceFilter = ({ categoryData, productData }) => {
                       <hr className="my-4 h-px border-t-0 bg-transparent bg-gradient-to-r from-transparent via-neutral-500 to-transparent opacity-25 dark:opacity-100" />
                     </div>
                   ))}
-                  <Button onClick={() => setOpen(false)}>Apply Filter</Button>
+                  <Button onClick={() => setOpen(false)}
+                   disabled={!Object.values(selectedFilters).some((arr) => arr.length > 0)}>Apply Filter</Button>
                 </ScrollArea>
               </SheetContent>
             </Sheet>
@@ -348,10 +367,16 @@ const MarketplaceFilter = ({ categoryData, productData }) => {
                       </div>
                     </CardContent>
                     <CardFooter>
-                      <Button className="w-full" asChild>
-                        <Link href={`/productdetail/${product.slug}`}>
+                      <Button className="w-full" 
+                       onClick={() => {
+      addToCart(product);  
+      router.push("/checkoutform");  
+    }}
+  >
+                      
+                        {/* <Link href={`/checkoutform`}> */}
                           Buy Now
-                        </Link>
+                        {/* </Link> */}
                       </Button>
                     </CardFooter>
                   </Card>
@@ -381,6 +406,12 @@ const MarketplaceFilter = ({ categoryData, productData }) => {
           </div>
         </div>
       </main>
+      {loading && (
+  <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-white bg-opacity-70 z-50">
+    <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500"></div>
+  </div>
+)}
+
       <Footer />
     </div>
   );

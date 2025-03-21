@@ -3,7 +3,7 @@ import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { useRouter } from "next/router";
 import { X } from "lucide-react";
 
-const StripePayment = ({ amount,email,userId,sellerid }) => {
+const StripePayment = ({ amount,email,userId,sellerid,isOpen,setIsOpen }) => {
   const router = useRouter();
   const stripe = useStripe();
   const elements = useElements();
@@ -11,7 +11,7 @@ const StripePayment = ({ amount,email,userId,sellerid }) => {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
   const [clientSecret, setClientSecret] = useState(null);
-  const [isOpen, setIsOpen] = useState(false);
+  // const [isOpen, setIsOpen] = useState(false);
 
 
   const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -125,12 +125,12 @@ const StripePayment = ({ amount,email,userId,sellerid }) => {
   return (
     <>
       {/* Button to Open Modal */}
-      <button
+      {/* <button
         onClick={() => setIsOpen(true)}
         className="bg-purple-300 text-white w-full px-5 py-2 rounded-lg hover:bg-purple-500 transition duration-300"
       >
         Pay Now
-      </button>
+      </button> */}
 
       {/* Payment Modal */}
       {isOpen && (

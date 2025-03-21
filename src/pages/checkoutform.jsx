@@ -194,18 +194,20 @@ console.log(cartItems,"cartcart");
               <p className="text-right font-bold">${subtotal}</p>
             </div>
             <p className="text-sm text-gray-500">Billing Email: {userEmail}</p>
-            <Button className="mt-4 w-full" onClick={handlePlaceOrder}>
-              Place order
-            </Button>
-            {showStripe && (
-              <StripePayment
-                amount={subtotal}
-                email={userEmail}
-                sellerid={cartItems?.[0]?.vendor?.[0] ?? ""}
-                userId={userId}
-                onSuccess={(paymentInfo) => savePaymentDetails(paymentInfo)}
-              />
-            )}
+              <Button className="mt-4 w-full" onClick={handlePlaceOrder}>
+                Place order
+              </Button>
+              {showStripe && (
+                <StripePayment
+                  amount={subtotal}
+                  email={userEmail}
+                  sellerid={cartItems?.[0]?.vendor?.[0] ?? ""}
+                  userId={userId}
+                  onSuccess={(paymentInfo) => savePaymentDetails(paymentInfo)}
+                  isOpen={showStripe}
+                  setIsOpen={setShowStripe}
+                />
+              )}
           </CardContent>
         </Card>
       </div>

@@ -36,6 +36,10 @@ const Description = ({ product }) => {
   }, []);
 
   const submitReview = async () => {
+    if (!reviewerId) {
+      toast.error("Please log in to submit the review.");
+      return;
+    }
     // Check if all required fields are filled
     if (!review || !rating || !name || !email) {
       toast.error("Please fill out all fields before submitting.");

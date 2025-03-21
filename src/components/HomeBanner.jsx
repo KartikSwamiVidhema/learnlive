@@ -15,6 +15,7 @@ const HomeBanner = () => {
   const [categories, setCategories] = useState([]);
   const [filteredCategories, setFilteredCategories] = useState([]);
   const [dropdownVisible, setDropdownVisible] = useState(false);
+  const [titleColor, setTitleColor] = useState("");
 
   const headlines = [
     "Find Top IT Services IT Companies",
@@ -53,6 +54,7 @@ const HomeBanner = () => {
           `${apiBaseUrl}/gethomepage`
         );
         setDesktopBanner(desktopBannerResponse.data.data.desktopBanner);
+        setTitleColor(desktopBannerResponse.data.data.titleColor);
         setCategories(response.data.data || []);
         setFilteredCategories(response.data.data.slice(0, 3)); // Show first 3 categories by default
       } catch (error) {
@@ -116,10 +118,12 @@ const HomeBanner = () => {
       <div className="absolute inset-0 bg-blue-900/30"></div>
       <div className="relative z-10 container mx-auto flex flex-col items-center text-center space-y-8">
         <div className="max-w-2xl">
-          <h1 className="text-4xl md:text-4xl font-bold leading-tight transition-opacity duration-500">
+          <h1 className="text-4xl md:text-4xl font-bold leading-tight transition-opacity duration-500"
+          style={{ color: titleColor }}>
             {currentHeadline}
           </h1>
-          <p className="mt-4 text-lg text-primary">
+          <p className="mt-4 text-lg text-primary"
+          style={{ color: titleColor }}>
             Discover and compare the best AI and IT service providers worldwide
           </p>
         </div>
@@ -148,7 +152,9 @@ const HomeBanner = () => {
                         <h3 className="font-bold text-gray-600 text-left ml-4">
                           Categories
                         </h3>
-                        <ul>
+                     
+                        {filteredCategories.length > 0 ? (
+                          <ul>
                           {filteredCategories.map((option, index) => (
                             <li
                               key={`category-${option._id || index}`}
@@ -159,6 +165,12 @@ const HomeBanner = () => {
                             </li>
                           ))}
                         </ul>
+                        ) : (
+                    <p className="p-2 text-gray-500 text-left ml-4">
+                       No data found
+                      </p>
+                  )}
+                        
                       </div>
                     </div>
                   )}

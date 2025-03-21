@@ -72,14 +72,14 @@ const ImageSlideshow = ({ images }) => {
     );
   };
 
-  useEffect(() => {
-    // Set a timeout to stop showing the skeleton loader after 2 seconds
-    const timeout = setTimeout(() => {
-      setIsLoading(false);
-    }, 2000);
+  // useEffect(() => {
+  //   // Set a timeout to stop showing the skeleton loader after 2 seconds
+  //   const timeout = setTimeout(() => {
+  //     setIsLoading(false);
+  //   }, 2000);
 
-    return () => clearTimeout(timeout); // Cleanup the timeout
-  }, []);
+  //   return () => clearTimeout(timeout); // Cleanup the timeout
+  // }, []);
 
   return (
     <div className="relative w-full  ">
@@ -173,7 +173,7 @@ const ProductTabs = ({ product }) => {
 
       {/* Reviews Tab */}
       <TabsContent value="reviews" className="mt-4">
-        <p>Reviews coming soon.</p>
+        <p>No Data Found</p>
       </TabsContent>
     </Tabs>
   );
