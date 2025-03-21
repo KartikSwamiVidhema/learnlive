@@ -104,7 +104,7 @@ const ProductCard = ({ product }) => {
           {Array.from({ length: product.rating || 0 }, (_, index) => (
             <Star key={index} size={16} fill="currentColor" />
           ))}
-          <Star size={16} fill="currentColor" />
+          
           <span className="text-sm text-gray-500">
             ({product.reviews?.length || 0} Reviews)
           </span>

@@ -37,7 +37,7 @@ const FeaturedProducts = () => {
               <CardContent className="flex-grow">
                 <CardTitle className="mb-2 ">{product.title}</CardTitle>
                 <div className="flex items-center mb-2">
-                  <StarRating ratinggggg={product.rating} />
+                  <StarRating rating={product.rating} />
                   <span className="ml-2 text-sm text-gray-600">({product.reviewCount} reviews)</span>
                 </div>
               </CardContent>
