@@ -13,6 +13,7 @@ export default function Demo() {
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
   const [weburl, setWeburl] = useState("");
+  const [scannerUrl, setScannerUrl] = useState("");
     useEffect(() => {
         console.log('id',id)
         if (!id) return;
@@ -22,6 +23,7 @@ export default function Demo() {
             const response = await axios.get(`${apiBaseUrl}/product?filter={"_id":"${productid}"}`)
             console.log('webUrl',response.data.data[0])
             setWeburl(response.data.data[0].webUrl);
+            setScannerUrl(response.data.data[0].scanner_url);
           } catch (error) {
             console.error("Error fetching product:", error);
           }
@@ -40,7 +42,7 @@ export default function Demo() {
           <h1 className="text-3xl font-bold text-gray-800">Doc App Clone</h1>
           <img
             className="mx-auto mt-4 w-24 h-24 object-contain"
-            src="/scanner-placeholder.png"
+            src={scannerUrl || "/scanner-placeholder.png"}
             alt="Scanner"
           />
           <p className="mt-2 text-gray-600">Scan to View on Your Mobile Device</p>

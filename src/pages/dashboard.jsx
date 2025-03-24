@@ -252,8 +252,10 @@ console.log(products,"productsproducts");
   useEffect(() => {
     // Get user data from localStorage
     const userData = localStorage.getItem("userdata");
+    console.log("userData",userData)
     if (userData) {
       const parsedUser = JSON.parse(userData);
+      console.log("Customer ID from localStorage:", parsedUser._id);
       setCustomerId(parsedUser._id); // Assuming userData contains an `_id` field
     }
   }, []);
@@ -261,9 +263,11 @@ console.log(products,"productsproducts");
   useEffect(() => {
     if (!customerId) return;
 
+    console.log("Fetching orders for customer:", customerId);
     fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/orders/${customerId}`)
       .then((response) => response.json())
       .then((data) => {
+        console.log("API Response:", data); 
         if (data.success) {
           // Extract products from orders
           const productsList = data.orders.flatMap(order =>
@@ -271,9 +275,10 @@ console.log(products,"productsproducts");
               ...item.item_id, // Spread product details
               quantity: item.item_quantity,
               price: item.item_price,
-              file: item.item_id.file,
+              file: item.item_id?.file,
             }))
           );
+          console.log("productsList",productsList);
           setProducts(productsList);
         } else {
           setError("Failed to fetch products");
@@ -377,7 +382,9 @@ const ProductContent = ({ categorydata }) => {
   useEffect(() => {
     const fetchData = async () => {
       const storedUserData = localStorage.getItem("userdata");
+      console.log("storedUserData",storedUserData)
       if (storedUserData) {
+        console.log("2");
         const userdata = JSON.parse(storedUserData);
         const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
         try {
@@ -422,6 +429,7 @@ const ProductContent = ({ categorydata }) => {
     // Fetch userdata from localStorage or wherever it is stored
     const storedUserData = localStorage.getItem('userdataa');
     if (storedUserData) {
+      console.log("3");
       setUserdata(JSON.parse(storedUserData));
     }
   }, []);

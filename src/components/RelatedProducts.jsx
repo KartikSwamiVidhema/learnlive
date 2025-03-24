@@ -8,9 +8,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { ArrowRight } from "lucide-react";
 const RelatedProducts = ({product}) => {
-   
- 
-    
+
   const [data, setData] = useState({ data: [] });
   const { addToCart } = useCart();
   const router = useRouter();
@@ -41,6 +39,7 @@ const RelatedProducts = ({product}) => {
   }, [apiBaseUrl, categoryId]); 
 
   const handleNavigate = (slug) => {
+    
     router.push(`/productdetail/${slug}`);
   };
 console.log(data,"related products");

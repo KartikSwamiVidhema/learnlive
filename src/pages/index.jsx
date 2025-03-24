@@ -100,7 +100,7 @@ const ProductCard = ({ product }) => {
           {product.name}
           <ArrowRight className="ml-2 size-4 transition-transform duration-200 translate-x-0 opacity-0 group-hover:translate-x-1 group-hover:opacity-100" />
         </h3>
-        <div className="flex items-center gap-1 text-yellow-500">
+        {/* <div className="flex items-center gap-1 text-yellow-500">
           {Array.from({ length: product.rating || 0 }, (_, index) => (
             <Star key={index} size={16} fill="currentColor" />
           ))}
@@ -108,7 +108,22 @@ const ProductCard = ({ product }) => {
           <span className="text-sm text-gray-500">
             ({product.reviews?.length || 0} Reviews)
           </span>
-        </div>
+        </div> */}
+        <div className="flex items-center gap-1">
+  {Array.from({ length: 5 }, (_, index) => (
+    <Star
+      key={index}
+      size={16}
+      fill={index < (product.rating || 0) ? "currentColor" : "none"}
+      stroke="currentColor"
+      className={index < (product.rating || 0) ? "text-yellow-500" : "text-gray-300"} 
+    />
+  ))}
+
+  <span className="text-sm text-gray-500">
+    ({product.reviews?.length || 0} Reviews)
+  </span>
+</div>
         <div className="mt-2">
           <span className="text-black font-bold ml-2">${product.salePrice}</span>
         </div>
