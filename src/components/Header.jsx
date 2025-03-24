@@ -124,24 +124,22 @@ const Header = () => {
     setUserRole("");
     router.push("/login");
   };
-  
+
   const handleSelectProduct = (slug) => {
     router.push(`/productdetail/${slug}`);
     setShowDropdown(false);
   };
 
-    // Close dropdown when clicking outside
-    useEffect(() => {
-      const handleClickOutside = (event) => {
-        if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-          setShowDropdown(false);
-        }
-      };
-      document.addEventListener("mousedown", handleClickOutside);
-      return () => document.removeEventListener("mousedown", handleClickOutside);
-    }, []);
-
-   
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setShowDropdown(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   return (
     <header className="bg-white shadow-sm sticky top-0 z-20 w-full">

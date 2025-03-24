@@ -1,97 +1,136 @@
+
 import React, { useEffect, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Star } from "lucide-react";
+import { Star, ArrowRight } from "lucide-react";
 import axios from "axios";
 import { useCart } from "../../context/CartContext";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { ArrowRight } from "lucide-react";
-const RelatedProducts = ({product}) => {
+import Carousel from "react-multi-carousel";
+import "react-multi-carousel/lib/styles.css";
 
-  const [data, setData] = useState({ data: [] });
+const RelatedProducts = ({ product }) => {
+  const [relatedProducts, setRelatedProducts] = useState([]);
   const { addToCart } = useCart();
   const router = useRouter();
-  const categoryId = product?.categories[0]?._id;
-  
   const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchRelatedProducts = async () => {
       try {
-        const filterParam = JSON.stringify({ categories: categoryId });
+        if (!product?.related_products?.length) {
+          setRelatedProducts([]);
+          return;
+        }
 
-        // ✅ Use await to wait for the API response
+        const relatedProductIds = product.related_products.map((p) => p._id);
         const response = await axios.get(`${apiBaseUrl}/product`, {
-          params: { filter: filterParam }
+          params: {
+            filter: JSON.stringify({ _id: { $in: relatedProductIds } }),
+          },
         });
 
-        console.log(response.data, "hfhfhfh"); // ✅ Log actual response data
-
-        setData(response.data); // ✅ Store the API response data in state
+        setRelatedProducts(response.data.data);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Error fetching related products:", error);
       }
     };
 
-    fetchData();
-  }, [apiBaseUrl, categoryId]); 
+    fetchRelatedProducts();
+  }, [apiBaseUrl, product]);
 
   const handleNavigate = (slug) => {
-    
     router.push(`/productdetail/${slug}`);
   };
-console.log(data,"related products");
+
+  // Responsive settings for different devices
+  const responsive = {
+    desktop: {
+      breakpoint: { max: 3000, min: 1024 },
+      items: 4, // Show 4 cards on desktop
+    },
+    tablet: {
+      breakpoint: { max: 1024, min: 768 },
+      items: 3, // Show 3 cards on tablet
+    },
+    mobile: {
+      breakpoint: { max: 768, min: 0 },
+      items: 2, // Show 2 cards on mobile
+    },
+  };
 
   return (
     <div className="container mx-auto px-4">
-    {data.data.length > 0 && (
-      <>
-      <h2 className="text-3xl font-bold">Related Products</h2>
-      <p className="text-gray-600 mb-6">
-        Top picks for you: Best-selling products that speak for themselves.
-      </p>
-</>
-    )}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-5">
-        {data?.data?.slice(4, 8).map((product) => (
-          <Card key={product.id} className="shadow-md">
-            <img
-              src={product.coverImage}
-              alt={product.name}
-              className="w-full mt-3 aspect-[4/3] object-contain rounded-t-lg bg-white"
-              onClick={() => handleNavigate(product.slug)}
-            />
-            <CardContent className="p-4">
-              <h3 className="text-lg font-semibold flex items-center cursor-pointer group"  onClick={() => handleNavigate(product.slug)}>
-                {product.name}
-                <ArrowRight className="ml-2 size-4 transition-transform duration-200 translate-x-0 opacity-0 group-hover:translate-x-1 group-hover:opacity-100" />
-              </h3>
+      {relatedProducts.length > 0 && (
+        <>
+          <h2 className="text-3xl font-bold">Related Products</h2>
+          <p className="text-gray-600 mb-6">
+            Top picks for you: Best-selling products that speak for themselves.
+          </p>
+        </>
+      )}
 
-              <div className="flex items-center gap-1 text-yellow-500">
-                {Array.from({ length: product.rating }, (_, index) => (
-                  <Star key={index} size={16} fill="currentColor" />
+      {/* React Multi Carousel */}
+      <Carousel
+        responsive={responsive}
+        infinite={true}
+        autoPlay={true}
+        autoPlaySpeed={3000}
+        keyBoardControl={true}
+        swipeable={true}
+        draggable={true}
+        showDots={false}
+        arrows={true}
+      >
+        {relatedProducts.map((product) => (
+          <div key={product._id} className="p-2">
+            <Card className="shadow-md">
+              <img
+                src={product.coverImage}
+                alt={product.name}
+                className="w-full mt-3 aspect-[4/3] object-contain rounded-t-lg bg-white cursor-pointer"
+                onClick={() => handleNavigate(product.slug)}
+              />
+              <CardContent className="p-4">
+                <h3
+                  className="text-lg font-semibold flex items-center justify-between cursor-pointer group"
+                  onClick={() => handleNavigate(product.slug)}
+                >
+                  {product.name}
+                  <ArrowRight className="size-4 transition-transform duration-200 opacity-0 group-hover:opacity-100 group-hover:translate-x-2" />
+                </h3>
+
+                  <div className="flex items-center gap-1">
+                {Array.from({ length: 5 }, (_, index) => (
+                  <Star
+                    key={index}
+                    size={16}
+                    fill={index < (product.rating || 0) ? "currentColor" : "none"}
+                    stroke="currentColor"
+                    className={index < (product.rating || 0) ? "text-yellow-500" : "text-gray-300"} 
+                  />
                 ))}
+              
                 <span className="text-sm text-gray-500">
-                  ({product.reviews.length} Reviews)
+                  ({product.reviews?.length || 0} Reviews)
                 </span>
               </div>
-              <div className="mt-2">
-                {/* <span className="text-gray-400 line-through">{product.oldPrice}</span> */}
-                <span className="text-black font-bold ml-2">
-                  ${product.salePrice}
-                </span>
-              </div>
-              <Link href="/checkoutform">
-                <Button className="w-full" onClick={() => addToCart(product)}>
-                  Buy Now
-                </Button>
-              </Link>
-            </CardContent>
-          </Card>
+                <div className="mt-2">
+                  <span className="text-black font-bold ml-2">
+                    ${product.salePrice}
+                  </span>
+                </div>
+                <Link href="/checkoutform">
+                  <Button className="w-full" onClick={() => addToCart(product)}>
+                    Buy Now
+                  </Button>
+                </Link>
+              </CardContent>
+            </Card>
+          </div>
         ))}
-      </div>
+      </Carousel>
     </div>
   );
 };
