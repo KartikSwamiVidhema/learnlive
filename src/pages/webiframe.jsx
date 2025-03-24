@@ -10,6 +10,8 @@ const IframeWebViewer = () => {
   const [visible, setVisible] = useState(true);
   const [weburl, setWeburl] = useState("");
   const [slug, setslug]= useState("");
+  const [Name, setName]= useState("");
+
   const router = useRouter();
   const { url: productid } = router.query; // Extracting `url` instead of `productid`
 
@@ -25,6 +27,8 @@ const IframeWebViewer = () => {
         );
         console.log(response.data.data[0].slug,"responseee");
         setslug(response.data.data[0].slug)
+        setName(response.data.data[0].name)
+
 
         if (response.data.data.length > 0) {
           setWeburl(response.data.data[0].webUrl);
@@ -48,11 +52,21 @@ const IframeWebViewer = () => {
   return (
     <>
    
-     <div className="container">
-     <div className="flex justify-end">
-      <Button className=" mt-2 ml-auto my-[30px]" onClick={handleNavigate}>Buy Now</Button>
+   <div className="sticky top-0 bg-white shadow-md z-10">
+        <div className="flex justify-between items-center px-[18%] py-3">
+          <div>
+            <div className="text-3xl ">Product Demo</div>
+            <div className="text-2xl ">{Name}</div>
+          </div>
+          <Button
+            // className="bg-green-600 text-white px-4 py-2 rounded-md"
+            onClick={handleNavigate}
+          >
+            Buy Now
+          </Button>
+        </div>
+        <hr />
       </div>
-     </div>
       <div className="flex justify-center items-center mb-4 container">
         <div className="relative flex justify-center  w-full h-[700px] border-2 border-gray-300 rounded-lg shadow-lg overflow-hidden">
 

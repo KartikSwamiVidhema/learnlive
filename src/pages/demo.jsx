@@ -4,10 +4,15 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
+import { Button } from "@/components/ui/button";
 export default function Demo() {
   const router = useRouter();
   const test = router.query;
   const productid = test.id;
+  const [Name, setName]= useState("");
+  const [Slug, setSlug]= useState("");
+
+
 
 
   const searchParams = useSearchParams();
@@ -31,7 +36,10 @@ export default function Demo() {
         fetchProduct();
       }, [id]);
 
-  
+  const handleNavigate = () => {
+    router.push(`/productdetail/${Slug}`);
+  };
+
   return (
     <>
    <section className="py-8 md:py-12">

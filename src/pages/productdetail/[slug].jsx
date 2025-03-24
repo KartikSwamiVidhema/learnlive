@@ -50,25 +50,30 @@ const createCheckoutSession = async (productId) => {
   };
 };
 
-const ImageSlideshow = ({ images }) => {
+const ImageSlideshow = ({ images,coverImage }) => {
   // Flattening the array
   const flattenedImages = images.flat();
   const [isLoading, setIsLoading] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
+  console.log(coverImage,"coverimage");
 
-  if (!Array.isArray(flattenedImages) || flattenedImages.length === 0) {
+  const hasImages = flattenedImages.length > 0;
+  const displayImages = hasImages ? flattenedImages : [coverImage];
+  
+
+  if (!Array.isArray(displayImages) || displayImages.length === 0) {
     return <p>No images available</p>;
   }
 
   const goToPrevious = () => {
     setCurrentIndex((prevIndex) =>
-      prevIndex === 0 ? flattenedImages.length - 1 : prevIndex - 1
+      prevIndex === 0 ? displayImages.length - 1 : prevIndex - 1
     );
   };
 
   const goToNext = () => {
     setCurrentIndex((prevIndex) =>
-      prevIndex === flattenedImages.length - 1 ? 0 : prevIndex + 1
+      prevIndex === displayImages.length - 1 ? 0 : prevIndex + 1
     );
   };
 
@@ -82,31 +87,36 @@ const ImageSlideshow = ({ images }) => {
   // }, []);
 
   return (
-    <div className="relative w-full  ">
-       {isLoading ? (
-        <div className="animate-pulse bg-gray-300 w-full h-48 rounded-t-lg"></div>
-      ) : (
+    <div className="relative w-full">
+    {isLoading ? (
+      <div className="animate-pulse bg-gray-300 w-full h-48 rounded-t-lg"></div>
+    ) : (
       <img
-        src={flattenedImages[currentIndex]}
+        src={displayImages[currentIndex]}
         alt={`Slide ${currentIndex + 1}`}
-        className="w-full h-49  object-contain rounded-t-lg"
+        className="w-full h-49 object-contain rounded-t-lg"
       />
-      )}
-      <Button
-        variant="outline"
-        className="absolute top-1/2 left-2 transform -translate-y-1/2"
-        onClick={goToPrevious}
-      >
-        <ChevronLeft className="h-6 w-6" />
-      </Button>
-      <Button
-        variant="outline"
-        className="absolute top-1/2 right-2 transform -translate-y-1/2"
-        onClick={goToNext}
-      >
-        <ChevronRight className="h-6 w-6" />
-      </Button>
-    </div>
+    )}
+
+    {hasImages && (
+      <>
+        <Button
+          variant="outline"
+          className="absolute top-1/2 left-2 transform -translate-y-1/2"
+          onClick={goToPrevious}
+        >
+          <ChevronLeft className="h-6 w-6" />
+        </Button>
+        <Button
+          variant="outline"
+          className="absolute top-1/2 right-2 transform -translate-y-1/2"
+          onClick={goToNext}
+        >
+          <ChevronRight className="h-6 w-6" />
+        </Button>
+      </>
+    )}
+  </div>
   );
 };
 
@@ -273,7 +283,7 @@ const ProductDetail = ({ productData }) => {
   }
 
   const product = productData.data[0];
-  console.log(product,"ggggggg990");
+  
   
 
   const handleBuyNow = () => {
@@ -289,7 +299,7 @@ const ProductDetail = ({ productData }) => {
             <div className="md:col-span-2">
               <Card>
                 <CardContent>
-                  <ImageSlideshow images={[product.images]} />{" "}
+                  <ImageSlideshow images={[product.images]} coverImage={product.coverImage}/>{" "}
                   {/* Adjusted to array */}
                   <ProductInfo product={product} />
                   <ProductTabs product={product} />

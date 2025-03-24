@@ -2,14 +2,12 @@ import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { SearchIcon, Menu, X } from "lucide-react";
-
 import Link from "next/link";
 import { useRouter } from "next/router";
 import axios from "axios";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-
+import { useRef } from "react";
 const Header = () => {
-  const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   const [searchValue, setSearchValue] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userRole, setUserRole] = useState("");
@@ -18,8 +16,10 @@ const Header = () => {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const router = useRouter();
+  const [showDropdown, setShowDropdown] = useState(false);
+  const dropdownRef = useRef(null);
   const [open, setOpen] = useState(false);
-
+  const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   const handleClose = () => setOpen(false);
 
   const checkAuthStatus = () => {
@@ -124,6 +124,24 @@ const Header = () => {
     setUserRole("");
     router.push("/login");
   };
+  
+  const handleSelectProduct = (slug) => {
+    router.push(`/productdetail/${slug}`);
+    setShowDropdown(false);
+  };
+
+    // Close dropdown when clicking outside
+    useEffect(() => {
+      const handleClickOutside = (event) => {
+        if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+          setShowDropdown(false);
+        }
+      };
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
+
+   
 
   return (
     <header className="bg-white shadow-sm sticky top-0 z-20 w-full">

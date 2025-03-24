@@ -286,10 +286,12 @@ console.log(products,"productsproducts");
         setLoading(false);
       })
       .catch((err) => {
+        console.error("Fetch error:", err);
         setError("Error fetching data");
         setLoading(false);
       });
   }, [customerId]);
+  
 
   // Function to handle download
   const handleDownload = (fileUrl) => {
