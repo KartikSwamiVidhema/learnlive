@@ -118,10 +118,9 @@ const HomeBanner = () => {
       }}
     >
       <div className="absolute inset-0 bg-blue-900/30"></div>
-      <div className="relative z-10 container mx-auto flex flex-col items-center text-center space-y-8">
+      <div className="relative z-10 container mx-auto flex flex-col items-center text-center space-y-8 md:px-0 px-0">
         <div className="max-w-2xl">
-          <h1 className="text-4xl md:text-4xl font-bold leading-tight transition-opacity duration-500"
-          style={{ color: titleColor }}>
+          <h1 className="text-[30px] text-white md:text-4xl font-bold leading-tight transition-opacity duration-500">
             {currentHeadline}
           </h1>
           <p className="mt-4 text-lg text-primary"
@@ -130,8 +129,8 @@ const HomeBanner = () => {
           </p>
         </div>
         {/* <div className="relative z-10 container mx-auto flex flex-col items-center text-center space-y-8"> */}
-        <Card className="md:w-[700px] bg-white/10 shadow-lg backdrop-blur-lg">
-          <CardContent className="p-6 space-y-4">
+        <Card className="md:w-[700px] bg-white/10 shadow-lg backdrop-blur-lg w-full">
+          <CardContent className="md:p-6 space-y-4 p-3">
             <div className="flex flex-col md:flex-row items-end space-y-4 md:space-y-0 md:space-x-4">
               <div className="w-full md:w-[90%] relative">
                

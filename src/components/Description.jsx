@@ -76,7 +76,7 @@ const Description = ({ product }) => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <Card className="p-6">
+      <Card >
         <CardContent>
           <h1 className="text-2xl font-bold">Product Features</h1>
           <p className="text-gray-600 mt-2">
@@ -85,7 +85,7 @@ const Description = ({ product }) => {
 
           <div className="mt-6">
             <h2 className="text-lg font-semibold">Awesome Layout</h2>
-            <ul className="list-disc pl-6 text-gray-700">
+            <ul className="list-disc pl-6 text-gray-700 ps-4">
               <li>100+ layout modes</li>
               <li>Tabler card layout</li>
               <li>Widgets & grid layouts</li>
@@ -153,7 +153,7 @@ const Description = ({ product }) => {
 )}
 
 
-      <div ref={reviewRef} className="mt-12 p-6 border rounded-lg bg-gray-50">
+      <div ref={reviewRef} className="mt-12 p-3 border rounded-lg bg-gray-50">
         <h2 className="text-lg font-semibold">Be the first to review</h2>
         <textarea
           className="w-full mt-4 p-2 border rounded"

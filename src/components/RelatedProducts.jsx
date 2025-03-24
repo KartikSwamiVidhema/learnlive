@@ -62,76 +62,77 @@ const RelatedProducts = ({ product }) => {
 
   return (
     <div className="container mx-auto px-4">
-      {relatedProducts.length > 0 && (
-        <>
-          <h2 className="text-3xl font-bold">Related Products</h2>
-          <p className="text-gray-600 mb-6">
-            Top picks for you: Best-selling products that speak for themselves.
-          </p>
-        </>
-      )}
-
-      {/* React Multi Carousel */}
-      <Carousel
-        responsive={responsive}
-        infinite={true}
-        autoPlay={true}
-        autoPlaySpeed={3000}
-        keyBoardControl={true}
-        swipeable={true}
-        draggable={true}
-        showDots={false}
-        arrows={true}
-      >
-        {relatedProducts.map((product) => (
-          <div key={product._id} className="p-2">
-            <Card className="shadow-md">
-              <img
-                src={product.coverImage}
-                alt={product.name}
-                className="w-full mt-3 aspect-[4/3] object-contain rounded-t-lg bg-white cursor-pointer"
+    {relatedProducts.length > 0 && (
+      <>
+        <h2 className="text-3xl font-bold">Related Products</h2>
+        <p className="text-gray-600 mb-6">
+          Top picks for you: Best-selling products that speak for themselves.
+        </p>
+      </>
+    )}
+  
+    {/* React Multi Carousel */}
+    <Carousel
+      responsive={responsive}
+      infinite={true}
+      autoPlay={true}
+      autoPlaySpeed={3000}
+      keyBoardControl={true}
+      swipeable={true}
+      draggable={true}
+      showDots={false}
+      arrows={true}
+    >
+      {relatedProducts.map((product) => (
+        <div key={product._id} className="p-2">
+          <Card className="shadow-md">
+            <img
+              src={product.coverImage}
+              alt={product.name}
+              className="w-full mt-3 aspect-[4/3] object-contain rounded-t-lg bg-white cursor-pointer"
+              onClick={() => handleNavigate(product.slug)}
+            />
+            <CardContent className="p-4">
+              <h3
+                className="text-lg font-semibold flex items-center justify-between cursor-pointer group"
                 onClick={() => handleNavigate(product.slug)}
-              />
-              <CardContent className="p-4">
-                <h3
-                  className="text-lg font-semibold flex items-center justify-between cursor-pointer group"
-                  onClick={() => handleNavigate(product.slug)}
-                >
-                  {product.name}
-                  <ArrowRight className="size-4 transition-transform duration-200 opacity-0 group-hover:opacity-100 group-hover:translate-x-2" />
-                </h3>
-
-                  <div className="flex items-center gap-1">
+              >
+                {product.name}
+                <ArrowRight className="size-4 transition-transform duration-200 opacity-0 group-hover:opacity-100 group-hover:translate-x-2" />
+              </h3>
+  
+              {/* Star Rating */}
+              <div className="flex items-center gap-1">
                 {Array.from({ length: 5 }, (_, index) => (
                   <Star
                     key={index}
                     size={16}
                     fill={index < (product.rating || 0) ? "currentColor" : "none"}
                     stroke="currentColor"
-                    className={index < (product.rating || 0) ? "text-yellow-500" : "text-gray-300"} 
+                    className={index < (product.rating || 0) ? "text-yellow-500" : "text-gray-300"}
                   />
                 ))}
-              
-                <span className="text-sm text-gray-500">
-                  ({product.reviews?.length || 0} Reviews)
-                </span>
+                <span className="text-sm text-gray-500">({product.reviews?.length || 0} Reviews)</span>
               </div>
-                <div className="mt-2">
-                  <span className="text-black font-bold ml-2">
-                    ${product.salePrice}
-                  </span>
-                </div>
-                <Link href="/checkoutform">
-                  <Button className="w-full" onClick={() => addToCart(product)}>
-                    Buy Now
-                  </Button>
-                </Link>
-              </CardContent>
-            </Card>
-          </div>
-        ))}
-      </Carousel>
-    </div>
+  
+              {/* Pricing Section */}
+              <div className="mt-2">
+                <span className="text-black font-bold">${product.salePrice}</span>
+              </div>
+  
+              {/* Buy Now Button */}
+              <Link href="/checkoutform">
+                <Button className="w-full" onClick={() => addToCart(product)}>
+                  Buy Now
+                </Button>
+              </Link>
+            </CardContent>
+          </Card>
+        </div>
+      ))}
+    </Carousel>
+  </div>
+  
   );
 };
 

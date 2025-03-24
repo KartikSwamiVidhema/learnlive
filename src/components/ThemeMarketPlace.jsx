@@ -25,8 +25,8 @@ export default function ThemeMarketplace() {
   ];
 
   return (
-    <section className="py-16 bg-white">
-      <div className="container mx-auto text-center">
+    <section className="md:py-16 py-10 bg-white">
+      <div className="container px-4 mx-auto text-center">
         <h2 className="text-3xl font-bold text-gray-900">We're the Biggest theme marketplace across the world</h2>
         <p className="text-gray-600 mt-2">Most viewed and all-time top-selling services</p>
 

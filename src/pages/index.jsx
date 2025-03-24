@@ -92,15 +92,20 @@ const ProductCard = ({ product }) => {
         <img
           src={product.coverImage}
           alt={product.name}
-          className="w-full aspect-[4/3] object-contain rounded-t-lg bg-white mt-4"
+          className="w-full aspect-[4/3] object-contain rounded-t-lg bg-white mt-1"
         />
       </CardHeader>
-      <CardContent>
-        <h3 className="mb-2 flex items-center cursor-pointer group" onClick={handleNavigate}>
-          {product.name}
-          <ArrowRight className="ml-2 size-4 transition-transform duration-200 translate-x-0 opacity-0 group-hover:translate-x-1 group-hover:opacity-100" />
-        </h3>
-        {/* <div className="flex items-center gap-1 text-yellow-500">
+      <CardContent className="p-4">
+      <h3
+  className="mb-2 flex items-center cursor-pointer group text-base font-semibold"
+  onClick={handleNavigate}
+>
+  {product.name.length > 25 ? `${product.name.slice(0, 25)}...` : product.name}
+  <ArrowRight className="ml-2 size-4 transition-transform duration-200 translate-x-0 opacity-0 group-hover:translate-x-1 group-hover:opacity-100" />
+</h3>
+
+       <div className="flex justify-between mb-3">
+       {/* <div className="flex items-center gap-1 text-yellow-500"> */}
           {Array.from({ length: product.rating || 0 }, (_, index) => (
             <Star key={index} size={16} fill="currentColor" />
           ))}
@@ -108,7 +113,7 @@ const ProductCard = ({ product }) => {
           <span className="text-sm text-gray-500">
             ({product.reviews?.length || 0} Reviews)
           </span>
-        </div> */}
+        </div> 
         <div className="flex items-center gap-1">
   {Array.from({ length: 5 }, (_, index) => (
     <Star
@@ -124,6 +129,7 @@ const ProductCard = ({ product }) => {
     ({product.reviews?.length || 0} Reviews)
   </span>
 </div>
+
         <div className="mt-2">
           <span className="text-black font-bold ml-2">${product.salePrice}</span>
         </div>
@@ -151,7 +157,7 @@ const PopularCategories = ({ categories, onCategoryClick }) => {
   return (
     <section className="bg-gray-100 py-12 categories-section">
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl font-bold mb-8">Popular Categories</h2>
+        <h2 className="text-3xl font-bold mb-8 md:text-left text-center">Popular Categories</h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
           {categories && categories.length > 0 ? (
             categories.map((category, index) => (
@@ -254,8 +260,8 @@ const Index = ({ initialProducts, initialTab, categoriesData }) => {
       <main className="flex-grow">
         <section className="py-12">
           <div className="container mx-auto px-4">
-            <h2 className="text-2xl font-bold mb-7">Featured Products</h2>
-            <Tabs defaultValue={initialTab} className="mb-8">
+            <h2 className="text-3xl font-bold md:text-left text-center">Featured Products </h2>
+            <Tabs defaultValue={initialTab} className="mt-5">
               <TabsList>
                 {/* Map over categories and display each category */}
                 {
@@ -287,7 +293,7 @@ const Index = ({ initialProducts, initialTab, categoriesData }) => {
               </TabsList>
 
               <TabsContent value={activeTab}>
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 mt-4">
                   {filteredProducts.length > 0 ? (
                     filteredProducts.slice(0, 4).map((product) => (
                       <ProductCard key={product.id} product={product} />

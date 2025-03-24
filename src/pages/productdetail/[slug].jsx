@@ -161,7 +161,7 @@ const ProductTabs = ({ product }) => {
       </TabsList>
 
       {/* Description Tab */}
-      <TabsContent value="description" className="mt-4 ml-4">
+      <TabsContent value="description" className="mt-4 md:ml-4 ml-0">
         <p dangerouslySetInnerHTML={{ __html: description }} />
       </TabsContent>
 
@@ -212,7 +212,7 @@ const PurchaseInfo = ({ product, seller, onBuyNow }) => {
 
   return (
     <Card>
-      <CardContent className="p-6">
+      <CardContent className="p-3">
         <ToastContainer autoClose={3000} />
         {/* <h2 className="text-2xl font-bold mb-4">${product.price.toFixed(2)}</h2> */}
         <Link className="w-full" href="/checkoutform">
