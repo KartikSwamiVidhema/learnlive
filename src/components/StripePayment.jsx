@@ -11,8 +11,6 @@ const StripePayment = ({ amount,email,userId,sellerid,isOpen,setIsOpen }) => {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
   const [clientSecret, setClientSecret] = useState(null);
-  // const [isOpen, setIsOpen] = useState(false);
-
 
   const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -96,7 +94,7 @@ const StripePayment = ({ amount,email,userId,sellerid,isOpen,setIsOpen }) => {
       })),
       payment_method: "Card",
       tax: 0.0,
-      discount: 0.0,
+      discount: [],
       sub_total: amount,
       grand_total: amount,
       order_status: "succeeded",
@@ -116,29 +114,14 @@ const StripePayment = ({ amount,email,userId,sellerid,isOpen,setIsOpen }) => {
         body: JSON.stringify(orderData),
       });
       
-      // Parse the response as JSON
-      const resData = await res.clone().json();
-     
-
-
-      const response = await fetch(`${apiBaseUrl}/order-success`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: paymentIntent.receipt_email, // Assuming email is stored in receipt_email
-          orderId: resData.data.order_id || " ", // PaymentIntent ID as Order ID
-          orderTotal: paymentIntent.amount, // Convert amount from cents to dollars
-        }),
-      });
+ 
 
       const data = await res.json();
       if (data.success) {
         console.log("Order saved successfully:", data);
         localStorage.removeItem("cart"); // Clear cart after successful order
       }
-      if (!response.ok) {
+      if (!res.ok) {
         throw new Error(data.message || "Something went wrong");
       } else {
         console.error("Failed to save order:", data.message);

@@ -183,17 +183,19 @@ const CheckoutForm = () => {
             </Card>
           </div>
 
-        <Card className="z-0">
-          <CardHeader>
-            <CardTitle>Your order</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="border-b pb-4 mb-4">
-              <p>Product Subtotal</p>
-              <p className="text-right font-bold">${subtotal}</p>
-            </div>
-            <p className="text-sm text-gray-500">Billing Email: {userEmail}</p>
-              <Button className="mt-4 w-full" onClick={handlePlaceOrder}>
+          <Card className="z-0">
+            <CardHeader>
+              <CardTitle>Your order</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="border-b pb-4 mb-4">
+                <p>Product Subtotal</p>
+                <p className="text-right font-bold">${subtotal}</p>
+              </div>
+              <p className="text-sm text-gray-500">
+                Billing Email: {userEmail}
+              </p>
+              <Button className="mt-4 " onClick={handlePlaceOrder}>
                 Place order
               </Button>
               {showStripe && (
@@ -207,8 +209,9 @@ const CheckoutForm = () => {
                   setIsOpen={setShowStripe}
                 />
               )}
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        </div>
       </div>
       <Footer />
     </>

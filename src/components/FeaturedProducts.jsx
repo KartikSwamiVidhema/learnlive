@@ -23,11 +23,22 @@ const StarRating = ({ rating }) => {
 
 const FeaturedProducts = () => {
   // const featuredProducts = productsData.slice(0, 4); // Display first 4 products as featured
-
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    setTimeout(() => { // Simulate API delay
+      setFeaturedProducts(productsData.slice(0, 4)); // Display first 4 products
+      setLoading(false);
+    }, 1000);
+  }, []);
   return (
     <section className="py-12">
       <div className="container mx-auto px-4">
         <h2 className="text-2xl font-bold mb-5">Featured Products</h2>
+        {loading ? (
+          <div className="flex justify-center items-center h-40">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
+          </div>
+        ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
           {featuredProducts.map((product) => (
             <Card key={product.id} className="flex flex-col">
@@ -48,6 +59,7 @@ const FeaturedProducts = () => {
             </Card>
           ))}
         </div>
+      )}
       </div>
     </section>
   );

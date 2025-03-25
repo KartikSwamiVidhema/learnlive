@@ -146,3 +146,10 @@
   text-align: center;
 }
 
+.react-multiple-carousel__arrow--right{
+  left: calc(96% + 1px);
+}
+.react-multiple-carousel__arrow--left{
+  right: calc(96% + 1px);
+}
+
