@@ -166,7 +166,7 @@ const Header = () => {
 
           <div className="p-6 space-y-2 md:w-[500px]">
             <div className="flex flex-col md:flex-row items-end space-y-4 md:space-y-0 md:space-x-4">
-              <div className="w-full md:w-[90%] relative">
+              <div className="hidden md:block w-full md:w-[90%] relative">
                 <div className="relative dropdown-container">
                   <Input
                     type="text"
