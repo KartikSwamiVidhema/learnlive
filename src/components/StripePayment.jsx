@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { useRouter } from "next/router";
 import { X } from "lucide-react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const StripePayment = ({ amount,email,userId,sellerid,isOpen,setIsOpen }) => {
   const router = useRouter();
@@ -63,18 +65,23 @@ const StripePayment = ({ amount,email,userId,sellerid,isOpen,setIsOpen }) => {
 
       if (error) {
         setError(error.message);
+        toast.error(error.message);
       } else if (paymentIntent?.status === "succeeded") {
         setSuccess(true);
         setIsOpen(false);
-
         // Save order details to backend
         await saveOrderDetails(paymentIntent);
 
         if (router) router.push("/thankyoupage");
+      } else {
+        toast.error("Payment failed! Please try again.");
       }
     } catch (err) {
       console.error("Error:", err);
       setError("Something went wrong!");
+      toast.error("Something went wrong! Please try again.");
+
+
     }
 
     setLoading(false);
