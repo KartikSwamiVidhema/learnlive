@@ -35,7 +35,7 @@ const Register = () => {
     }
 
     try {
-      const response = await axios.post(`${apiBaseUrl}/users/register`, {
+      const response = await axios.post(`${apiBaseUrl}/users/frontregister`, {
         username,
         email,
         password,
