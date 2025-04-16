@@ -10,7 +10,9 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Filter } from "lucide-react";
+import MetaTags from "@/components/metaTags";
 
+import metadata from "../../components/common/metadata.json"
 import {
   Card,
   CardContent,
@@ -212,8 +214,16 @@ const MarketplaceFilter = ({ categoryData, productData }) => {
   const handleNavigate = (slug) => {
     router.push(`/productdetail/${slug}`);
   };
+    const seo = metadata.productcategory;
 
   return (
+    <>
+    <MetaTags
+            title={seo.title}
+            description={seo.description}
+            keywords={seo.keywords}
+            canonical={seo.canonical}
+          />
     <div className="min-h-screen flex flex-col">
       <ToastContainer autoClose={3000} />
 
@@ -416,6 +426,7 @@ const MarketplaceFilter = ({ categoryData, productData }) => {
 
       <Footer />
     </div>
+    </>
   );
 };
 

@@ -46,8 +46,6 @@ const StripePayment = ({ amount,email,userId,sellerid,isOpen,setIsOpen }) => {
   }, [amount]);
 
   const handleSubmit = async (e) => {
-    console.log("payment status");
-
     e.preventDefault();
     if (!stripe || !elements || !clientSecret) return;
 
@@ -61,8 +59,6 @@ const StripePayment = ({ amount,email,userId,sellerid,isOpen,setIsOpen }) => {
           payment_method: { card: elements.getElement(CardElement) },
         }
       );
-      console.log(paymentIntent.amount, "hellllllllllllooooo");
-
       if (error) {
         setError(error.message);
         toast.error(error.message);
@@ -125,7 +121,6 @@ const StripePayment = ({ amount,email,userId,sellerid,isOpen,setIsOpen }) => {
 
       const data = await res.json();
       if (data.success) {
-        console.log("Order saved successfully:", data);
         localStorage.removeItem("cart"); // Clear cart after successful order
       }
       if (!res.ok) {

@@ -25,7 +25,6 @@ const IframeWebViewer = () => {
         const response = await axios.get(
           `${apiBaseUrl}/product?filter={"_id":"${encodeURIComponent(productid)}"}`
         );
-        console.log(response.data.data[0].slug,"responseee");
         setslug(response.data.data[0].slug)
         setName(response.data.data[0].name)
 

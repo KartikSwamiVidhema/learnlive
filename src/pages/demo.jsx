@@ -20,7 +20,7 @@ export default function Demo() {
   const [weburl, setWeburl] = useState("");
   const [scannerUrl, setScannerUrl] = useState("");
     useEffect(() => {
-        console.log('id',id)
+
         if (!id) return;
         const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
         const fetchProduct = async () => {

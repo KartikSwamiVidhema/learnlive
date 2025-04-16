@@ -1,11 +1,19 @@
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import { Shield, Globe, Lock, Users, Database, Link, AlertCircle } from "lucide-react";
+import MetaTags from "@/components/metaTags";
+import metadata from "../components/common/metadata.json"
 
 const PrivacyPolicy =()=> {
+  const seo = metadata.privacypolicy;
   return (
     <>
-  
+     <MetaTags
+        title={seo.title}
+        description={seo.description}
+        keywords={seo.keywords}
+        canonical={seo.canonical}
+      />
     <div className="max-w-4xl mx-auto p-6">
       <h1 className="text-3xl font-bold mb-4">Privacy Policy</h1>
       <p className="text-gray-500">Home / Privacy Policy</p>

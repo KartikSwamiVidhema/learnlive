@@ -41,6 +41,8 @@ import { useCart } from "../../context/CartContext";
 import { ArrowRight } from "lucide-react";
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
+import MetaTags from "@/components/metaTags";
+import metadata from "../components/common/metadata.json"
 
 const StarRating = ({ rating }) => {
   const fullStars = Math.floor(rating);
@@ -236,8 +238,15 @@ const Index = ({ initialProducts, initialTab, categoriesData }) => {
       : products.filter((product) =>
         product.categories?.some((category) => category.slug === activeTab)
       );
-
+      const seo = metadata.home;
   return (
+    <>
+       <MetaTags
+        title={seo.title}
+        description={seo.description}
+        keywords={seo.keywords}
+        canonical={seo.canonical}
+      />
     <div className="min-h-screen flex flex-col">
      
       <HomeBanner />
@@ -309,6 +318,7 @@ const Index = ({ initialProducts, initialTab, categoriesData }) => {
       <BestSellingThemes />
       <Footer />
     </div>
+    </>
   );
 };
 

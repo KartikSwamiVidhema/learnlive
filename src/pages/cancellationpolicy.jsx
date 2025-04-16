@@ -1,10 +1,18 @@
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
+import MetaTags from "@/components/metaTags";
+import metadata from "../components/common/metadata.json"
 
 const CancellationPolicy = () => {
+  const seo = metadata.cancellationpolicy;
   return (
     <>
-    
+       <MetaTags
+            title={seo.title}
+            description={seo.description}
+            keywords={seo.keywords}
+            canonical={seo.canonical}
+          />
       <div className="max-w-5xl mx-auto p-6 text-gray-700">
         <h1 className="text-3xl font-bold mb-4 text-black">Refund and Returns Policy</h1>
         <p className="text-gray-500 text-sm">Home / Refund and Returns Policy</p>

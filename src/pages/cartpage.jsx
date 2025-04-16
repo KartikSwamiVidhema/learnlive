@@ -38,7 +38,6 @@ const CartPage = () => {
       (sum, item) => sum + item.price * item.quantity,
       0
     );
-    console.log(newSubtotal,"newSubtotal");
     
     setSubtotal(newSubtotal); // Update subtotal in context
   }, [cartItems, setSubtotal]);

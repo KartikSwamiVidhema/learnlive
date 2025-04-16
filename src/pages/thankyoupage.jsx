@@ -5,6 +5,8 @@ import Footer from "../components/Footer";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { CheckCircle } from "lucide-react";
+import MetaTags from "@/components/metaTags";
+import metadata from "../components/common/metadata.json"
 
 const ThankYouPage = () => {
   const router = useRouter();
@@ -12,8 +14,15 @@ const ThankYouPage = () => {
   const handleNavigate = () => {
     router.push("/dashboard");
   };
-
+  const seo = metadata.home;
   return (
+    <>
+    <MetaTags
+    title={seo.title}
+    description={seo.description}
+    keywords={seo.keywords}
+    canonical={seo.canonical}
+  />
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-grey to-indigo-600">
      
       <main className="flex-grow flex items-center justify-center py-12">
@@ -44,6 +53,7 @@ const ThankYouPage = () => {
       </main>
       <Footer />
     </div>
+    </>
   );
 };
 

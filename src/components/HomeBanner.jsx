@@ -53,7 +53,6 @@ const HomeBanner = () => {
         const desktopBannerResponse = await axios.get(
           `${apiBaseUrl}/gethomepage`
         );
-        console.log(desktopBannerResponse,"desktopBannerResponse");
         
         setDesktopBanner(desktopBannerResponse.data.data.desktopBanner);
         setTitleColor(desktopBannerResponse.data.data.titleColor);

@@ -1,0 +1,55 @@
+{
+    "about": {
+      "title": "About Us | Ithemes Premium Website Templates & Themes for All Platforms",
+      "description": "Discover our story and mission behind offering high-quality website templates and themes. We help businesses build beautiful, professional websites effortlessly.",
+      "keywords": "marketing agency, business growth, website templates, premium themes",
+      "canonical": "https://ithemes-dev.netlify.app/aboutus"
+    },
+    "home": {
+      "title": "Ithemes | Premium Website Templates & Themes Marketplace",
+      "description": "Shop the best responsive themes and website templates for WordPress, Shopify, HTML & more. Elevate your brand with our beautifully designed themes.",
+      "keywords": "website templates, WordPress themes, Shopify templates, HTML templates, theme marketplace",
+      "canonical": "https://ithemes-dev.netlify.app/"
+    },
+    "cancellationpolicy": {
+  "title": "Cancellation Policy | Ithemes Premium Website Templates",
+  "description": "Read our Refund and Returns Policy to understand how we handle product returns, exchanges, and refunds for your purchases on Ithemes.",
+  "keywords": "refund policy, returns, exchanges, cancellation, theme refund, product return",
+  "canonical": "https://ithemes-dev.netlify.app/cancellationpolicy"
+},
+"termsandconditions": {
+  "title": "Terms and Conditions | iThemes Premium Website Templates",
+  "description": "Read the Terms and Conditions for using iThemes.xyz. Learn about licensing, payments, refunds, intellectual property, and your obligations when using our themes.",
+  "keywords": "terms and conditions, ithemes, website theme terms, licensing agreement, refund policy, user agreement",
+  "canonical": "https://ithemes-dev.netlify.app/termsandconditions"
+},
+"privacypolicy": {
+  "title": "Privacy Policy | iThemes Technologies",
+  "description": "Understand how iThemes Technologies collects, uses, and protects your personal information. Read our Privacy Policy to learn about data collection, retention, security, and your rights.",
+  "keywords": "privacy policy, data protection, personal information, cookies, user data, iThemes privacy",
+  "canonical": "https://ithemes-dev.netlify.app/privacypolicy"
+},
+"contactus": {
+  "title": "Contact Us | iThemes Technologies",
+  "description": "Get in touch with the iThemes team. Fill out the form for inquiries, support, or collaboration. We're here to help you!",
+  "keywords": "contact iThemes, support, customer service, iThemes Technologies, get in touch, contact form",
+  "canonical": "https://ithemes-dev.netlify.app/contactus"
+},
+"thankyou": {
+  "title": "Thank You for Your Order | iThemes Technologies",
+  "description": "Your order has been confirmed! 🎉 Check your email for confirmation details and track your order anytime. Thank you for shopping with iThemes Technologies.",
+  "keywords": "thank you page, order confirmation, iThemes order, track order, order summary, iThemes Technologies",
+  "canonical": "https://ithemes-dev.netlify.app/thankyou"
+},
+
+"productcategory": {
+  "title": "Product Category | Ithemes Premium Website Templates & Themes Marketplace",
+  "description": "Shop the best responsive themes and website templates for WordPress, Shopify, HTML & more. Elevate your brand with our beautifully designed themes.",
+  "keywords": "website templates, WordPress themes, Shopify templates, HTML templates, theme marketplace",
+  "canonical": "https://ithemes-dev.netlify.app/product-category/all"
+}
+
+
+
+  }
+  

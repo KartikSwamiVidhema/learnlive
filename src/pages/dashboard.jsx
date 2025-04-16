@@ -8,6 +8,8 @@ import { ToastContainer, toast } from "react-toastify";
 import { Download } from "lucide-react";
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import { Readable } from "stream";
+import MetaTags from "@/components/metaTags";
+import metadata from "../components/common/metadata.json"
 
 import "react-toastify/dist/ReactToastify.css";
 import {
@@ -125,12 +127,8 @@ function ProfileForm() {
     setSuccessMessage(""); // Reset the success message before starting the submission
     try {
       const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
-      console.log("API URL:", apiBaseUrl);
 
       const response = await axios.put(`${apiBaseUrl}/users/${UserId}`, profile);
-
-      console.log("Profile Updated:", response.data);
-
       // Update localStorage with the new profile data
       localStorage.setItem("userdata", JSON.stringify({
         _id: UserId,
@@ -247,15 +245,14 @@ const DownloadReport = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [customerId, setCustomerId] = useState(null);
-console.log(products,"productsproducts");
 
   useEffect(() => {
     // Get user data from localStorage
     const userData = localStorage.getItem("userdata");
-    console.log("userData",userData)
+
     if (userData) {
       const parsedUser = JSON.parse(userData);
-      console.log("Customer ID from localStorage:", parsedUser._id);
+
       setCustomerId(parsedUser._id); // Assuming userData contains an `_id` field
     }
   }, []);
@@ -263,11 +260,10 @@ console.log(products,"productsproducts");
   useEffect(() => {
     if (!customerId) return;
 
-    console.log("Fetching orders for customer:", customerId);
     fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/orders/${customerId}`)
       .then((response) => response.json())
       .then((data) => {
-        console.log("API Response:", data); 
+
         if (data.success) {
           // Extract products from orders
           const productsList = data.orders.flatMap(order =>
@@ -278,7 +274,6 @@ console.log(products,"productsproducts");
               file: item.item_id?.file,
             }))
           );
-          console.log("productsList",productsList);
           setProducts(productsList);
         } else {
           setError("Failed to fetch products");
@@ -384,14 +379,13 @@ const ProductContent = ({ categorydata }) => {
   useEffect(() => {
     const fetchData = async () => {
       const storedUserData = localStorage.getItem("userdata");
-      console.log("storedUserData",storedUserData)
       if (storedUserData) {
-        console.log("2");
+
         const userdata = JSON.parse(storedUserData);
         const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
         try {
           const responseProduct = await axios.get(`${apiBaseUrl}/product?filter={"vendor":"${userdata._id}"}`);
-          console.log('responseProduct', responseProduct.data.data);
+
           setData(responseProduct.data.data);
         } catch (error) {
           console.error("Error fetching product data", error);
@@ -431,7 +425,7 @@ const ProductContent = ({ categorydata }) => {
     // Fetch userdata from localStorage or wherever it is stored
     const storedUserData = localStorage.getItem('userdataa');
     if (storedUserData) {
-      console.log("3");
+
       setUserdata(JSON.parse(storedUserData));
     }
   }, []);
@@ -710,7 +704,6 @@ const ProductContent = ({ categorydata }) => {
   // Helper function to upload a file to Cloudinary
   const uploadToCloudinary = async (file) => {
     if (!file) {
-      console.log("No file provided, skipping upload.");
       return null; // Return null if no file is provided
     }
 
@@ -720,7 +713,6 @@ const ProductContent = ({ categorydata }) => {
 
     try {
       const res = await axios.post("https://api.cloudinary.com/v1_1/drsh5gjtv/upload", formData);
-      console.log('Uploaded file URL:', res.data.secure_url);
       return res.data.secure_url; // Return the URL of the uploaded file
     } catch (error) {
       console.error("Error uploading file to Cloudinary:", error);
@@ -1373,12 +1365,10 @@ const OrderContent = () => {
       if (storedUserData) {
         const userdata = JSON.parse(storedUserData);
         const sellerId = userdata._id; // Extract seller ID
-        console.log("Seller ID:", sellerId);
 
         const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
         try {
           const response = await axios.get(`${apiBaseUrl}/seller/${sellerId}`);
-          console.log("Orders:", response.data.orders);
           setData(response.data.orders);
           setTotalPages(Math.ceil(response.data.orders.length / itemsPerPage));
         } catch (error) {
@@ -1486,7 +1476,7 @@ const OrderContent = () => {
 
 export default function Dashboard({ userdata, categorydata }) {
   const [activeTab, setActiveTab] = useState("profile");
-
+  const seo = metadata.home;
   const renderContent = () => {
     switch (activeTab) {
       case "product":
@@ -1530,7 +1520,12 @@ export default function Dashboard({ userdata, categorydata }) {
   };
   return (
     <>
-    
+       <MetaTags
+        title={seo.title}
+        description={seo.description}
+        keywords={seo.keywords}
+        canonical={seo.canonical}
+      />
       <div className="container flex py-4 px-3">
         <Sidebar setActiveTab={setActiveTab}  />
         <div className="md:w-[85%] w-[80%] md:px-6 ">
@@ -1547,7 +1542,7 @@ export default function Dashboard({ userdata, categorydata }) {
 export async function getServerSideProps(context) {
   const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-  console.log('api base url1233' + apiBaseUrl)
+
   try {
     const initialTab = "all";
 

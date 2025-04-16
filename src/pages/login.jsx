@@ -11,6 +11,9 @@ import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import MetaTags from "@/components/metaTags";
+import metadata from "../components/common/metadata.json"
+
 const Login = () => {
   useEffect(() => {
     if (localStorage.getItem("logoutSuccess") === "true") {
@@ -32,7 +35,7 @@ const Login = () => {
         });
 
         const data = response.data;
-        console.log("Login Response:", data);
+
 
         if (response.status === 200) {
             localStorage.setItem("token", data.data.token);
@@ -53,9 +56,16 @@ const Login = () => {
         toast.error(error.response?.data?.message || "An error occurred during login");
     }
 };
-
+const seo = metadata.home;
   
   return (
+    <>
+    <MetaTags
+    title={seo.title}
+    description={seo.description}
+    keywords={seo.keywords}
+    canonical={seo.canonical}
+  />
     <div className="min-h-screen flex flex-col">
     <ToastContainer autoClose={3000} /> 
     
@@ -119,6 +129,7 @@ const Login = () => {
 
    
     </div>
+    </>
   );
 };
 

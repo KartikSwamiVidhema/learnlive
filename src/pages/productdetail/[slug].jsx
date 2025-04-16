@@ -36,6 +36,7 @@ import Description from "@/components/Description";
 import RelatedProducts from "@/components/RelatedProducts";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Head from "next/head";
 
 
 const stripePromise = loadStripe(
@@ -125,9 +126,9 @@ const ProductInfo = ({ product }) => (
     <h1 className="text-3xl font-bold my-4">{product.name}</h1>
     <div className="flex items-center mb-4">
       <StarRating rating={product.rating} />
-      <span className="ml-2 text-sm text-gray-600">
+      {/* <span className="ml-2 text-sm text-gray-600">
         ({product.reviews.length} reviews)
-      </span>
+      </span> */}
     </div>
     <div className="mt-2">
       <span className="text-black font-bold ml-2 text-2xl">
@@ -271,7 +272,7 @@ const PurchaseInfo = ({ product, seller, onBuyNow }) => {
 };
 
 const ProductDetail = ({ productData }) => {
-
+  // console.log("sdfghjk",productData)
 
   const router = useRouter();
   const { slug } = router.query;
@@ -291,6 +292,17 @@ const ProductDetail = ({ productData }) => {
   };
 
   return (
+    <>  
+   <Head>
+  <title>{product.meta_title || product.name}</title>
+  <meta
+    name="description"
+    content={product.meta_description?.replace(/<\/?[^>]+(>|$)/g, "") || "Default description"}
+  />
+  <meta name="keywords" content={product.meta_keywords || "default, keywords"} />
+  <link rel="canonical" href={`https://ithemes-dev.netlify.app/productdetail/${product.slug}`} />
+</Head>
+
     <div className="min-h-screen flex flex-col">
      
       <main className="flex-grow bg-gray-100 py-8">
@@ -332,6 +344,8 @@ const ProductDetail = ({ productData }) => {
         </AlertDialogContent>
       </AlertDialog>
     </div>
+    </>
+
   );
 };
 
@@ -347,7 +361,7 @@ export async function getServerSideProps(context) {
       )}`
     );
     const productData = productResponse.data || [];
-    console.log(productData, "hello");
+
 
     return {
       props: { productData, slug },

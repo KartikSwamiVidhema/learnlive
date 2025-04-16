@@ -29,8 +29,6 @@ const ResetPassword = () => {
       return;
     }
     try {
-      console.log("API Call:", `${apiBaseUrl}/reset-password/${token}`);
-
       const res = await axios.post(`${apiBaseUrl}/reset-password/${token}`, {
         password,
       });

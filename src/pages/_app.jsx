@@ -9,7 +9,8 @@ import { Elements } from "@stripe/react-stripe-js";
 import Header from "@/components/Header";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-
+import MetaTags from "@/components/metaTags";
+import metadata from "../components/common/metadata.json"
 const queryClient = new QueryClient();
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
@@ -19,7 +20,7 @@ const App = ({ Component, pageProps }) => {
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState(0);
   const router = useRouter();
-
+  const seo = metadata.home;
   useEffect(() => {
     let progressInterval;
     const start = () => {
@@ -66,6 +67,13 @@ const App = ({ Component, pageProps }) => {
   }, [router]);
 
   return (
+    <>
+    <MetaTags
+        title={seo.title}
+        description={seo.description}
+        keywords={seo.keywords}
+        canonical={seo.canonical}
+      />
     <QueryClientProvider client={queryClient}>
       {/* <PayPalScriptProvider options={{ "client-id": process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID }}> */}
       <TooltipProvider>
@@ -95,6 +103,7 @@ const App = ({ Component, pageProps }) => {
       </TooltipProvider>
       {/* </PayPalScriptProvider> */}
     </QueryClientProvider>
+    </>
   );
 };
 

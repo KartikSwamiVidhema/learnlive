@@ -3,21 +3,7 @@ import Footer from "@/components/Footer";
 import axios from "axios";
 import { useEffect, useState } from "react";
 export default function ProductDemo() {
-    // useEffect(() => {
-    //     console.log('id',id)
-    //     if (!id) return;
-    //     const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
-    //     const fetchProduct = async () => {
-    //       try {
-    //         const response = await axios.get(`${apiBaseUrl}/product?filter={"_id":"${id}"}`)
-    //         console.log('res',response.data)
-    //         setProduct(response.data);
-    //       } catch (error) {
-    //         console.error("Error fetching product:", error);
-    //       }
-    //     };
-    //     fetchProduct();
-    //   }, [id]);
+
   return (
     <>
  
@@ -79,7 +65,7 @@ export async function getServerSideProps(context) {
       // const responseProduct = await axios.get(`${apiBaseUrl}/product?filter={"vendor":"67bd5ccc684c54fa8c4060b3"}`);
       const response = await axios.get(`${apiBaseUrl}/product?filter={"_id":"67c1ad542663cb8b8c8529a5"}`)
       const responsedata = await response.json();
-      console.log('response', responsedata);
+
       return {
         props: { responsedata },
       };

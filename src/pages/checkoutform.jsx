@@ -19,7 +19,6 @@ const CheckoutForm = () => {
   const [userId, setUserId] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(true); // Track login status
   const router = useRouter();
-  console.log(cartItems, "cartcart");
 
   // Fetch user email & ID from localStorage on mount
   useEffect(() => {

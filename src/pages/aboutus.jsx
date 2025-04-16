@@ -1,11 +1,19 @@
 import Header from "@/components/Header";
 import { Briefcase, Users, Globe } from "lucide-react";
 import Footer from "@/components/Footer";
+import MetaTags from "@/components/metaTags";
+import metadata from "../components/common/metadata.json"
 
 export default function AboutUs() {
+  const seo = metadata.about;
   return (
     <>
-  
+    <MetaTags
+        title={seo.title}
+        description={seo.description}
+        keywords={seo.keywords}
+        canonical={seo.canonical}
+      />
     <div className="container mx-auto p-8">
       {/* Breadcrumb */}
       <div className="text-gray-500 text-sm mb-4">

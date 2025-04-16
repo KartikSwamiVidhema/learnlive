@@ -14,7 +14,8 @@ import {
 } from "@/components/ui/card";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-
+import MetaTags from "@/components/metaTags";
+import metadata from "../components/common/metadata.json"
 const Register = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -25,7 +26,7 @@ const Register = () => {
 
   const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   const router = useRouter();
-
+  const seo = metadata.home;
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -41,7 +42,7 @@ const Register = () => {
         password,
         role,
       });
-      console.log(response,"777777");
+
       
 
       if (response.status === 201 || response.status === 200) {
@@ -57,7 +58,14 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <>
+    <MetaTags
+        title={seo.title}
+        description={seo.description}
+        keywords={seo.keywords}
+        canonical={seo.canonical}
+      />
+        <div className="min-h-screen flex flex-col">
     <main className="flex-grow bg-gray-100 flex items-center justify-center py-12">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-md mx-auto">
@@ -149,7 +157,8 @@ const Register = () => {
     </main>
     <Footer />
   </div>
-  
+  </>
+
   );
 };
 

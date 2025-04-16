@@ -7,8 +7,6 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Description = ({ product }) => {
-  console.log(product.reviews, "productproduct");
-
   const reviewRef = useRef(null);
   const [rating, setRating] = useState(0);
   const [review, setReview] = useState("");
