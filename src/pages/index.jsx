@@ -43,6 +43,7 @@ import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import MetaTags from "@/components/metaTags";
 import metadata from "../components/common/metadata.json"
+import LazyImage from "@/components/common/LazyImage";
 
 const StarRating = ({ rating }) => {
   const fullStars = Math.floor(rating);
@@ -91,7 +92,7 @@ const ProductCard = ({ product }) => {
   return (
     <Card key={product.id} className="shadow-md">
       <CardHeader onClick={handleNavigate} className="cursor-pointer">
-        <img
+        <LazyImage
           src={product.coverImage}
           alt={product.name}
           className="w-full aspect-[4/3] object-contain rounded-t-lg bg-white mt-1"
@@ -238,6 +239,9 @@ const Index = ({ initialProducts, initialTab, categoriesData }) => {
       : products.filter((product) =>
         product.categories?.some((category) => category.slug === activeTab)
       );
+
+      console.log("filteredProducts ", filteredProducts);
+      
       const seo = metadata.home;
   return (
     <>
@@ -308,7 +312,7 @@ const Index = ({ initialProducts, initialTab, categoriesData }) => {
 
           </div>
         </section>
-        <BestSellingProducts filteredProducts={filteredProducts} />
+        <BestSellingProducts products={products} />
 
         <PopularCategories
           categories={Array.isArray(categories.data) ? categories.data.filter((cat) => cat.isFeatured) : []} // Safe filter

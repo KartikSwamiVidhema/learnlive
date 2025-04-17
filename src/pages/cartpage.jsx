@@ -4,6 +4,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
 import { useCart } from "../../context/CartContext";
+import LazyImage from "@/components/common/LazyImage";
 
 const CartPage = () => {
   const { cart, updateCart } = useCart();
@@ -66,7 +67,7 @@ const CartPage = () => {
                 {cartItems.map((item) => (
                   <tr key={item.id} className="border-t">
                     <td className="p-3">
-                      <img
+                      <LazyImage
                         src={item.coverImage}
                         alt={item.name}
                         className="w-16 h-16 rounded-md object-cover"

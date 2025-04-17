@@ -5,16 +5,14 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
 import { Button } from "@/components/ui/button";
+import LazyImage from "@/components/common/LazyImage";
+
 export default function Demo() {
   const router = useRouter();
   const test = router.query;
   const productid = test.id;
   const [Name, setName]= useState("");
   const [Slug, setSlug]= useState("");
-
-
-
-
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
   const [weburl, setWeburl] = useState("");
@@ -26,7 +24,6 @@ export default function Demo() {
         const fetchProduct = async () => {
           try {
             const response = await axios.get(`${apiBaseUrl}/product?filter={"_id":"${productid}"}`)
-            console.log('webUrl',response.data.data[0])
             setWeburl(response.data.data[0].webUrl);
             setScannerUrl(response.data.data[0].scanner_url);
           } catch (error) {
@@ -48,7 +45,7 @@ export default function Demo() {
    
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-gray-800">Doc App Clone</h1>
-          <img
+          <LazyImage
             className="mx-auto mt-4 w-24 h-24 object-contain"
             src={scannerUrl || "/scanner-placeholder.png"}
             alt="Scanner"
@@ -74,7 +71,7 @@ export default function Demo() {
 
    
         <div className="relative w-[375px] h-[750px] ms-auto">
-          <img
+          <LazyImage
             className="absolute w-full"
             src="https://ithemes.xyz/wp-content/uploads/2024/01/Untitled-design-9.png"
             alt="Mobile Frame"

@@ -9,6 +9,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
+import LazyImage from "./common/LazyImage";
 
 const RelatedProducts = ({ product }) => {
   const [relatedProducts, setRelatedProducts] = useState([]);
@@ -86,7 +87,7 @@ const RelatedProducts = ({ product }) => {
       {relatedProducts.map((product) => (
         <div key={product._id} className="p-2">
           <Card className="shadow-md">
-            <img
+            <LazyImage
               src={product.coverImage}
               alt={product.name}
               className="w-full mt-3 aspect-[4/3] object-contain rounded-t-lg bg-white cursor-pointer"

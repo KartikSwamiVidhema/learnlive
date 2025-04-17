@@ -3,7 +3,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Button } from "@/components/ui/button";
 import { Star, StarHalf } from 'lucide-react';
 import productsData from '../data/products.json';
-
+import LazyImage from './common/LazyImage';
 const StarRating = ({ rating }) => {
   const fullStars = Math.floor(rating);
   const hasHalfStar = rating % 1 !== 0;
@@ -43,7 +43,7 @@ const FeaturedProducts = () => {
           {featuredProducts.map((product) => (
             <Card key={product.id} className="flex flex-col">
               <CardHeader>
-                <img src={product.image} alt={product.title} className="w-full h-24 object-cover rounded-t-lg" />
+                <LazyImage src={product.image} alt={product.title} className="w-full h-24 object-cover rounded-t-lg" />
               </CardHeader>
               <CardContent className="flex-grow">
                 <CardTitle className="mb-2 ">{product.title}</CardTitle>

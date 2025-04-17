@@ -26,6 +26,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { ArrowRight } from "lucide-react";
 import { useCart } from "../../../context/CartContext";
+import LazyImage from "@/components/common/LazyImage";
 const StarRating = ({ rating }) => {
   const numericRating = parseFloat(rating) || 0;
   const fullStars = Math.floor(numericRating);
@@ -335,7 +336,7 @@ const MarketplaceFilter = ({ categoryData, productData }) => {
                 {currentProducts?.map((product) => (
                   <Card key={product.id}>
                     <CardHeader onClick={() => handleNavigate(product.slug)}>
-                      <img
+                      <LazyImage
                         src={product.coverImage}
                         alt={product?.title}
                         className="w-full aspect-[4/3]  object-contain rounded-t-lg bg-white"

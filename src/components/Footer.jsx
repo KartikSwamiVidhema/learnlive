@@ -1,5 +1,6 @@
 import React from "react";
 import { Facebook, Linkedin, Instagram } from "lucide-react";
+import LazyImage from "./common/LazyImage";
 
 let currentYear = new Date().getFullYear();
 const Footer = () => {
@@ -9,7 +10,7 @@ const Footer = () => {
  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
   {/* About Section (Full width) */}
   <div className="col-span-1 sm:col-span-2 md:col-span-1">
-    <img
+    <LazyImage
       src="../transperant-logo.png"
       alt="ithemes"
       className="w-40 mb-4 filter brightness-0 invert"

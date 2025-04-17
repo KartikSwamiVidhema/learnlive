@@ -8,6 +8,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import LazyImage from "./common/LazyImage";
 
 const SkeletonCard = () => (
   <Card className="shadow-md">
@@ -20,24 +21,26 @@ const SkeletonCard = () => (
   </Card>
 );
 
-const BestSellingProducts = () => {
+const BestSellingProducts = ({products}) => {
+  
   const [data, setData] = useState(null);
   const { addToCart } = useCart();
   const router = useRouter();
-  const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+  // const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(`${apiBaseUrl}/product`);
-        setData(response.data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await axios.get(`${apiBaseUrl}/product`);
+  //       setData(response.data);
+  //     } catch (error) {
+  //       console.error("Error fetching data:", error);
+  //     }
+  //   };
 
-    fetchData();
-  }, []);
+  //   fetchData();
+  // }, []);
+  
 
   const handleNavigate = (slug) => {
     router.push(`productdetail/${slug}`);
@@ -53,10 +56,10 @@ const BestSellingProducts = () => {
       </p>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-5">
-        {data
-          ? data?.data?.slice(4, 8).map((product) => (
+        {products
+          ? products?.map((product) => (
               <Card key={product.id} className="shadow-md">
-                <img
+                <LazyImage
                   src={product.coverImage}
                   alt={product.name}
                   className="w-full aspect-[4/3] mt-4 object-contain rounded-t-lg bg-white"

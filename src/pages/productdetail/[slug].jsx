@@ -37,6 +37,7 @@ import RelatedProducts from "@/components/RelatedProducts";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Head from "next/head";
+import LazyImage from "@/components/common/LazyImage";
 
 
 const stripePromise = loadStripe(
@@ -92,7 +93,7 @@ const ImageSlideshow = ({ images,coverImage }) => {
     {isLoading ? (
       <div className="animate-pulse bg-gray-300 w-full h-48 rounded-t-lg"></div>
     ) : (
-      <img
+      <LazyImage
         src={displayImages[currentIndex]}
         alt={`Slide ${currentIndex + 1}`}
         className="w-full h-49 object-contain rounded-t-lg"

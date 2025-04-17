@@ -2,6 +2,7 @@
 import { CheckCircle, Truck, ShoppingCart } from "lucide-react";
 import MetaTags from "@/components/metaTags";
 import metadata from "../components/common/metadata.json"
+import LazyImage from "@/components/common/LazyImage";
 
 export default function ThankYou() {
   const seo = metadata.thankyou;
@@ -34,7 +35,7 @@ export default function ThankYou() {
 
             {/* Product Details */}
             <div className="flex items-center space-x-4 bg-gray-50 p-4 rounded-lg shadow-sm">
-              <img 
+              <LazyImage 
                 src="https://tse4.mm.bing.net/th?id=OIP.Ba3f2ZiJZYt89BvdvMh50wHaEK&pid=Api&P=0&h=180" 
                 alt="Product Image" 
                 className="w-20 h-20 object-cover rounded-lg shadow-md" 

@@ -9,6 +9,7 @@ import { useCart } from "../../context/CartContext";
 import { Trash2 } from "lucide-react";
 import StripePayment from "@/components/StripePayment";
 import { useRouter } from "next/router";
+import LazyImage from "@/components/common/LazyImage";
 
 const CheckoutForm = () => {
   const [showStripe, setShowStripe] = useState(false);
@@ -140,7 +141,7 @@ const CheckoutForm = () => {
                   {cartItems.map((item) => (
                     <tr key={item._id} className="border-t">
                       <td className="p-3">
-                        <img
+                        <LazyImage
                           src={item.coverImage}
                           alt={item.name}
                           className="w-16 h-16 rounded-md object-cover"

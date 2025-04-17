@@ -2,6 +2,8 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import LazyImage from "@/components/common/LazyImage";
+
 export default function ProductDemo() {
 
   return (
@@ -12,7 +14,7 @@ export default function ProductDemo() {
       {/ Content Section /}
       <div className="text-center mb-8">
         <h1 className="text-3xl font-bold text-gray-800">Doc App Clone</h1>
-        <img
+        <LazyImage
           className="mx-auto mt-4 w-24 h-24 object-contain"
           src=""
           alt="Scanner"
@@ -36,7 +38,7 @@ export default function ProductDemo() {
 
       {/ iPhone Frame Section /}
       <div className="relative w-[375px] h-[750px] ms-auto">
-        <img
+        <LazyImage
           className="absolute w-full"
           src="https://ithemes.xyz/wp-content/uploads/2024/01/Untitled-design-9.png"
           alt="Mobile Image"

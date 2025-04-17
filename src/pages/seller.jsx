@@ -11,6 +11,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { BadgeCheck, Search, Tag } from 'lucide-react';
 import StarRating from '../components/StarRating';
 import { fetchSellerById, fetchProductsForSeller } from '../config/api';
+import LazyImage from '@/components/common/LazyImage';
 
 const SellerBanner = ({ seller }) => (
   <div className="relative h-64 bg-cover bg-center" style={{ backgroundImage: `url(${seller.bannerImage})` }}>
@@ -18,7 +19,7 @@ const SellerBanner = ({ seller }) => (
     <div className="container mx-auto px-4 h-full flex items-end pb-8">
       <div className="flex items-end space-x-6">
         <div>
-        <img src={seller.avatar} alt={seller.name} className="w-24 h-24 rounded-full border-4 border-[#000]" />
+        <LazyImage src={seller.avatar} alt={seller.name} className="w-24 h-24 rounded-full border-4 border-[#000]" />
         {/* <span className="text-lg font-bold">
     {seller.name.charAt(0)} - {seller.name.charAt(seller.name.length - 1)}
   </span> */}
@@ -69,7 +70,7 @@ const SearchAndMenu = ({ categories, onSearch, onCategoryClick, activeCategory }
 const ProductCard = ({ product }) => (
   <Card>
     <CardHeader>
-      <img src={product.image} alt={product.title} className="w-full h-24 object-cover rounded-t-lg" />
+      <LazyImage src={product.image} alt={product.title} className="w-full h-24 object-cover rounded-t-lg" />
     </CardHeader>
     <CardContent>
       <CardTitle className="mb-2">{product.title}</CardTitle>

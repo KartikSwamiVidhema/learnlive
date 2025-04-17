@@ -7,6 +7,8 @@ import { useRouter } from "next/router";
 import axios from "axios";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useRef } from "react";
+import LazyImage from "./common/LazyImage";
+
 const Header = () => {
   const [searchValue, setSearchValue] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -156,7 +158,7 @@ const Header = () => {
         {/* Left Section (Logo + Search Bar) */}
         <div className="flex items-center space-x-4">
           <Link href="/" className="text-2xl font-bold">
-            <img
+            <LazyImage
               className="max-w-40 h-[45px] object-contain"
               src="https://res.cloudinary.com/drsh5gjtv/image/upload/v1741677507/logo_vae3xb.png"
               alt="logo"
