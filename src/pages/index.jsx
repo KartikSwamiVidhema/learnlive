@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import Header from "../components/Header";
+// import Header from "../components/Header";
 import Footer from "../components/Footer";
 import {
   Card,
@@ -13,26 +13,26 @@ import {
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Star, StarHalf } from "lucide-react";
-import { fetchProducts } from "../config/api";
+// import { fetchProducts } from "../config/api";
 import axios from "axios";
 import HomeBanner from "@/components/HomeBanner";
-import {
-  Book,
-  GraduationCap,
-  FileText,
-  Laptop,
-  Key,
-  Wrench,
-  Globe,
-  Monitor,
-  ShoppingCart,
-  DollarSign,
-  Megaphone,
-  PenTool,
-  Folder,
-  Smartphone,
-  Cloud,
-} from "lucide-react";
+// import {
+//   Book,
+//   GraduationCap,
+//   FileText,
+//   Laptop,
+//   Key,
+//   Wrench,
+//   Globe,
+//   Monitor,
+//   ShoppingCart,
+//   DollarSign,
+//   Megaphone,
+//   PenTool,
+//   Folder,
+//   Smartphone,
+//   Cloud,
+// } from "lucide-react";
 import BestSellingProducts from "@/components/BestSellingProducts";
 import BestSellingThemes from "@/components/BestSellingTheme";
 import ThemeMarketplace from "@/components/ThemeMarketPlace";
@@ -45,24 +45,24 @@ import MetaTags from "@/components/metaTags";
 import metadata from "../components/common/metadata.json"
 import LazyImage from "@/components/common/LazyImage";
 
-const StarRating = ({ rating }) => {
-  const fullStars = Math.floor(rating);
-  const hasHalfStar = rating % 1 !== 0;
+// const StarRating = ({ rating }) => {
+//   const fullStars = Math.floor(rating);
+//   const hasHalfStar = rating % 1 !== 0;
 
-  return (
-    <div className="flex items-center">
-      {/* {[...Array(fullStars)].map((_, i) => (
-        <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-      ))}
-      {hasHalfStar && (
-        <StarHalf className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-      )}
-      {[...Array(5 - Math.ceil(rating))].map((_, i) => (
-        <Star key={i + fullStars} className="w-4 h-4 text-gray-300" />
-      ))} */}
-    </div>
-  );
-};
+//   return (
+//     <div className="flex items-center">
+//       {[...Array(fullStars)].map((_, i) => (
+//         <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+//       ))}
+//       {hasHalfStar && (
+//         <StarHalf className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+//       )}
+//       {[...Array(5 - Math.ceil(rating))].map((_, i) => (
+//         <Star key={i + fullStars} className="w-4 h-4 text-gray-300" />
+//       ))}
+//     </div>
+//   );
+// };
 
 const ProductCard = ({ product }) => {
   const router = useRouter();
@@ -133,9 +133,6 @@ const ProductCard = ({ product }) => {
           </Button>
         </Link>
       </CardContent>
-      
-      
-    
     </Card>
   );
 };
@@ -255,45 +252,27 @@ const Index = ({ initialProducts, initialTab, categoriesData }) => {
      
       <HomeBanner />
       <ThemeMarketplace />
-
-      {/* Display the categories dynamically */}
-      {/* <CategoryList
-        categories={categories}
-        onCategoryClick={handleCategoryClick}
-      /> */}
       <main className="flex-grow">
         <section className="py-12">
           <div className="container mx-auto px-4">
             <h2 className="text-3xl font-bold md:text-left text-center">Featured Products </h2>
             <Tabs defaultValue={initialTab} className="mt-5">
               <TabsList>
-                {/* Map over categories and display each category */}
                 {
                   categories?.data && Array.isArray(categories.data) && categories.data.length > 0 ? (
                     categories.data.map((category) => (
                       <TabsTrigger
-                        key={category._id}  // Use unique ID for the key
-                        value={category.slug} // Use category slug as the value
+                        key={category._id}  
+                        value={category.slug}
                         onClick={() => handleCategoryClick(category.slug)}
                       >
-                        {category.name} {/* Display category name */}
+                        {category.name} 
                       </TabsTrigger>
                     ))
                   ) : (
-                    <p>No categories available</p> // Fallback message or loading state
+                    <p>No categories available</p> 
                   )
                 }
-
-                {/* {categories.data.map((category) => (
-                  <TabsTrigger
-                    key={category._id} 
-                    value={category.slug} 
-                    onClick={() => handleCategoryClick(category.slug)}
-                  >
-                    {category.name} 
-                  </TabsTrigger>
-                ))} */}
-
               </TabsList>
 
               <TabsContent value={activeTab}>
@@ -303,7 +282,6 @@ const Index = ({ initialProducts, initialTab, categoriesData }) => {
                       <ProductCard key={product.id} product={product} />
                     ))
                   ) : (
-                    // Show skeletons while loading
                     [...Array(4)].map((_, index) => <ProductCard key={index} product={null} />)
                   )}
                 </div>
@@ -312,7 +290,7 @@ const Index = ({ initialProducts, initialTab, categoriesData }) => {
 
           </div>
         </section>
-        <BestSellingProducts products={products} />
+        <BestSellingProducts  />
 
         <PopularCategories
           categories={Array.isArray(categories.data) ? categories.data.filter((cat) => cat.isFeatured) : []} // Safe filter
