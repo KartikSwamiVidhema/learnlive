@@ -13,7 +13,7 @@ import metadata from "../components/common/metadata.json"
 import OrderContent from "../components/common/OrderContent";
 import DownloadReport from "../components/common/DownloadReport";
 import ProfileForm from "../components/common/ProfileForm";
-
+import ProductContent from "../components/common/ProductContent";
 import "react-toastify/dist/ReactToastify.css";
 import {
   Table,

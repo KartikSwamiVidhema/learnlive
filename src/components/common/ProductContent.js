@@ -1,4 +1,27 @@
-
+import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { useRouter } from "next/router";
+import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import "react-toastify/dist/ReactToastify.css";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import axios from "axios";
 
 const ProductContent = ({ categorydata }) => {
     const router = useRouter();
@@ -860,3 +883,5 @@ const ProductContent = ({ categorydata }) => {
       </div>
     );
   };
+
+  export default ProductContent;

@@ -1,4 +1,18 @@
 
+import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import "react-toastify/dist/ReactToastify.css";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import axios from "axios";
+
 const ViewOrderDetails = ({ order, onClose }) => {
 
     return (
@@ -234,4 +248,4 @@ const OrderContent = () => {
       </div>
     );
   };
-  
+  export default OrderContent;

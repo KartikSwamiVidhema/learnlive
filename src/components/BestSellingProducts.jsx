@@ -21,25 +21,25 @@ const SkeletonCard = () => (
   </Card>
 );
 
-const BestSellingProducts = ({products}) => {
+const BestSellingProducts = () => {
   
   const [data, setData] = useState(null);
   const { addToCart } = useCart();
   const router = useRouter();
-  // const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+  const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await axios.get(`${apiBaseUrl}/product`);
-  //       setData(response.data);
-  //     } catch (error) {
-  //       console.error("Error fetching data:", error);
-  //     }
-  //   };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`${apiBaseUrl}/product`);
+        setData(response.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
 
-  //   fetchData();
-  // }, []);
+    fetchData();
+  }, []);
   
 
   const handleNavigate = (slug) => {
@@ -56,8 +56,8 @@ const BestSellingProducts = ({products}) => {
       </p>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-5">
-        {products
-          ? products?.map((product) => (
+        {data
+          ? data?.data.slice(4,8).map((product) => (
               <Card key={product.id} className="shadow-md">
                 <LazyImage
                   src={product.coverImage}
