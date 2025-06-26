@@ -26,7 +26,7 @@ const FeaturedProducts = () => {
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     setTimeout(() => { // Simulate API delay
-      setFeaturedProducts(productsData.slice(0, 4)); // Display first 4 products
+      setFeaturedProducts(productsData); // Display first 4 products
       setLoading(false);
     }, 1000);
   }, []);

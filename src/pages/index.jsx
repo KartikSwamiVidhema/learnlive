@@ -257,7 +257,7 @@ const Index = ({ initialProducts, initialTab, categoriesData }) => {
           <div className="container mx-auto px-4">
             <h2 className="text-3xl font-bold md:text-left text-center">Featured Products </h2>
             <Tabs defaultValue={initialTab} className="mt-5">
-              <TabsList>
+              {/* <TabsList>
                 {
                   categories?.data && Array.isArray(categories.data) && categories.data.length > 0 ? (
                     categories.data.map((category) => (
@@ -273,12 +273,12 @@ const Index = ({ initialProducts, initialTab, categoriesData }) => {
                     <p>No categories available</p> 
                   )
                 }
-              </TabsList>
+              </TabsList> */}
 
               <TabsContent value={activeTab}>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 mt-4">
                   {filteredProducts.length > 0 ? (
-                    filteredProducts.slice(0, 4).map((product) => (
+                    filteredProducts.map((product) => (
                       <ProductCard key={product.id} product={product} />
                     ))
                   ) : (
@@ -307,7 +307,7 @@ const Index = ({ initialProducts, initialTab, categoriesData }) => {
 export async function getServerSideProps() {
   const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   try {
-    const initialTab = "ionic-3";
+    const initialTab = "ionic-7";
     const response = await axios.get(
       `${apiBaseUrl}/getProductByCategorySlug/${initialTab}`
     );

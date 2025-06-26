@@ -31,7 +31,7 @@ const BestSellingProducts = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${apiBaseUrl}/product`);
+        const response = await axios.get(`${apiBaseUrl}/getProductByCategorySlug/ionic-6`);
         setData(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -57,7 +57,7 @@ const BestSellingProducts = () => {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-5">
         {data
-          ? data?.data.slice(4,8).map((product) => (
+          ? data.map((product) => (
               <Card key={product.id} className="shadow-md">
                 <LazyImage
                   src={product.coverImage}
