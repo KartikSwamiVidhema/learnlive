@@ -109,16 +109,17 @@ const HomeBanner = () => {
 
   return (
     <section
-      className="relative py-10 text-primary px-6 md:px-12 flex justify-center items-center"
+      className="relative py-10 text-primary px-6 md:px-12 flex justify-center items-center h-[450px]"
       style={{
         backgroundImage: `url(${bannerImage})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
     >
-      <div className="absolute inset-0 bg-blue-900/30"></div>
+      <div className="absolute inset-0 bg-blue-900/30 ">
+      </div>
       <div className="relative z-10 container mx-auto flex flex-col items-center text-center space-y-8 md:px-0 px-0">
-        <div className="max-w-2xl">
+        {/* <div className="max-w-2xl">
           <h1 className="text-[30px] text-white md:text-4xl font-bold leading-tight transition-opacity duration-500">
             {currentHeadline}
           </h1>
@@ -126,9 +127,9 @@ const HomeBanner = () => {
           style={{ color: titleColor }}>
             Discover and compare the best AI and IT service providers worldwide
           </p>
-        </div>
+        </div> */}
         {/* <div className="relative z-10 container mx-auto flex flex-col items-center text-center space-y-8"> */}
-        <Card className="md:w-[700px] bg-white/10 shadow-lg backdrop-blur-lg w-full">
+        {/* <Card className="md:w-[700px] bg-white/10 shadow-lg backdrop-blur-lg w-full">
           <CardContent className="md:p-6 space-y-4 p-3">
             <div className="flex flex-col md:flex-row items-end space-y-4 md:space-y-0 md:space-x-4">
               <div className="w-full md:w-[90%] relative">
@@ -185,7 +186,7 @@ const HomeBanner = () => {
               </Button>
             </div>
           </CardContent>
-        </Card>
+        </Card> */}
       </div>
     </section>
   );
