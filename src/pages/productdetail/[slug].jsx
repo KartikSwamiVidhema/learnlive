@@ -52,16 +52,23 @@ const createCheckoutSession = async (productId) => {
   };
 };
 
-const ImageSlideshow = ({ images,coverImage }) => {
+const ImageSlideshow = ({ images, coverImage }) => {
   // Flattening the array
   const flattenedImages = images.flat();
   const [isLoading, setIsLoading] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
-  console.log(coverImage,"coverimage");
+  console.log(coverImage, "coverimage");
+
+  console.log("Images Array: ", images);
+  const displayImages = (images && images.length > 0) ? images : (coverImage ? [coverImage] : []);
+
+  if (displayImages.length === 0) {
+    return <p>No images available</p>;
+  }
 
   const hasImages = flattenedImages.length > 0;
-  const displayImages = hasImages ? flattenedImages : [coverImage];
-  
+
+
 
   if (!Array.isArray(displayImages) || displayImages.length === 0) {
     return <p>No images available</p>;
@@ -90,35 +97,35 @@ const ImageSlideshow = ({ images,coverImage }) => {
 
   return (
     <div className="relative w-full">
-    {isLoading ? (
-      <div className="animate-pulse bg-gray-300 w-full h-48 rounded-t-lg"></div>
-    ) : (
-      <LazyImage
-        src={displayImages[currentIndex]}
-        alt={`Slide ${currentIndex + 1}`}
-        className="w-full h-49 object-contain rounded-t-lg"
-      />
-    )}
+      {isLoading ? (
+        <div className="animate-pulse bg-gray-300 w-full h-48 rounded-t-lg"></div>
+      ) : (
+        <LazyImage
+          src={displayImages[currentIndex]}
+          alt={`Slide ${currentIndex + 1}`}
+          className="w-full h-49 object-contain rounded-t-lg"
+        />
+      )}
 
-    {hasImages && (
-      <>
-        <Button
-          variant="outline"
-          className="absolute top-1/2 left-2 transform -translate-y-1/2"
-          onClick={goToPrevious}
-        >
-          <ChevronLeft className="h-6 w-6" />
-        </Button>
-        <Button
-          variant="outline"
-          className="absolute top-1/2 right-2 transform -translate-y-1/2"
-          onClick={goToNext}
-        >
-          <ChevronRight className="h-6 w-6" />
-        </Button>
-      </>
-    )}
-  </div>
+      {hasImages && (
+        <>
+          <Button
+            variant="outline"
+            className="absolute top-1/2 left-2 transform -translate-y-1/2"
+            onClick={goToPrevious}
+          >
+            <ChevronLeft className="h-6 w-6" />
+          </Button>
+          <Button
+            variant="outline"
+            className="absolute top-1/2 right-2 transform -translate-y-1/2"
+            onClick={goToNext}
+          >
+            <ChevronRight className="h-6 w-6" />
+          </Button>
+        </>
+      )}
+    </div>
   );
 };
 
@@ -157,9 +164,9 @@ const ProductTabs = ({ product }) => {
     <Tabs defaultValue="description">
       <TabsList>
         <TabsTrigger value="description">Description</TabsTrigger>
-     
+
         <TabsTrigger value="reviews">Reviews</TabsTrigger>
-  
+
       </TabsList>
 
       {/* Description Tab */}
@@ -203,9 +210,7 @@ const PurchaseInfo = ({ product, seller, onBuyNow }) => {
 
     if (product.webUrl.includes(".app")) {
       window.open(`/demo?id=${product._id}`, "_blank");
-    } else if (product.webUrl.includes(".xyz") || product.webUrl.includes(".firebaseapp.com"))
-
-       {
+    } else if (product.webUrl.includes(".xyz") || product.webUrl.includes(".firebaseapp.com")) {
       window.open(`/webiframe?url=${product._id}`, "_blank");
     } else {
       console.error("Unknown URL type");
@@ -263,7 +268,7 @@ const PurchaseInfo = ({ product, seller, onBuyNow }) => {
                 <BadgeCheck className="w-4 h-4 text-blue-500 ml-1" />
               )}
             </Link> */}
-        
+
             </div>
           </div>
         </div>
@@ -285,66 +290,66 @@ const ProductDetail = ({ productData }) => {
   }
 
   const product = productData.data[0];
-  
-  
+
+
 
   const handleBuyNow = () => {
     setIsDialogOpen(true);
   };
 
   return (
-    <>  
-   <Head>
-  <title>{product.meta_title || product.name}</title>
-  <meta
-    name="description"
-    content={product.meta_description?.replace(/<\/?[^>]+(>|$)/g, "") || "Default description"}
-  />
-  <meta name="keywords" content={product.meta_keywords || "default, keywords"} />
-  <link rel="canonical" href={`https://ithemes-dev.netlify.app/productdetail/${product.slug}`} />
-</Head>
+    <>
+      <Head>
+        <title>{product.meta_title || product.name}</title>
+        <meta
+          name="description"
+          content={product.meta_description?.replace(/<\/?[^>]+(>|$)/g, "") || "Default description"}
+        />
+        <meta name="keywords" content={product.meta_keywords || "default, keywords"} />
+        <link rel="canonical" href={`https://ithemes-dev.netlify.app/productdetail/${product.slug}`} />
+      </Head>
 
-    <div className="min-h-screen flex flex-col">
-     
-      <main className="flex-grow bg-gray-100 py-8">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="md:col-span-2">
-              <Card>
-                <CardContent>
-                  <ImageSlideshow images={[product.images]} coverImage={product.coverImage}/>{" "}
-                  {/* Adjusted to array */}
-                  <ProductInfo product={product} />
-                  <ProductTabs product={product} />
-                </CardContent>
-              </Card>
-            </div>
-            <div className="md:col-span-1">
-              <PurchaseInfo product={product} onBuyNow={handleBuyNow} />
+      <div className="min-h-screen flex flex-col">
+
+        <main className="flex-grow bg-gray-100 py-8">
+          <div className="container mx-auto px-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div className="md:col-span-2">
+                <Card>
+                  <CardContent>
+                    <ImageSlideshow images={[product.images]} coverImage={product.coverImage} />{" "}
+                    {/* Adjusted to array */}
+                    <ProductInfo product={product} />
+                    <ProductTabs product={product} />
+                  </CardContent>
+                </Card>
+              </div>
+              <div className="md:col-span-1">
+                <PurchaseInfo product={product} onBuyNow={handleBuyNow} />
+              </div>
             </div>
           </div>
-        </div>
-      </main>
-      <Description slug={slug} product={product} />
-      <RelatedProducts product={product} />
-      <Footer />
-      <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Complete your purchase</AlertDialogTitle>
-            <AlertDialogDescription>
-              <p>Enter your payment details below to complete your purchase.</p>
-              <Elements stripe={stripePromise}>
-                <CheckoutForm productId={product._id} />
-              </Elements>
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
-    </div>
+        </main>
+        <Description slug={slug} product={product} />
+        <RelatedProducts product={product} />
+        <Footer />
+        <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Complete your purchase</AlertDialogTitle>
+              <AlertDialogDescription>
+                <p>Enter your payment details below to complete your purchase.</p>
+                <Elements stripe={stripePromise}>
+                  <CheckoutForm productId={product._id} />
+                </Elements>
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      </div>
     </>
 
   );

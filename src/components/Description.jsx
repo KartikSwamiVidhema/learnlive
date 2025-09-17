@@ -5,6 +5,9 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Star } from "lucide-react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useRouter } from "next/router";
+import LazyImage from "@/components/common/LazyImage";
+import Link from "next/link";
 
 const Description = ({ product }) => {
   const reviewRef = useRef(null);
@@ -18,6 +21,22 @@ const Description = ({ product }) => {
   const scrollToReview = () => {
     reviewRef.current?.scrollIntoView({ behavior: "smooth" });
   };
+
+  const router = useRouter();
+  useEffect(() => {
+    // Only scroll if query param scrollTo=features is present
+    if (router.query.scrollTo === "features") {
+      const el = document.getElementById("features");
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  }, [router.query.scrollTo]);
+
+
+
+
+
 
   useEffect(() => {
     const userData = localStorage.getItem("userdata");
@@ -75,7 +94,7 @@ const Description = ({ product }) => {
   return (
     <div className="container mx-auto px-4 py-8">
       <Card >
-        <CardContent>
+        <CardContent id="features">
           <h1 className="text-2xl font-bold">Product Features</h1>
           <p className="text-gray-600 mt-2">
             A powerful release with exciting new features
@@ -106,49 +125,49 @@ const Description = ({ product }) => {
       </Card>
 
       {product.reviews && product.reviews.length > 0 && (
-  <div className="flex flex-col space-y-4 p-4 border border-gray-200 rounded-lg shadow-sm mt-9">
-    <h2 className="text-lg font-semibold">Customer Reviews</h2>
-    {product.reviews.map((item, index) => (
-      <div
-        key={index}
-        className="p-4 border border-gray-200 rounded-lg shadow-sm"
-      >
-        <div className="flex items-start space-x-4">
-          {/* User Avatar (Placeholder) */}
-          <div className="w-12 h-12 bg-purple-200 text-white rounded flex items-center justify-center text-lg font-semibold">
-            {item.name.charAt(0).toUpperCase()}
-          </div>
+        <div className="flex flex-col space-y-4 p-4 border border-gray-200 rounded-lg shadow-sm mt-9">
+          <h2 className="text-lg font-semibold">Customer Reviews</h2>
+          {product.reviews.map((item, index) => (
+            <div
+              key={index}
+              className="p-4 border border-gray-200 rounded-lg shadow-sm"
+            >
+              <div className="flex items-start space-x-4">
+                {/* User Avatar (Placeholder) */}
+                <div className="w-12 h-12 bg-purple-200 text-white rounded flex items-center justify-center text-lg font-semibold">
+                  {item.name.charAt(0).toUpperCase()}
+                </div>
 
-          <div className="w-full">
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="font-semibold text-gray-800">{item.name}</h3>
-                <p className="text-sm text-gray-500">
-                  {formatDate(item.createdAt)}
-                </p>
-              </div>
+                <div className="w-full">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h3 className="font-semibold text-gray-800">{item.name}</h3>
+                      <p className="text-sm text-gray-500">
+                        {formatDate(item.createdAt)}
+                      </p>
+                    </div>
 
-              {/* Star Rating */}
-              <div className="flex space-x-1 text-yellow-500">
-                {[...Array(item.rating)].map((_, i) => (
-                  <Star
-                    key={i}
-                    size={16}
-                    fill="currentColor"
-                    stroke="none"
-                  />
-                ))}
+                    {/* Star Rating */}
+                    <div className="flex space-x-1 text-yellow-500">
+                      {[...Array(item.rating)].map((_, i) => (
+                        <Star
+                          key={i}
+                          size={16}
+                          fill="currentColor"
+                          stroke="none"
+                        />
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Review Text */}
+                  <p className="mt-2 text-gray-700">{item.message}</p>
+                </div>
               </div>
             </div>
-
-            {/* Review Text */}
-            <p className="mt-2 text-gray-700">{item.message}</p>
-          </div>
+          ))}
         </div>
-      </div>
-    ))}
-  </div>
-)}
+      )}
 
 
       <div ref={reviewRef} className="mt-12 p-3 border rounded-lg bg-gray-50">
@@ -166,9 +185,8 @@ const Description = ({ product }) => {
           {[...Array(5)].map((_, index) => (
             <Star
               key={index}
-              className={`cursor-pointer ${
-                index < rating ? "text-yellow-500" : "text-gray-400"
-              }`}
+              className={`cursor-pointer ${index < rating ? "text-yellow-500" : "text-gray-400"
+                }`}
               onClick={() => setRating(index + 1)}
             />
           ))}
