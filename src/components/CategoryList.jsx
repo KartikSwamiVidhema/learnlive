@@ -12,7 +12,7 @@ const CategoryList = () => {
         <ul className="flex space-x-2 overflow-x-auto">
           {categories.map((category, index) => (
             <li key={index}>
-              <Button  variant={index === 0 ? "default" : "outline"} size="sm">
+              <Button variant={index === 0 ? "default" : "outline"} size="sm">
                 {category}
               </Button>
             </li>

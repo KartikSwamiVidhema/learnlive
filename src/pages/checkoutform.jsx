@@ -32,7 +32,7 @@ const CheckoutForm = () => {
       setIsLoggedIn(false);
     }
   }, []);
-
+  const defaultImage = "https://tse1.mm.bing.net/th/id/OIP.mtFzdGV6x4bKHCxjmS7yrQHaF4?pid=Api&P=0&h=180";
   // Redirect to login if not logged in
   useEffect(() => {
     if (!isLoggedIn) {
@@ -121,7 +121,7 @@ const CheckoutForm = () => {
 
   return (
     <>
-      <div className="container mx-auto px-4 ">
+      <div className=" mx-auto px-4 ">
         <div className="py-10 flex flex-col gap-y-7">
           <div className="md:col-span-2 space-y-6">
             <h2 className="text-2xl font-bold">Checkout</h2>
@@ -142,7 +142,7 @@ const CheckoutForm = () => {
                     <tr key={item._id} className="border-t">
                       <td className="p-3">
                         <LazyImage
-                          src={item.coverImage}
+                          src={item.coverImage || defaultImage}
                           alt={item.name}
                           className="w-16 h-16 rounded-md object-cover"
                         />

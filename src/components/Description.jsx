@@ -9,8 +9,8 @@ import { useRouter } from "next/router";
 import LazyImage from "@/components/common/LazyImage";
 import Link from "next/link";
 
-const Description = ({ product }) => {
-  const reviewRef = useRef(null);
+const Description = ({ product, reviewRef }) => {
+
   const [rating, setRating] = useState(0);
   const [review, setReview] = useState("");
   const [name, setName] = useState("");
@@ -27,6 +27,15 @@ const Description = ({ product }) => {
     // Only scroll if query param scrollTo=features is present
     if (router.query.scrollTo === "features") {
       const el = document.getElementById("features");
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  }, [router.query.scrollTo]);
+  useEffect(() => {
+    // Only scroll if query param scrollTo=features is present
+    if (router.query.scrollTo === "description") {
+      const el = document.getElementById("description");
       if (el) {
         el.scrollIntoView({ behavior: "smooth" });
       }
@@ -92,15 +101,30 @@ const Description = ({ product }) => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className=" px-4 py-8 flex flex-col space-y-8">
       <Card >
+        <CardContent id="description">
+          <div className="mt-6">
+            <h1 className="text-2xl font-bold">Product Description </h1>
+            <div
+              className="text-gray-600"
+              dangerouslySetInnerHTML={{ __html: product.description }}
+            />
+          </div>
+
+
+
+        </CardContent>
+      </Card>
+      <Card >
+
         <CardContent id="features">
           <h1 className="text-2xl font-bold">Product Features</h1>
           <p className="text-gray-600 mt-2">
             A powerful release with exciting new features
           </p>
 
-          <div className="mt-6">
+          <div className="mt-6 mb-6">
             <h2 className="text-lg font-semibold">Awesome Layout</h2>
             <ul className="list-disc pl-6 text-gray-700 ps-4">
               <li>100+ layout modes</li>
@@ -110,17 +134,8 @@ const Description = ({ product }) => {
             </ul>
           </div>
 
-          <div className="mt-6">
-            <h2 className="text-lg font-semibold">Product Description</h2>
-            <div
-              className="text-gray-600"
-              dangerouslySetInnerHTML={{ __html: product.shortDescription }}
-            />
-          </div>
 
-          <Button className="mt-6" onClick={scrollToReview}>
-            Write a Review
-          </Button>
+
         </CardContent>
       </Card>
 

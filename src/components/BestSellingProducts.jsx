@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Star, ArrowRight } from "lucide-react";
 import axios from "axios";
@@ -9,6 +9,11 @@ import { useRouter } from "next/router";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import LazyImage from "./common/LazyImage";
+import ProductCard from "./ProductCard";
+import Popup from "@/components/Popup";
+import MetaTags from "@/components/metaTags";
+
+
 
 const SkeletonCard = () => (
   <Card className="shadow-md">
@@ -20,13 +25,70 @@ const SkeletonCard = () => (
     </CardContent>
   </Card>
 );
+const handleArrowClick = () => {
+  if (product?.slug) {
+    // Just redirect to product page without any scroll indication
+    router.push(`/productdetail/${product.slug}`);
+  }
+};
+const handleFeaturesClick = () => {
+  if (product?.slug) {
+    // Pass a query param to indicate scrolling is desired
+    router.push({
+      pathname: `/productdetail/${product.slug}`,
+      query: { scrollTo: 'features' },
+    });
+  }
+};
+const handleSubmit = async (e) => {
+  window.location.href = "/";
 
+  e.preventDefault();
+
+  // Example POST request to your backend API to save the form data
+  try {
+    const response = await fetch('/api/demo-request', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(formData)
+    });
+
+    if (response.ok) {
+      alert('Demo request submitted successfully!');
+      router.push('/'); // Redirect or show success message
+    } else {
+      alert('Failed to submit demo request.');
+    }
+  } catch (error) {
+    console.error('Error submitting form:', error);
+    alert('An error occurred. Try again later.');
+  }
+};
+const handleNavigate = () => {
+  if (product?.slug) {
+    router.push(`productdetail/${product.slug}`);
+  }
+};
+
+const handleChange = (e) => {
+  setFormData({ ...formData, [e.target.name]: e.target.value });
+};
 const BestSellingProducts = () => {
-  
+  const [isOpen, setIsOpen] = useState(false);
   const [data, setData] = useState(null);
   const { addToCart } = useCart();
   const router = useRouter();
   const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+  const [formData, setFormData] = useState({
+    phone: '',
+    name: '',
+    email: '',
+    businessType: '',
+    budget: '',
+
+  });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -40,87 +102,46 @@ const BestSellingProducts = () => {
 
     fetchData();
   }, []);
-  
+
 
   const handleNavigate = (slug) => {
     router.push(`productdetail/${slug}`);
   };
+  const handleFeaturesClick = () => {
+    if (product?.slug) {
+      // Pass a query param to indicate scrolling is desired
+      router.push({
+        pathname: `/productdetail/${product.slug}`,
+        query: { scrollTo: 'features' },
+      });
+    }
+  };
 
   return (
-    <div className="container mx-auto px-4">
-      <h2 className="text-3xl font-bold md:text-left text-center">
+    <section className="py-12 ">
+
+
+      <h2 className="text-3xl font-bold mb-5  md:text-center mt-10">
         Best Selling Products
       </h2>
-      <p className="text-gray-600 mb-6 mt-2 md:text-left text-center">
+      <p className="text-gray-600 mb-6 mt-2 md:text-center text-center">
         Top picks for you: Best-selling products that speak for themselves.
       </p>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-5">
+
+      <div className="mx-auto px-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-6 ">
+
         {data
           ? data.map((product) => (
-              <Card key={product.id} className="shadow-md">
-                <LazyImage
-                  src={product.coverImage}
-                  alt={product.name}
-                  className="w-full aspect-[4/3] mt-4 object-contain rounded-t-lg bg-white"
-                  onClick={() => handleNavigate(product.slug)}
-                />
-                <CardContent className="p-4">
-                  <h3
-                    className="text-base font-semibold flex items-center cursor-pointer group"
-                    onClick={() => handleNavigate(product.slug)}
-                  >
-                    {product.name.length > 25
-                      ? `${product.name.slice(0, 25)}...`
-                      : product.name}
-                    <ArrowRight className="ml-2 size-4 transition-transform duration-200 translate-x-0 opacity-0 group-hover:translate-x-1 group-hover:opacity-100" />
-                  </h3>
 
-                  <div className="flex items-center gap-1">
-                    {Array.from({ length: 5 }, (_, index) => (
-                      <Star
-                        key={index}
-                        size={16}
-                        fill={
-                          index < (product.rating || 0)
-                            ? "currentColor"
-                            : "none"
-                        }
-                        stroke="currentColor"
-                        className={
-                          index < (product.rating || 0)
-                            ? "text-yellow-500"
-                            : "text-gray-300"
-                        }
-                      />
-                    ))}
 
-                    <span className="text-sm text-gray-500">
-                      ({product.reviews?.length || 0} Reviews)
-                    </span>
-                  </div>
-                  <div className="mt-2">
-                    <span className="text-black font-bold ml-2">
-                      ${product.salePrice}
-                    </span>
-                  </div>
+            <ProductCard key={product.id} product={product} />
 
-                  <Link href="/checkoutform">
-                    <Button
-                      className="w-full"
-                      onClick={() => addToCart(product)}
-                    >
-                      Buy Now
-                    </Button>
-                  </Link>
-                </CardContent>
-              </Card>
-            ))
-          : Array.from({ length: 4 }).map((_, index) => (
-              <SkeletonCard key={index} />
-            ))}
+          ))
+          : Array.from({ length: 4 }).map((_, i) => <SkeletonCard key={i} />)}
       </div>
-    </div>
+
+    </section>
   );
 };
 

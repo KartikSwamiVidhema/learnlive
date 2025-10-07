@@ -187,22 +187,17 @@
 }
 
 .features-btn {
-  background-color: #f5f5f5;
-  color: #555;
-  border-radius: 15px;
-  border: none;
-  padding: 5px 15px;
-  margin-bottom: 10px;
+
+  color: #00a8fc;
+
   /* spacing between the two buttons */
   cursor: pointer;
-  font-size: 14px;
+  font-size: 16px;
   gap: 10px;
-  margin: 10px
+
 }
 
-.features-btn:hover {
-  background-color: #e0e0e0;
-}
+
 
 .price-text {
   /* Style as needed */
@@ -312,4 +307,218 @@
   display: flex;
   gap: 10px;
   /* space between logos */
+}
+
+/* Hide scrollbar for Webkit browsers */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge, and Firefox */
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+.container {
+  display: flex;
+  align-items: flex-start;
+  /* Align items at the top */
+  gap: 20px;
+  /* space between image and text */
+  padding: 10px;
+  background: #fff;
+
+  /* optional background */
+
+  /* optional rounded corners */
+}
+
+.image-section img {
+  max-width: 300px;
+  /* control image size */
+  width: 100%;
+  border-radius: 8px;
+  /* optional */
+}
+
+.text-section {
+  flex: 1;
+  /* take remaining space */
+}
+
+.breadcrumb-container {
+  font-size: 0.875rem;
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.breadcrumb-link {
+  color: #2563eb;
+  /* Blue 600 */
+  text-decoration: none;
+}
+
+.breadcrumb-link:hover {
+  text-decoration: underline;
+}
+
+.breadcrumb-current {
+  background-color: #2563eb;
+  /* Blue 600 */
+  color: white;
+  padding: 0.15rem 0.5rem;
+  border-radius: 0.25rem;
+  /* Rounded */
+}
+
+.features-box {
+  gap: 10;
+  padding-bottom: 20px;
+  padding-top: 20px;
+  /* example max width, adjust accordingly */
+  width: 100%;
+  margin: auto;
+  width-max: 600px;
+}
+
+.box {
+  width: 300px;
+  /* or any fixed width you want */
+  /* optional to keep layout clean */
+  box-sizing: border-box;
+}
+
+.divider {
+  width: 1px;
+  height: 20px;
+  background-color: #ccc;
+  margin: 0 8px;
+  border-left: 1px solid #ccc;
+
+
+}
+
+.button-container {
+  display: flex;
+  gap: 16px;
+  /* space between buttons */
+  margin-top: 24px;
+  /* some spacing above buttons */
+}
+
+.btn {
+  padding: 12px 0;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+  flex: 1;
+}
+
+.demo-btn {
+  background: transparent;
+  color: #2563EB;
+  /* blue */
+  border: 1px solid #2563EB;
+}
+
+.demo-btn:hover {
+  background-color: #2563EB;
+  color: white;
+}
+
+.buy-btn {
+  background-color: #2563EB;
+  color: white;
+  border: none;
+  flex: 1.5;
+  /* wider than demo button */
+}
+
+.buy-btn:hover {
+  background-color: #1D4ED8;
+  /* darker blue */
+}
+
+hr {
+  margin-top: 4px;
+  /* reduce top margin */
+  margin-bottom: 4px;
+  /* reduce bottom margin */
+  border-top: 1px solid #ccc;
+}
+
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.card {
+  flex: 0 0 320px;
+  /* set the width for each card */
+}
+
+.blur-sm {
+  filter: blur(4px);
+
+}
+
+.bg-black.bg-opacity-40 {
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.features-dv {
+  padding: 2px 10px;
+  border-radius: 50px;
+  background-color: #f0f0f0;
+  float: left;
+  margin-left: 8px;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropbtn {
+
+  color: rgb(14, 14, 14);
+  padding: 10px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  border-radius: 4px;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {
+  background-color: #ddd;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+  /* Basic hover show */
 }

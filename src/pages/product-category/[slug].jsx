@@ -27,6 +27,7 @@ import Footer from "@/components/Footer";
 import { ArrowRight } from "lucide-react";
 import { useCart } from "../../../context/CartContext";
 import LazyImage from "@/components/common/LazyImage";
+import ProductCard from "@/components/ProductCard";
 const StarRating = ({ rating }) => {
   const numericRating = parseFloat(rating) || 0;
   const fullStars = Math.floor(numericRating);
@@ -51,8 +52,8 @@ const StarRating = ({ rating }) => {
 const MarketplaceFilter = ({ categoryData, productData }) => {
   useEffect(() => {
     if (localStorage.getItem("loginSuccess") === "true") {
-      toast.success("Login successful! 🎉"); 
-      localStorage.removeItem("loginSuccess"); 
+      toast.success("Login successful! 🎉");
+      localStorage.removeItem("loginSuccess");
     }
   }, []);
   const Products = productData.data;
@@ -60,7 +61,7 @@ const MarketplaceFilter = ({ categoryData, productData }) => {
   const [products, setProducts] = useState(Products);
   const [filteredProducts, setFilteredProducts] = useState(Products);
   const [searchTerm, setSearchTerm] = useState("");
-  const [loading, setLoading] = useState(false); 
+  const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [selectedFilters, setSelectedFilters] = useState({
     Category: [],
@@ -70,19 +71,27 @@ const MarketplaceFilter = ({ categoryData, productData }) => {
   });
   const [availableTags, setAvailableTags] = useState([]);
   const router = useRouter();
-    const { addToCart } = useCart();
+  const { addToCart } = useCart();
   const { slug } = router.query;
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 12;
+  console.log(products, "productsproductsproductsproducts");
 
   // Calculate total pages
   const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
 
   // Slice the products for the current page
-  const currentProducts = filteredProducts.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
+  const [displayedProducts, setDisplayedProducts] = useState(
+    filteredProducts.slice(0, itemsPerPage)
   );
+
+  const loadMoreProducts = () => {
+    const nextProducts = filteredProducts.slice(
+      displayedProducts.length,
+      displayedProducts.length + itemsPerPage
+    );
+    setDisplayedProducts([...displayedProducts, ...nextProducts]);
+  };
 
   // Handle pagination
   const nextPage = () => {
@@ -95,7 +104,7 @@ const MarketplaceFilter = ({ categoryData, productData }) => {
 
       setTimeout(() => {
         setLoading(false);
-      },1000);
+      }, 1000);
     }
   };
 
@@ -107,7 +116,7 @@ const MarketplaceFilter = ({ categoryData, productData }) => {
 
       setTimeout(() => {
         setLoading(false);
-      },1000);
+      }, 1000);
     }
   };
 
@@ -215,32 +224,34 @@ const MarketplaceFilter = ({ categoryData, productData }) => {
   const handleNavigate = (slug) => {
     router.push(`/productdetail/${slug}`);
   };
-    const seo = metadata.productcategory;
+  const seo = metadata.productcategory;
 
   return (
     <>
-    <MetaTags
-            title={seo.title}
-            description={seo.description}
-            keywords={seo.keywords}
-            canonical={seo.canonical}
-          />
-    <div className="min-h-screen flex flex-col">
-      <ToastContainer autoClose={3000} />
 
-      <main className="flex-grow bg-gray-100 py-8">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row gap-8 ">
+      <MetaTags
+        title={seo.title}
+        description={seo.description}
+        keywords={seo.keywords}
+        canonical={seo.canonical}
+      />
+      <div>
+        <ToastContainer autoClose={3000} />
+
+
+        <div>
+
+          <div className="flex flex-col md:flex-row gap-6 mt-4 mb-4">
             {/* Left sidebar with filters */}
-            <aside className=" w-full md:w-1/4 sticky top-[100px] max-h-[calc(100vh-2rem)] md:block hidden">
+            <aside className="w-1/5 ml-6 sticky top-[100px] max-h-[calc(115vh-100px-2rem)] ">
               <Card>
                 <CardHeader>
-                  <CardTitle>Filters</CardTitle>
+                  <CardTitle>Filters </CardTitle>
                 </CardHeader>
                 {/* <hr className="my-4 h-px border-t-0 bg-transparent bg-gradient-to-r from-transparent via-neutral-500 to-transparent opacity-25 dark:opacity-100" /> */}
 
                 <CardContent>
-                  <ScrollArea className="max-h-[400px] pr-2 overflow-y-auto custom-scroll">
+                  <ScrollArea className="max-h-[520px] pr-2 overflow-y-auto custom-scroll">
                     {filters.map((filter, index) => (
                       <div>
                         <div key={index} className="mb-4">
@@ -325,108 +336,40 @@ const MarketplaceFilter = ({ categoryData, productData }) => {
                     </div>
                   ))}
                   <Button onClick={() => setOpen(false)}
-                   disabled={!Object.values(selectedFilters).some((arr) => arr.length > 0)}>Apply Filter</Button>
+                    disabled={!Object.values(selectedFilters).some((arr) => arr.length > 0)}>Apply Filter</Button>
                 </ScrollArea>
               </SheetContent>
             </Sheet>
 
             {/* Right side with product results */}
             <div className="w-full md:w-3/4">
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {currentProducts?.map((product) => (
-                  <Card key={product.id}>
-                    <CardHeader onClick={() => handleNavigate(product.slug)}>
-                      <LazyImage
-                        src={product.coverImage}
-                        alt={product?.title}
-                        className="w-full aspect-[4/3]  object-contain rounded-t-lg bg-white"
-                      />
-                    </CardHeader>
-                    <CardContent>
-                      <CardTitle
-                        className="mb-2 capitalize flex items-center cursor-pointer group text-base font-semibold"
-                        onClick={() => handleNavigate(product.slug)}
-                      >
-                        {product.name}
-                        <ArrowRight className="ml-2 size-4 transition-transform duration-200 translate-x-0 opacity-0 group-hover:translate-x-1 group-hover:opacity-100" />
-                      </CardTitle>
-
-                   <div className="flex justify-between">
-                   <div className="flex items-center mb-2">
-                        <StarRating rating={product.rating} />
-                        <span className="ml-2 text-sm text-gray-600">
-                          ({product.reviewCount} reviews)
-                        </span>
-                      </div>
-
-                      <p className="text-lg font-semibold mb-2">
-                        ${product.salePrice}
-                      </p>
-                   </div>
-
-                      <div className="flex gap-1 flex-wrap">
-                        {product.tags
-                          ?.split(", ")
-                          .slice(0, 3)
-                          .map((tag, index) => (
-                            <span
-                              key={index}
-                              className="px-2 py-1 rounded-full text-xs bg-gray-100 text-gray-800 flex items-center"
-                            >
-                              <Tag className="w-3 h-3 mr-1" />
-                              {tag}
-                            </span>
-                          ))}
-                      </div>
-                    </CardContent>
-                    <CardFooter>
-                      <Button className="w-full" 
-                       onClick={() => {
-      addToCart(product);  
-      router.push("/checkoutform");  
-    }}
-  >
-                      
-                        {/* <Link href={`/checkoutform`}> */}
-                          Buy Now
-                        {/* </Link> */}
-                      </Button>
-                    </CardFooter>
-                  </Card>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                {displayedProducts?.map((product) => (
+                  <ProductCard key={product.id} product={product} />
                 ))}
               </div>
+              {displayedProducts.length < filteredProducts.length && (
+                <div className="flex justify-center mt-6 mb-6">
+                  <Button onClick={loadMoreProducts} className="px-6 py-2">
+                    Load More
+                  </Button>
+
+                </div>
+
+              )}
             </div>
           </div>
-          {/* Pagination Controls */}
-          <div className="flex justify-center mt-4">
-            <button
-              onClick={prevPage}
-              disabled={currentPage === 1}
-              className="px-4 py-2 mx-2 bg-gray-300 text-gray-700 rounded disabled:opacity-50"
-            >
-              Previous
-            </button>
-            <span className="px-4 py-2">
-              {currentPage} of {totalPages}
-            </span>
-            <button
-              onClick={nextPage}
-              disabled={currentPage === totalPages}
-              className="px-4 py-2 mx-2 bg-gray-300 text-gray-700 rounded disabled:opacity-50"
-            >
-              Next
-            </button>
-          </div>
-        </div>
-      </main>
-      {loading && (
-  <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-white bg-opacity-70 z-50">
-    <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500"></div>
-  </div>
-)}
 
-      <Footer />
-    </div>
+        </div>
+
+        {loading && (
+          <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-white bg-opacity-70 z-50">
+            <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500"></div>
+          </div>
+        )}
+
+        <Footer />
+      </div>
     </>
   );
 };
