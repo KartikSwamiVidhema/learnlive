@@ -34,6 +34,7 @@ const StarRating = ({ rating }) => {
   const hasHalfStar = numericRating % 1 !== 0;
   const emptyStars = Math.max(5 - fullStars - (hasHalfStar ? 1 : 0), 0);
 
+
   return (
     <div className="flex items-center">
       {[...Array(fullStars)].map((_, i) => (
@@ -78,7 +79,7 @@ const MarketplaceFilter = ({ categoryData, productData }) => {
   console.log(products, "productsproductsproductsproducts");
 
   // Calculate total pages
-  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+
 
   // Slice the products for the current page
   const [displayedProducts, setDisplayedProducts] = useState(
@@ -137,22 +138,23 @@ const MarketplaceFilter = ({ categoryData, productData }) => {
 
   const handleFilterChange = (filterName, option, isChecked) => {
     setSelectedFilters((prevFilters) => {
-      const updatedFilters = {
+      const updated = {
         ...prevFilters,
         [filterName]: isChecked
           ? [...prevFilters[filterName], option]
           : prevFilters[filterName].filter((item) => item !== option),
       };
-
-      // Apply the filter after state update
-      applyFilters(updatedFilters);
-      return updatedFilters;
+      return updated;
     });
   };
   useEffect(() => {
     applyFilters(selectedFilters);
   }, [selectedFilters]);
-
+  useEffect(() => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    setDisplayedProducts(filteredProducts.slice(startIndex, endIndex));
+  }, [filteredProducts, currentPage]);
   const applyFilters = (filters) => {
     let filtered = products;
 
@@ -226,6 +228,7 @@ const MarketplaceFilter = ({ categoryData, productData }) => {
   };
   const seo = metadata.productcategory;
 
+
   return (
     <>
 
@@ -243,7 +246,7 @@ const MarketplaceFilter = ({ categoryData, productData }) => {
 
           <div className="flex flex-col md:flex-row gap-6 mt-4 mb-4">
             {/* Left sidebar with filters */}
-            <aside className="w-1/5 ml-6 sticky top-[100px] max-h-[calc(115vh-100px-2rem)] ">
+            <aside className=" mb-9 w-1/5 ml-6 sticky top-[100px] max-h-[calc(115vh-100px-2rem)] ">
               <Card>
                 <CardHeader>
                   <CardTitle>Filters </CardTitle>

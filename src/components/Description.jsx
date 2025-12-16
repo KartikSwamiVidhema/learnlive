@@ -9,7 +9,7 @@ import { useRouter } from "next/router";
 import LazyImage from "@/components/common/LazyImage";
 import Link from "next/link";
 
-const Description = ({ product, reviewRef }) => {
+const Description = ({ product, reviewRef, type, onReviewSubmitted }) => {
 
   const [rating, setRating] = useState(0);
   const [review, setReview] = useState("");
@@ -23,15 +23,7 @@ const Description = ({ product, reviewRef }) => {
   };
 
   const router = useRouter();
-  useEffect(() => {
-    // Only scroll if query param scrollTo=features is present
-    if (router.query.scrollTo === "features") {
-      const el = document.getElementById("features");
-      if (el) {
-        el.scrollIntoView({ behavior: "smooth" });
-      }
-    }
-  }, [router.query.scrollTo]);
+
   useEffect(() => {
     // Only scroll if query param scrollTo=features is present
     if (router.query.scrollTo === "description") {
@@ -73,7 +65,7 @@ const Description = ({ product, reviewRef }) => {
     }
 
     try {
-      await axios.post(`${apiBaseUrl}/review`, {
+      const res = await axios.post(`${apiBaseUrl}/review`, {
         message: review,
         rating,
         name,
@@ -82,11 +74,26 @@ const Description = ({ product, reviewRef }) => {
         productId,
         status: "inactive",
       });
+
       toast.success("Review submitted successfully!", {
         onClose: () => {
           window.location.reload(); // Refresh the page
         },
       });
+
+      // clear local inputs
+      setReview("");
+      setRating(0);
+      setName("");
+      setEmail("");
+
+      // notify parent to refresh product data (so new review appears)
+      if (typeof onReviewSubmitted === "function") {
+        onReviewSubmitted();
+      } else {
+        // fallback: reload
+        window.location.reload();
+      }
     } catch (error) {
       toast.error("Failed to submit review.");
     }
@@ -100,136 +107,134 @@ const Description = ({ product, reviewRef }) => {
     });
   };
 
+  if (type === "features") {
+    return (
+      <div className=" bg-gray-100 border px-4 py-8 mb-4 flex flex-col space-y-8">
+        <Card >
+          <CardContent id="features">
+            <h1 className="text-2xl font-bold">Product Features</h1>
+            <p className="text-gray-600 mt-2">
+              A powerful release with exciting new features
+            </p>
+
+            <div className="mt-6 mb-6">
+              <h2 className="text-lg font-semibold">Awesome Layout</h2>
+              <ul className="list-disc pl-6 text-gray-700 ps-4">
+                <li>100+ layout modes</li>
+                <li>Tabler card layout</li>
+                <li>Widgets & grid layouts</li>
+                <li>Light and dark mode</li>
+              </ul>
+            </div>
+
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+
+
+
   return (
-    <div className=" px-4 py-8 flex flex-col space-y-8">
-      <Card >
-        <CardContent id="description">
-          <div className="mt-6">
-            <h1 className="text-2xl font-bold">Product Description </h1>
-            <div
-              className="text-gray-600"
-              dangerouslySetInnerHTML={{ __html: product.description }}
-            />
+    <div className="px-4  ">
+
+      {/* 2 Column Layout */}
+      <div className="flex flex-col lg:flex-row gap-8">
+
+        {/* LEFT SIDE — Review Form (70%) */}
+        <div ref={reviewRef} className="lg:w-[70%] p-4 border rounded-lg bg-gray-50 mb-6 shadow-sm">
+          <h2 className="text-lg font-semibold">Write a review</h2>
+
+          <textarea
+            className="w-full mt-4 p-2 border rounded"
+            placeholder="Write your review here..."
+            value={review}
+            onChange={(e) => setReview(e.target.value)}
+            required
+          />
+
+          <h2 className="text-lg font-semibold mt-4">Rating</h2>
+
+          <div className="mt-3 flex gap-2">
+            {[...Array(5)].map((_, index) => (
+              <Star
+                key={index}
+                className={`cursor-pointer ${index < rating ? "text-yellow-500" : "text-yellow-400"
+                  }`}
+                onClick={() => setRating(index + 1)}
+              />
+            ))}
           </div>
 
+          <input
+            type="text"
+            className="w-full mt-4 p-2 border rounded"
+            placeholder="Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
 
+          <input
+            type="email"
+            className="w-full mt-2 p-2 border rounded"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
 
-        </CardContent>
-      </Card>
-      <Card >
+          <Button className="mt-4 bg-green-500" onClick={submitReview}>
+            Submit Review
+          </Button>
 
-        <CardContent id="features">
-          <h1 className="text-2xl font-bold">Product Features</h1>
-          <p className="text-gray-600 mt-2">
-            A powerful release with exciting new features
-          </p>
+          <ToastContainer />
+        </div>
 
-          <div className="mt-6 mb-6">
-            <h2 className="text-lg font-semibold">Awesome Layout</h2>
-            <ul className="list-disc pl-6 text-gray-700 ps-4">
-              <li>100+ layout modes</li>
-              <li>Tabler card layout</li>
-              <li>Widgets & grid layouts</li>
-              <li>Light and dark mode</li>
-            </ul>
-          </div>
+        {/* RIGHT SIDE — Customer Reviews (30%) */}
+        {product.reviews && product.reviews.length > 0 && (
+          <div className="lg:w-[30%] p-4 border border-gray-200 bg-gray-100 rounded-lg shadow-sm h-fit">
+            <h2 className="text-lg font-semibold mb-3 ">Customer Reviews</h2>
 
-
-
-        </CardContent>
-      </Card>
-
-      {product.reviews && product.reviews.length > 0 && (
-        <div className="flex flex-col space-y-4 p-4 border border-gray-200 rounded-lg shadow-sm mt-9">
-          <h2 className="text-lg font-semibold">Customer Reviews</h2>
-          {product.reviews.map((item, index) => (
-            <div
-              key={index}
-              className="p-4 border border-gray-200 rounded-lg shadow-sm"
-            >
-              <div className="flex items-start space-x-4">
-                {/* User Avatar (Placeholder) */}
-                <div className="w-12 h-12 bg-purple-200 text-white rounded flex items-center justify-center text-lg font-semibold">
-                  {item.name.charAt(0).toUpperCase()}
-                </div>
-
-                <div className="w-full">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h3 className="font-semibold text-gray-800">{item.name}</h3>
-                      <p className="text-sm text-gray-500">
-                        {formatDate(item.createdAt)}
-                      </p>
+            <div className="bg-white space-y-4 max-h-[600px] overflow-y-auto pr-1">
+              {product.reviews.map((item, index) => (
+                <div key={index} className="p-3 border rounded-lg shadow-sm">
+                  <div className="flex items-start space-x-4">
+                    {/* Avatar */}
+                    <div className="w-10 h-10 bg-purple-200 text-white rounded flex items-center justify-center text-sm font-semibold">
+                      {item.name.charAt(0).toUpperCase()}
                     </div>
 
-                    {/* Star Rating */}
-                    <div className="flex space-x-1 text-yellow-500">
-                      {[...Array(item.rating)].map((_, i) => (
-                        <Star
-                          key={i}
-                          size={16}
-                          fill="currentColor"
-                          stroke="none"
-                        />
-                      ))}
+                    <div>
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <h3 className="font-semibold text-gray-800">{item.name}</h3>
+                          <p className="text-xs text-gray-500">
+                            {formatDate(item.createdAt)}
+                          </p>
+                        </div>
+
+                        {/* Rating Stars */}
+                        <div className="flex space-x-1 text-yellow-500">
+                          {[...Array(item.rating)].map((_, i) => (
+                            <Star key={i} size={14} fill="currentColor" stroke="none" />
+                          ))}
+                        </div>
+                      </div>
+
+                      <p className="mt-1 text-gray-700 text-sm">{item.message}</p>
                     </div>
                   </div>
-
-                  {/* Review Text */}
-                  <p className="mt-2 text-gray-700">{item.message}</p>
                 </div>
-              </div>
+              ))}
             </div>
-          ))}
-        </div>
-      )}
+          </div>
+        )}
 
-
-      <div ref={reviewRef} className="mt-12 p-3 border rounded-lg bg-gray-50">
-        <h2 className="text-lg font-semibold">Be the first to review</h2>
-        <textarea
-          className="w-full mt-4 p-2 border rounded"
-          placeholder="Write your review here..."
-          value={review}
-          onChange={(e) => setReview(e.target.value)}
-          required
-        />
-        <h2 className="text-lg font-semibold"> Rating</h2>
-
-        <div className="mt-4 flex gap-2">
-          {[...Array(5)].map((_, index) => (
-            <Star
-              key={index}
-              className={`cursor-pointer ${index < rating ? "text-yellow-500" : "text-gray-400"
-                }`}
-              onClick={() => setRating(index + 1)}
-            />
-          ))}
-        </div>
-
-        <input
-          type="text"
-          className="w-full mt-4 p-2 border rounded"
-          placeholder="Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-        />
-        <input
-          type="email"
-          className="w-full mt-2 p-2 border rounded"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-
-        <Button className="mt-4" onClick={submitReview}>
-          Submit Review
-        </Button>
-        <ToastContainer />
       </div>
     </div>
   );
+
 };
 export default Description;

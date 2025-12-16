@@ -44,7 +44,7 @@ const ProductContent = ({ categorydata }) => {
         const userdata = JSON.parse(storedUserData);
         const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
         try {
-          const responseProduct = await axios.get(`${apiBaseUrl}/product?filter={"vendor":"${userdata._id}"}`);
+          const responseProduct = await axios.get(`${apiBaseUrl}/products?filter={"vendor":"${userdata._id}"}`);
 
           setData(responseProduct.data.data);
         } catch (error) {

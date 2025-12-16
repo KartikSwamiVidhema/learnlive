@@ -5,23 +5,16 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  CheckCircle,
-  ChevronLeft,
-  ChevronRight,
-  BadgeCheck,
-} from "lucide-react";
+import { CheckCircle, ChevronLeft, ChevronRight } from "lucide-react";
 import {
   AlertDialog,
   AlertDialogCancel,
   AlertDialogContent,
-  AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
+  AlertDialogDescription,
 } from "@/components/ui/alert-dialog";
-import { Avatar } from "@/components/ui/avatar";
 import StarRating from "@/components/StarRating";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
@@ -34,391 +27,536 @@ import "react-toastify/dist/ReactToastify.css";
 import Head from "next/head";
 import LazyImage from "@/components/common/LazyImage";
 import Breadcrumb from "@/components/Breadcrumb";
-import Footer from '@/components/Footer';
+import Footer from "@/components/Footer";
 import Image from "next/image";
-const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || '';  // Add this at start of the component
-function MyComponent() {
-  const myRef = useRef(null);
-  return <div ref={myRef}>Content</div>;
-}
+import { ShoppingCart } from "lucide-react";
+import { Image as ImageIcon } from "lucide-react";
+import { SquareMousePointer } from "lucide-react";
+import FeaturedProducts from "@/components/FeaturedProducts";
+import { Loader2 } from "lucide-react"; // for spinner
 
-const scrollToReview = () => {
-  reviewRef.current?.scrollIntoView({ behavior: "smooth" });
-};
-
-const handleWriteReviewClick = () => {
-  setTimeout(() => {
-    reviewRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, 1000);
-};
 const stripePromise = loadStripe(
   "pk_test_51Q2TfeRpVqbYsgvrnKeVR5alcP24hdcpm53etjSTZ8iGhZDS2Uy4fUE44vRfg33TzIOVXruQiieNQ1e1Ki5xAhga00bQNh9MCq"
 );
 
+const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || "";
 
-const ImageSlideshow = ({ images, coverImage }) => {
-  console.log(images, "test image");
+// NEW: default image when product has no images
+const DEFAULT_IMAGE = "https://tse1.mm.bing.net/th/id/OIP.mtFzdGV6x4bKHCxjmS7yrQHaF4?pid=Api&P=0&h=180";
 
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || '';
+// NEW: default demo video URL (fallback if product has no URL)
+const DEFAULT_DEMO_URL = "https://www.youtube.com/embed/fbrYV1Oajc4?si=ceotL-3sDC3-QQck";
 
-  // Filter out null, undefined, or falsy image entries
-  const validImages = Array.isArray(images)
-    ? images.filter(img => typeof img === 'string' && img.trim())
-    : [];
+const ScreenshotsLightbox = ({ open, onClose, images = [], startIndex = 0 }) => {
+  const [current, setCurrent] = useState(startIndex || 0);
 
-  const displayImages = validImages.length
-    ? validImages.map(img => img.startsWith('http') ? img : `${baseUrl}${img}`)
-    : coverImage
-      ? [coverImage.startsWith('http') ? coverImage : `${baseUrl}${coverImage}`]
-      : [];
+  useEffect(() => {
+    setCurrent(startIndex || 0);
+  }, [startIndex, open]);
 
-  if (displayImages.length === 0) {
-    return <img src="https://cdn2.vectorstock.com/i/1000x1000/48/06/image-preview-icon-picture-placeholder-vector-31284806.jpg" alt="No Image Available" className="w-full h-64 sm:h-80 md:h-96 object-contain" />;
-  }
+  useEffect(() => {
+    if (!open) return;
+    const handleKey = (e) => {
+      if (e.key === "ArrowLeft") setCurrent((c) => (c > 0 ? c - 1 : images.length - 1));
+      if (e.key === "ArrowRight") setCurrent((c) => (c < images.length - 1 ? c + 1 : 0));
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, [open, images.length, onClose]);
 
-  const goToPrevious = () => {
-    setCurrentIndex((prev) => (prev === 0 ? displayImages.length - 1 : prev - 1));
-  };
-  const goToNext = () => {
-    setCurrentIndex((prev) => (prev === displayImages.length - 1 ? 0 : prev + 1));
-  };
-  const handleThumbnailClick = (index) => {
-    setCurrentIndex(index);
-  };
-  console.log("Display Images", displayImages);
+  if (!open) return null;
+  if (!images || images.length === 0) return null;
+
+  const goPrev = () => setCurrent((c) => (c === 0 ? images.length - 1 : c - 1));
+  const goNext = () => setCurrent((c) => (c === images.length - 1 ? 0 : c + 1));
 
   return (
-    <div className="w-full max-w-2xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
-      {/* Main image container */}
-      <div className="relative bg-gray-100">
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/80 backdrop-blur-md">
+
+      {/* Close */}
+      <button
+        onClick={onClose}
+        aria-label="Close"
+        className="absolute right-8 top-6 text-white text-3xl hover:scale-110"
+      >
+        ✕
+      </button>
+
+      {/* Prev arrow */}
+      {images.length > 1 && (
+        <button
+          onClick={goPrev}
+          className="absolute left-10 top-1/2 -translate-y-1/2 text-white rounded-full bg-white/20 hover:bg-white/40 p-3"
+        >
+          <ChevronLeft className="w-6 h-6" />
+        </button>
+      )}
+
+      {/* Image */}
+      <div className="relative bg-white/10 p-3 rounded-xl shadow-lg border border-white/20 max-w-[90%] max-h-[90%]">
         <LazyImage
-          src={displayImages[currentIndex]}
-          alt={`Slide ${currentIndex + 1}`}
-          className="w-full h-64 sm:h-80 md:h-96 object-contain"
+          src={images[current] || "/placeholder.png"}
+          alt={`Screenshot ${current + 1}`}
+          className="max-h-[80vh] w-auto rounded-lg mx-auto"
         />
 
-        {/* Navigation buttons */}
-        {displayImages.length > 1 && (
-          <>
-            <Button
-              variant="outline"
-              className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white rounded-full p-2 shadow-md z-10 transition-all duration-200 hover:scale-110"
-              onClick={goToPrevious}
-              type="button"
-            >
-              <ChevronLeft className="h-5 w-5" />
-            </Button>
-            <Button
-              variant="outline"
-              className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white rounded-full p-2 shadow-md z-10 transition-all duration-200 hover:scale-110"
-              onClick={goToNext}
-              type="button"
-            >
-              <ChevronRight className="h-5 w-5" />
-            </Button>
-          </>
-        )}
-
-        {/* Image counter */}
-        {displayImages.length > 1 && (
-          <div className="absolute bottom-2 right-2 bg-black/60 text-white text-xs px-10 py-6 rounded-md">
-            {currentIndex + 1} / {displayImages.length}
-          </div>
-        )}
+        {/* Counter */}
+        <div className="absolute bottom-3 right-3 bg-black/60 text-white text-xs px-3 py-1 rounded-md">
+          {current + 1} / {images.length}
+        </div>
       </div>
 
-      {/* Thumbnails container */}
-      {displayImages.length > 1 && (
-        <div className="p-3 bg-gray-50">
-          <div className="flex gap-2 overflow-x-auto py-1 hide-scrollbar">
-            {displayImages.map((img, idx) => (
-              <button
-                key={idx}
-                type="button"
-                onClick={() => handleThumbnailClick(idx)}
-                className={`flex-shrink-0 focus:outline-none rounded-md border transition-all duration-200
-                  ${idx === currentIndex
-                    ? 'ring-2 ring-blue-500 border-blue-500 scale-105'
-                    : 'border border-gray-200 opacity-70 hover:opacity-100 hover:scale-105'
-                  }
-                `}
-                style={{ width: 60, height: 60, padding: 0, background: 'none' }}
-                tabIndex={0}
-                aria-label={`Show image ${idx + 1}`}
-              >
-                <div className="w-full h-full">
-                  <LazyImage
-                    src={img}
-                    alt={`Thumbnail ${idx + 1}`}
-                    className="w-full h-full object-cover rounded-md"
-                    style={{ width: '100%', height: '100%', display: 'block' }}
-                  />
-                </div>
-              </button>
-            ))}
-          </div>
-        </div>
+      {/* Next arrow */}
+      {images.length > 1 && (
+        <button
+          onClick={goNext}
+          className="absolute right-10 top-1/2 -translate-y-1/2 text-white rounded-full bg-white/20 hover:bg-white/40 p-3"
+        >
+          <ChevronRight className="w-6 h-6" />
+        </button>
       )}
     </div>
   );
 };
 
-// Updated ProductInfo component to accept props and handler
-const ProductInfo = ({ product, onFeaturesClick, onDescriptionClick }) => (
 
-  <div>
+const getYouTubeEmbedUrl = (url) => {
+  if (!url || typeof url !== "string") return "";
 
-    <h1 className="text-3xl font-bold my-1">{product.name}</h1>
-    <p className="space-y-2 text-sm mb-6">Brand : {product.brand || product.name}</p>
+  let videoId = "";
 
-    <div className="flex items-center mb-0">
-
-      <span className="rating-box bg-green-100 text-green-800 rounded-full px-3 py-1 text-sm font-semibold flex items-center">
-        ★ 4.3
-      </span>
-      <span className="divider"></span>
-
-      <button className=" features-btn" onClick={onFeaturesClick}>
-        Features
-      </button>
-      <span className="divider"></span>
-
-      <button className="features-btn" onClick={onDescriptionClick}> Description</button>
-      <span className="divider"></span>
-      <Tabs defaultValue="description">
-        <TabsList>
-          <div className="features-btn">
-            <TabsTrigger value="reviews">Reviews</TabsTrigger>
-          </div>
-        </TabsList>
-        <TabsContent value="reviews" className="mt-0">
-          <p>No Data Found</p>
-        </TabsContent>
-      </Tabs>
-    </div>
-    <hr className="my-4 border-t border-gray-300" />
-    <div className="space-y-2 text-sm mb-6">
-      <p>Starting AT: </p>
-      <span className="flex text-black font-bold ml-2  text-2xl gap-4">
-        ${product.salePrice}
-
-      </span>
-    </div>
-  </div>
-);
-
-
-const ProductTabs = ({ product }) => {
-  const [description, setDescription] = useState("Loading...");
-  console.log(product, "productproductproductproduct ");
-
-  useEffect(() => {
-    setDescription(DOMPurify.sanitize(product?.description || "No description available."));
-  }, [product]);
-
-  return (
-
-
-
-
-    <div
-      className="text-gray-600 mt-4"
-
-      dangerouslySetInnerHTML={{ __html: product.shortDescription }}
-    />
-
-
-
-
-
-  );
-};
-
-const PurchaseInfo = ({ product }) => {
-  const { addToCart } = useCart();
-
-  const handleClick = () => {
-    if (!product.webUrl) {
-      toast.error("Demo is Not Present!");
-      return;
-    }
-
-    if (product.webUrl.includes(".app")) {
-      window.open(`/demo?id=${product._id}`, "_blank");
-    } else if (
-      product.webUrl.includes(".xyz") ||
-      product.webUrl.includes(".firebaseapp.com")
-    ) {
-      window.open(`/webiframe?url=${product._id}`, "_blank");
-    } else {
-      console.error("Unknown URL type");
-    }
-  };
-
-  return (
-    <>
-      <ul className="flex flex-row flex-wrap space-x-4 text-sm mb-2 mt-2">
-        <li className="flex items-center">
-          <CheckCircle className="w-8 h-8 text-green-500 mr-2" />
-          <span>Instant digital download</span>
-        </li>
-        <li className="flex items-center">
-          <CheckCircle className="w-8 h-8 text-green-500 mr-2" />
-          <span>Full lifetime access</span>
-        </li>
-        <li className="flex items-center">
-          <CheckCircle className="w-8 h-8 text-green-500 mr-2" />
-          <span>30-day money-back guarantee</span>
-        </li>
-      </ul>
-
-      <div class="flex gap-20 mt-10 ">
-        <Button
-          onClick={handleClick}
-          className="flex-1 border border-blue-600 bg-white text-blue-600  rounded-full px-6 py-2 hover:bg-blue-50 transition duration-300"
-        >
-          Demo
-        </Button>
-        <Link href="/checkoutform" className="flex-1">
-          <Button className="w-full bg-blue-600 border border-blue-600 text-white rounded-full px-6 py-2 hover:bg-blue-700 transition duration-300" onClick={() => addToCart(product)}>
-            Buy Now
-          </Button>
-        </Link>
-
-
-
-      </div>
-
-    </>
-
-
-
-
-
-  );
-};
-
-const ProductDetail = ({ productData, }) => {
-  const reviewRef = useRef(null);
-  const router = useRouter();
-  const { slug } = router.query;
-
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-
-  if (!productData?.success || !productData.data.length) {
-    return <div>No product data available</div>;
+  // Extract from youtube.com/watch?v=
+  if (url.includes("youtube.com/watch?v=")) {
+    videoId = url.split("v=")[1]?.split("&")[0];
+  }
+  // Extract from youtu.be/
+  else if (url.includes("youtu.be/")) {
+    videoId = url.split("youtu.be/")[1]?.split("?")[0];
+  }
+  // Already in embed format
+  else if (url.includes("youtube.com/embed/")) {
+    return url;
   }
 
-  const product = productData.data[0];
+  return videoId ? `https://www.youtube.com/embed/${videoId}` : "";
+};
 
-  // Moved handlers inside component with access to `product` and `router`
-  const handleBuyNow = () => setIsDialogOpen(true);
+const ProductDetail = ({ productData }) => {
+  const router = useRouter();
+  const { slug } = router.query;
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  const handleFeaturesClick = () => {
-    if (product?.slug) {
-      router.push({
-        pathname: `/productdetail/${product.slug}`,
-        query: { scrollTo: "features" },
-      });
-    }
-  };
-  const handleDescriptionClick = () => {
-    if (product?.slug) {
-      router.push({
-        pathname: `/productdetail/${product.slug}`,
-        query: { scrollTo: "description" },
-      });
-    }
-  };
-  const scrollToReview = () => {
-    if (reviewRef.current) {
-      reviewRef.current.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
+  // Tabs
+  const [activeTab, setActiveTab] = useState("details");
 
+  // Lightbox states
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [lightboxStart, setLightboxStart] = useState(0);
+  const [lightboxImages, setLightboxImages] = useState([]);
 
+  const [descriptionHTML, setDescriptionHTML] = useState("");
+  const [shortDescriptionHTML, setShortDescriptionHTML] = useState("");
 
+  const { addToCart } = useCart();
+
+  // add featured products state
+  const [featuredProducts, setFeaturedProducts] = useState([]);
+
+  // Demo tab state (remove fetch logic, use static iframe)
+  // Remove demoUrl and demoLoading states if they exist
+
+  if (!productData?.success || !productData.data.length) {
+    return <div className="pt-8 pb-8 text-center">No product data available</div>;
+  }
+
+  // initial product from server props
+  const initialProduct = productData.data[0];
+
+  // CLIENT-SIDE product state so we can refresh it after review submission
+  const [productState, setProductState] = useState(initialProduct);
+
+  // When server prop changes (e.g., client navigation to a new slug),
+  // update the client productState so UI reflects the new product.
   useEffect(() => {
-    // Only scroll if query param scrollTo=features is present
-    if (router.query.scrollTo === "features") {
-      const el = document.getElementById("features");
-      if (el) {
-        el.scrollIntoView({ behavior: "smooth" });
+    setProductState(initialProduct);
+  }, [initialProduct]);
+
+  // Build displayImages from productState
+  // normalize image URLs and always provide at least one URL (DEFAULT_IMAGE)
+  const toUrl = (img) => {
+    if (!img || typeof img !== "string" || !img.trim()) return DEFAULT_IMAGE;
+    return img.startsWith("http") ? img : `${baseUrl}${img}`;
+  };
+
+  const validImages = Array.isArray(productState.images)
+    ? productState.images.filter((i) => typeof i === "string" && i.trim()).map(toUrl)
+    : [];
+
+  const displayImages = validImages.length
+    ? validImages
+    : productState.coverImage
+      ? [toUrl(productState.coverImage)]
+      : [DEFAULT_IMAGE];
+
+  // Keep lightbox images and description updated whenever productState changes
+  useEffect(() => {
+    setDescriptionHTML(DOMPurify.sanitize(productState?.description || "No description available."));
+    setShortDescriptionHTML(DOMPurify.sanitize(productState?.shortDescription || ""));
+    setLightboxImages(displayImages);
+  }, [productState]);
+
+  // refresh product data from API (call after new review submitted)
+  const refreshProduct = async () => {
+    try {
+      const apiUrl = `${baseUrl}/product?filter=${encodeURIComponent(JSON.stringify({ slug }))}`;
+      const resp = await axios.get(apiUrl);
+      const fresh = resp.data?.data?.[0] || resp.data?.data || resp.data || null;
+      if (fresh) {
+        // normalize to single product object if needed
+        const newProduct = Array.isArray(fresh) ? fresh[0] : fresh;
+        setProductState(newProduct);
       }
+    } catch (err) {
+      console.error("Failed to refresh product:", err);
     }
-  }, [router.query.scrollTo]);
-  console.log(product.images, product.coverImage)
+  };
+
+  // goToSection: set active tab and update shallow query for deep linking
+  const goToSection = (id) => {
+    setActiveTab(id);
+    router.replace(
+      {
+        pathname: router.pathname,
+        query: { ...router.query, scrollTo: id },
+      },
+      undefined,
+      { shallow: true }
+    );
+  };
+
+  // Lightbox controls
+  const openLightbox = (start = 0) => {
+    if (!lightboxImages || lightboxImages.length === 0) return;
+    setLightboxStart(start);
+    setLightboxOpen(true);
+  };
+
+  const closeLightbox = () => setLightboxOpen(false);
+
+  // add to cart
+  const handleAddToCart = () => {
+    addToCart(productState);
+    toast.success("Added to cart");
+  };
+
+  // Pricing
+  const price = productState.salePrice || productState.price || 0;
+
+  // fetch featured products (top 10) after component mounts / when slug changes
+  useEffect(() => {
+    let mounted = true;
+    const fetchFeatured = async () => {
+      try {
+        const filter = { isFeatured: true };
+        const resp = await axios.get(
+          `${baseUrl}/product?filter=${encodeURIComponent(JSON.stringify(filter))}&limit=10`
+        );
+        let list = resp.data?.data || resp.data || [];
+        if (!Array.isArray(list)) list = Array.isArray(list.data) ? list.data : [];
+
+        // If server returned fewer than 10, fetch additional products to fill up to 10
+        if (Array.isArray(list) && list.length < 10) {
+          const needed = 10 - list.length;
+          try {
+            const resp2 = await axios.get(`${baseUrl}/product?limit=${needed}`);
+            let extra = resp2.data?.data || resp2.data || [];
+            if (!Array.isArray(extra)) extra = Array.isArray(resp2.data?.data) ? resp2.data.data : [];
+            // dedupe by id
+            const existingIds = new Set(list.map(p => p._id || p.id));
+            const filteredExtra = extra.filter(p => !existingIds.has(p._id || p.id));
+            list = list.concat(filteredExtra).slice(0, 10);
+          } catch (err2) {
+            console.warn("Failed to fetch extra products to fill featured list:", err2);
+          }
+        } else if (!Array.isArray(list)) {
+          list = [];
+        }
+
+        if (mounted) setFeaturedProducts(Array.isArray(list) ? list.slice(0, 10) : []);
+      } catch (err) {
+        console.error("Failed to fetch featured products:", err);
+        if (mounted) setFeaturedProducts([]);
+      }
+    };
+    fetchFeatured();
+    return () => { mounted = false; };
+  }, [slug]);
 
   return (
     <>
       <Head>
-        <title>{product.meta_title || product.name}</title>
-        <meta
-          name="description"
-          content={
-            product.meta_description?.replace(/<\/?[^>]+(>|$)/g, "") ||
-            "Default description"
-          }
-        />
-        <meta name="keywords" content={product.meta_keywords || "default, keywords"} />
-        <link
-          rel="canonical"
-          href={`https://ithemes-dev.netlify.app/productdetail/${product.slug}`}
-        />
+        <title>{productState.meta_title || productState.name}</title>
+        <meta name="description" content={productState.meta_description?.replace(/<\/?[^>]+(>|$)/g, "") || ""} />
       </Head>
 
-      <div className="min-h-screen flex flex-col">
-        <main className="flex-grow bg-gray-100 py-8">
-          <div className="mx-auto w-full max-w-8xl bg-white rounded-lg shadow-md px-10 py-10">
-            <div className="flex flex-col md:flex-row md:space-x-16">
-              <div className="image-section">
-                <Card>
-                  <CardContent>
-                    <ImageSlideshow images={product.images} coverImage={product.coverImage} />
-                  </CardContent>
-                </Card>
-              </div>
-
-              <div className="md:w-1/2 flex flex-col">
+      <div className=" w-full min-h-screen bg-white">
+        <main className=" w-full mx-auto ">
+          {/* Breadcrumb + Title + tabs */}
+          <div className="   bg-gray-100 border border-gray-200 rounded-md p-5 mb-6">
+            <div className="text-xl items center ml-[12rem]">
+              <Breadcrumb
+                categories={productState.categories}
+                productName={productState.name}
+              />
 
 
 
-                <CardContent>
-                  <div className="container mx-auto px-4">
-                    <Breadcrumb productName={product.name} />
+              <div className="  mt-3 w-full">
+                <h1 className="  text-4xl font-extrabold text-gray-800">{productState.name}</h1>
 
-                  </div>
-                  {/* Pass `handleFeaturesClick` as prop to ProductInfo */}
-                  <ProductInfo product={product} onFeaturesClick={handleFeaturesClick} onDescriptionClick={handleDescriptionClick} />
+                {/* Tabs below title inside gray box */}
+                <div className="mt-4 flex flex-wrap items-center gap-3">
+                  <button onClick={() => goToSection("details")} className={`text-sm font-medium ${activeTab === "details" ? "text-blue-600 text-sm" : "text-gray-700"} hover:text-blue-600`}>Item Details</button>
+                  <span className="text-gray-400">|</span>
 
+                  <button onClick={() => goToSection("reviews")} className={`text-sm font-medium ${activeTab === "reviews" ? "text-blue-600" : "text-gray-700"} hover:text-blue-600`}>Reviews</button>
+                  <span className="text-gray-400">|</span>
 
-
-                  <div className="mb-10">
-                    <ProductTabs product={product} />
-                  </div>
-                </CardContent>
-
-
-                <PurchaseInfo product={product} />
+                  <button onClick={() => goToSection("features")} className={`text-sm font-medium ${activeTab === "features" ? "text-blue-600" : "text-gray-700"} hover:text-blue-600`}>Features</button>
+                  <span className="text-gray-400">|</span>
+                  {/* Add Demo tab button */}
+                  <button
+                    onClick={() => goToSection("demo")}
+                    className={`text-sm font-medium ${activeTab === "demo" ? "text-blue-600" : "text-gray-700"} hover:text-blue-600`}
+                  >
+                    Demo
+                  </button>
+                </div>
               </div>
             </div>
           </div>
+
+          {/* Main two-column area: show only when details tab is active */}
+          {activeTab === "details" && (
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-9 pl-[12rem] pr-[12rem]">
+              {/* Left: cover image + screenshot button */}
+              <div className="lg:col-span-8">
+                <Card>
+                  <CardContent className="p-0">
+                    <div className="relative bg-gray-100 p-4">
+                      <div
+                        className="relative group cursor-pointer rounded-lg overflow-hidden"
+                        onClick={() => openLightbox(0)}
+                      >
+                        {/* Image */}
+                        <LazyImage
+                          src={displayImages[0] || DEFAULT_IMAGE}
+                          alt={productState.name}
+                          className="w-full max-h-[400px] object-cover transition-all duration-300 group-hover:blur-xs group-hover:brightness-50"
+                        />
+
+                        {/* Hover icon */}
+                        <div
+                          className="absolute inset-0 flex items-center justify-center text-white opacity-0 transition-all duration-300 group-hover:opacity-100 "
+                        >
+                          <SquareMousePointer className="w-14 h-14" />
+                        </div>
+                      </div>
+
+
+
+
+
+                      {/* Screenshots button below the card */}
+                      {lightboxImages.length > 0 && (
+                        <div className="mt-4 ml-[15rem] flex justify-start">
+                          <Button
+                            onClick={() => openLightbox(0)}
+                            className="bg-[#0084B4] text-white px-6 py-2 rounded-md hover:bg-[#0b9adb] hover:scale-105 transition flex items-center gap-2"
+                          >
+                            View Screenshots
+                            <ImageIcon className="w-4 h-4" />
+                          </Button>
+                        </div>
+
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+                {/* Dangerous HTML description right below image */}
+                <div className="mt-6 mb-9 ">
+                  <div className="mt-6 mb-9 ml-9 mr-9" dangerouslySetInnerHTML={{ __html: descriptionHTML }} />
+                </div>
+              </div>
+
+              {/* Right: Sticky pricing box */}
+              <div className="lg:col-span-4">
+                <div className="border border-gray-300">
+                  <div className="bg-white p-5 rounded-xl shadow-sm border border-gray-100">
+
+                    {/* Header Row */}
+                    <div className="flex justify-between items-start">
+                      <p className="text-gray-700 font-bold text-2xl">Starting at:</p>
+
+                      <div className="flex items-start">
+                        <span className="text-xl font-bold -mt-1">$</span>
+                        <span className="text-4xl font-bold text-gray-700 leading-none">{price}</span>
+                      </div>
+                    </div>
+
+
+                    {/* Grey Line */}
+                    <div className="border-b border-gray-300 mt-3 mb-4"></div>
+
+                    {/* Rating */}
+                    <div className="flex items-center mb-4">
+                      <span className="rating-box bg-green-100 text-green-800 rounded-full px-3 py-1 text-sm font-semibold flex items-center">
+                        ★ 4.3
+                      </span>
+                    </div>
+
+                    {/* Feature list */}
+                    <div className="text-xs text-gray-500">
+                      <ul className="space-y-2">
+                        <li className="flex items-start gap-2">
+                          <CheckCircle className="w-5 h-5 text-green-500 mt-1" />
+                          Instant digital download
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <CheckCircle className="w-5 h-5 text-green-500 mt-1" />
+                          Full lifetime access
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <CheckCircle className="w-5 h-5 text-green-500 mt-1" />
+                          30-day money-back guarantee
+                        </li>
+                      </ul>
+                    </div>
+
+                    {/* Buy Button */}
+                    <div className="mt-10 mb-5 ">
+                      <Link href="/checkoutform" className="flex-1">
+                        <Button
+                          className="w-full bg-[#6f9a37] text-white px-6 py-3 hover:bg-blue-700 transition duration-300 flex items-center justify-center gap-2 text-base font-semibold rounded-md"
+                          onClick={() => addToCart(productState)}
+                        >
+                          <ShoppingCart className="w-5 h-5" />
+                          Buy Now
+                        </Button>
+                      </Link>
+                    </div>
+
+                  </div>
+                </div>
+
+                {/* Replace placeholder with FeaturedProducts */}
+                <div className="mt-6">
+                  <FeaturedProducts products={featuredProducts} />
+                </div>
+              </div>
+
+            </div>
+          )}
+
+          {/* Reviews tab */}
+          {activeTab === "reviews" && (
+            <div className="p-1">
+              <Description
+                slug={slug}
+                product={productState}
+                type="reviews"
+                onReviewSubmitted={refreshProduct} // refresh product when review submitted
+              />
+            </div>
+          )}
+
+          {/* Features tab */}
+          {activeTab === "features" && (
+            <div className="p-1">
+              <Description slug={slug} product={productState} type="features" />
+
+            </div>
+          )}
+
+          {/* Description tab */}
+          {activeTab === "description" && (
+            <div className="p-6">
+              <div dangerouslySetInnerHTML={{ __html: descriptionHTML }} />
+            </div>
+          )}
+
+          {/* Rating tab */}
+          {activeTab === "rating" && (
+            <div className="p-6">
+              <StarRating productId={product._id} />
+            </div>
+          )}
+
+          {/* Add Demo tab content - FETCH FROM BACKEND */}
+          {activeTab === "demo" && (
+            <div className="flex justify-center items-center py-4">
+              <div className="w-full max-w-8xl mx-9 bg-gray-100 rounded-xl shadow-lg border border-gray-200 p-4">
+                <div className="w-full max-w-6xl bg-white rounded-xl shadow-lg border border-gray-200 p-4 ml-[140px]">
+                  <h2 className="text-3xl font-bold mb-3 text-blue-700">Live Demo</h2>
+                  <div className="w-full rounded-lg overflow-hidden border border-gray-300 shadow">
+                    {productState?.url ? (
+                      // Use URL from backend if available
+                      <iframe
+                        width="100%"
+                        height="315"
+                        src={getYouTubeEmbedUrl(productState.url)}
+                        title="YouTube video player"
+                        frameBorder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        referrerPolicy="strict-origin-when-cross-origin"
+                        allowFullScreen
+                        className="w-full h-[600px] min-h-[400px] rounded-lg border-0"
+                        style={{ background: "#f9f9f9" }}
+                      />
+                    ) : (
+                      // Use default fallback video if no URL in backend
+                      <iframe
+                        width="100%"
+                        height="315"
+                        src={DEFAULT_DEMO_URL}
+                        title="YouTube video player"
+                        frameBorder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        referrerPolicy="strict-origin-when-cross-origin"
+                        allowFullScreen
+                        className="w-full h-[600px] min-h-[400px] rounded-lg border-0"
+                        style={{ background: "#f9f9f9" }} env
+                      />
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
         </main>
 
-        <Description slug={slug} product={product} />
-        <RelatedProducts product={product} />
-        <Footer />
+        {/* Lightbox (fullscreen viewer) */}
+        <ScreenshotsLightbox
+          open={lightboxOpen}
+          onClose={() => setLightboxOpen(false)}
+          images={lightboxImages}
+          startIndex={lightboxStart}
+        />
 
+        {/* Checkout dialog */}
         <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <AlertDialogContent>
             <AlertDialogHeader>
               <AlertDialogTitle>Complete your purchase</AlertDialogTitle>
               <AlertDialogDescription>
-                <p>Enter your payment details below to complete your purchase.</p>
-                <Elements stripe={stripePromise}>
-                  <CheckoutForm productId={product._id} />
-                </Elements>
+                <div className="space-y-4">
+                  <p>Enter your payment details below to complete your purchase.</p>
+                  <Elements stripe={stripePromise}>
+                    <CheckoutForm productId={productState._id} />
+                  </Elements>
+                </div>
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
@@ -426,9 +564,12 @@ const ProductDetail = ({ productData, }) => {
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
+
+        {/* Always visible */}
+        <RelatedProducts product={productState} />
+        <Footer />
       </div>
     </>
-
   );
 };
 

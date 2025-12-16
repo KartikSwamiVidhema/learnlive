@@ -1,73 +1,82 @@
-import React from 'react';
+import React from "react";
+import { useRouter } from "next/router";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Star, StarHalf } from 'lucide-react';
-import productsData from '../data/products.json';
-import LazyImage from './common/LazyImage';
-const StarRating = ({ rating }) => {
-  const fullStars = Math.floor(rating);
-  const hasHalfStar = rating % 1 !== 0;
+import { Star } from "lucide-react";
+import LazyImage from "./common/LazyImage";
 
+const DEFAULT_IMAGE = "https://tse1.mm.bing.net/th/id/OIP.mtFzdGV6x4bKHCxjmS7yrQHaF4?pid=Api&P=0&h=180";
+
+const StarRating = ({ rating = 0 }) => {
+  const full = Math.floor(rating);
   return (
     <div className="flex items-center">
-      {[...Array(fullStars)].map((_, i) => (
-        <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+      {[...Array(full)].map((_, i) => (
+        <Star key={i} className="w-4 h-4 text-yellow-400" />
       ))}
-      {hasHalfStar && <StarHalf className="w-4 h-4 fill-yellow-400 text-yellow-400" />}
-      {[...Array(5 - Math.ceil(rating))].map((_, i) => (
-        <Star key={i + fullStars} className="w-4 h-4 text-gray-300" />
+      {[...Array(5 - full)].map((_, i) => (
+        <Star key={i + full} className="w-4 h-4 text-gray-200" />
       ))}
     </div>
   );
 };
 
-const FeaturedProducts = () => {
-  // const featuredProducts = productsData.slice(0, 4); // Display first 4 products as featured
-  const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    setTimeout(() => { // Simulate API delay
-      setFeaturedProducts(productsData); // Display first 4 products
-      setLoading(false);
-    }, 1000);
-  }, []);
+const getImage = (p) => {
+  const src = p?.coverImage || p?.scanner_url || "";
+  if (!src || typeof src !== "string" || !src.trim()) return DEFAULT_IMAGE;
+  return src.startsWith("http") ? src : src; // keep existing behavior; adjust if you need to prepend baseUrl
+};
+
+const FeaturedProducts = ({ products = [] }) => {
+  const router = useRouter();
+
+
+
+  // ensure max 10
+  const list = products.slice(0, 10);
+
+  const handleOpen = (p) => {
+    const slug = p.slug || p._id || p.id;
+    if (!slug) return;
+    // use pathname + query so Next treats this as dynamic route navigation
+    router.push({
+      pathname: "/productdetail/[slug]",
+      query: { slug },
+    });
+  };
+
   return (
-    <section className="py-12">
+    <div className="bg-white border border-gray-300 p-4 shadow-sm mb-9 ">
+      <h3 className="  font-semibold mb-3">Top Featured Products</h3>
+      <div className="space-y-0">
+        {list.map((p, idx) => (
+          <div
+            key={p._id || p.id}
+            role="button"
+            tabIndex={0}
+            onClick={() => handleOpen(p)}
+            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleOpen(p); }}
+            className={`flex items-center gap-3 p-2 rounded hover:bg-gray-50 transition cursor-pointer ${idx !== list.length - 1 ? "border-b border-gray-200" : ""}`}
+          >
 
-      <h2 className="text-2xl font-bold mb-5">Featured Products</h2>
-      {loading ? (
-        <div className="flex justify-center items-center h-40">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900">
+            <div className="flex-1 min-w-0">
+              <div className="flex justify-between items-start">
+                <div className=" text-sm font-medium truncate">{p.name || p.title}</div>
 
+              </div>
+
+            </div>
+            <div className="w-16 h-12 flex-shrink-0 overflow-hidden rounded">
+              <LazyImage
+                src={getImage(p)}
+                alt={p.name || p.title || "product"}
+                className="w-full h-full object-cover"
+              />
+            </div>
           </div>
-
-        </div>
-      ) : (
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-5">
-
-          {featuredProducts.map((product) => (
-
-            <Card key={product.id} className="flex flex-col">
-              <CardHeader>
-                <LazyImage src={product.image} alt={product.title} className="w-full h-24 object-cover rounded-t-lg" />
-              </CardHeader>
-              <CardContent className="flex-grow">
-                <CardTitle className="mb-2 ">{product.title}</CardTitle>
-                <div className="flex items-center mb-2">
-                  <StarRating rating={product.rating} />
-                  <span className="ml-2 text-sm text-gray-600">({product.reviewCount} reviews)</span>
-                </div>
-              </CardContent>
-              <CardFooter className="flex justify-between items-center">
-                <p className="text-lg font-semibold">${product.price.toFixed(2)}</p>
-                <Button>Buy Now</Button>
-              </CardFooter>
-            </Card>
-          ))}
-        </div>
-      )}
-
-    </section>
+        ))}
+      </div>
+    </div>
   );
 };
 

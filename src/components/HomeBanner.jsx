@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
 import { useRouter } from "next/router";
+import { motion, AnimatePresence } from "framer-motion";
 
 const HomeBanner = () => {
   const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -44,7 +45,7 @@ const HomeBanner = () => {
     <section
       className="relative py-10 px-6 md:px-12 flex justify-left items-center h-[500px] backdrop-blur"
       style={{
-        backgroundImage: `url(${bannerImage})`,
+        backgroundImage: `url(https://static.vecteezy.com/system/resources/thumbnails/003/570/649/small_2x/touching-virtual-screen-online-shopping-to-digital-cart-with-global-network-connection-intelligent-ecommerce-blue-background-free-photo.jpg)`, // Replace with the desired image URL
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
@@ -54,25 +55,61 @@ const HomeBanner = () => {
       <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-blue-900/40 to-black/60"></div>
 
       <div className="relative z-10 pl-20 max-w-2xl text-left text-white space-y-6">
-        <h2
-          className="font-extrabold text-4xl md:text-5xl leading-tight"
-          style={{ color: titleColor || "#fff" }}
+        {/* Headline with fade animation */}
+        <AnimatePresence mode="wait">
+          <motion.h2
+            key={currentHeadline}
+            className="font-extrabold text-4xl md:text-5xl leading-tight"
+            style={{ color: titleColor || "#fff" }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.8 }}
+          >
+            {currentHeadline}
+          </motion.h2>
+        </AnimatePresence>
+
+        {/* Paragraph fade-in */}
+        <motion.p
+          className="text-lg max-w-lg"
+          initial={{ opacity: 0, x: -30 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.5, duration: 0.8 }}
         >
-          {currentHeadline}
-        </h2>
-        <p className="text-lg max-w-lg">
           iThemes delivers the best responsive mobile app themes that are
           user-friendly, well organized, and crafted to save your time.
-        </p>
+        </motion.p>
 
-        {/* New feature highlights */}
-        <ul className="space-y-2 text-sm md:text-base list-disc list-inside text-gray-200">
-          <li>✔ 100% responsive & mobile-friendly designs</li>
-          <li>✔ Unlimited downloads with premium subscription</li>
-          <li>✔ Updated weekly with fresh content</li>
-        </ul>
+        {/* New feature highlights with staggered animation */}
+        <motion.ul
+          className="space-y-2 text-sm md:text-base list-disc list-inside text-gray-200"
+          initial="hidden"
+          animate="visible"
+          variants={{
+            hidden: {},
+            visible: { transition: { staggerChildren: 0.2 } },
+          }}
+        >
+          {[
+            "100% responsive & mobile-friendly designs",
+            "Unlimited downloads with premium subscription",
+            "Updated weekly with fresh content",
+          ].map((item, index) => (
+            <motion.li
+              key={index}
+              variants={{
+                hidden: { opacity: 0, x: -20 },
+                visible: { opacity: 1, x: 0 },
+              }}
+              className="flex items-center gap-2"
+            >
+              <span className="text-green-400 font-bold">✔</span> {item}
+            </motion.li>
+          ))}
+        </motion.ul>
 
-        {/* CTA buttons */}
+        {/* CTA button with entrance animation */}
 
       </div>
     </section>

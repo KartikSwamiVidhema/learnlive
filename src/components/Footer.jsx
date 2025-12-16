@@ -1,93 +1,184 @@
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import { Facebook, Linkedin, Instagram } from "lucide-react";
 import LazyImage from "./common/LazyImage";
+import Link from "next/link";
+import { motion } from "framer-motion";
 
-let currentYear = new Date().getFullYear();
 const Footer = () => {
-  return (
-    <footer className="bg-gray-900 text-white py-12 p-4">
+  const [year, setYear] = useState("");
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
-        {/* About Section (Full width) */}
-        <div className="col-span-1 sm:col-span-2 md:col-span-1">
+  useEffect(() => {
+    setYear(new Date().getFullYear());
+  }, []);
+
+  const fadeUp = {
+    hidden: { opacity: 0, y: 40 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+  };
+
+  return (
+    <footer className="relative bg-gradient-to-b from-gray-900 via-gray-800 to-black text-white overflow-hidden py-10 px-6 md:px-12">
+      {/* Animated background gradient blobs */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute -top-24 -left-24 w-72 h-72 bg-purple-600 opacity-20 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute -bottom-24 right-0 w-72 h-72 bg-blue-600 opacity-20 rounded-full blur-3xl animate-pulse"></div>
+      </div>
+
+      {/* Main Content */}
+      <motion.div
+        className="relative z-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        variants={fadeUp}
+      >
+        {/* About Section */}
+        <div>
           <LazyImage
             src="../transperant-logo.png"
             alt="ithemes"
-            className="w-40 mb-4 filter brightness-0 invert"
+            className="w-40 mb-4 filter brightness-0 invert drop-shadow-md hover:scale-105 transition-transform duration-300"
           />
-          <p className="text-gray-400 text-sm">
+          <p className="text-gray-400 text-sm leading-relaxed">
             Discover a diverse collection of responsive mobile and website
             themes for your app. Look through our resources for beautiful
-            design and user-friendly layouts.
+            designs and user-friendly layouts.
           </p>
-          <div className="flex mt-2 space-x-4">
-            <a href="https://www.facebook.com/profile.php?id=61550882554964&mibextid=2JQ9oc" target="_blank" rel="noopener noreferrer">
-              <Facebook className="w-6 h-6 text-gray-400 hover:text-white" />
-            </a>
-            <a href="https://www.linkedin.com/company/i-theme/" target="_blank" rel="noopener noreferrer">
-              <Linkedin className="w-6 h-6 text-gray-400 hover:text-white" />
-            </a>
-            <a href="https://www.instagram.com/ithemes02/?igshid=OGQ5ZDc2ODk2ZA%3D%3D" target="_blank" rel="noopener noreferrer">
-              <Instagram className="w-6 h-6 text-gray-400 hover:text-white" />
-            </a>
+
+          {/* Social Icons */}
+          <div className="flex mt-4 space-x-5">
+            {[
+              {
+                href: "https://www.facebook.com/profile.php?id=61550882554964&mibextid=2JQ9oc",
+                icon: Facebook,
+              },
+              {
+                href: "https://www.linkedin.com/company/i-theme/",
+                icon: Linkedin,
+              },
+              {
+                href: "https://www.instagram.com/ithemes02/?igshid=OGQ5ZDc2ODk2ZA%3D%3D",
+                icon: Instagram,
+              },
+            ].map(({ href, icon: Icon }, i) => (
+              <motion.div
+                key={i}
+                whileHover={{ scale: 1.2, rotate: 5 }}
+                transition={{ type: "spring", stiffness: 300 }}
+              >
+                <Link href={href} target="_blank" rel="noopener noreferrer">
+                  <Icon className="w-6 h-6 text-gray-400 hover:text-white transition-colors duration-300" />
+                </Link>
+              </motion.div>
+            ))}
           </div>
         </div>
 
-        {/* Products Section (Full width) */}
-        <div className="col-span-1 sm:col-span-2 md:col-span-1">
-          <h3 className="text-lg font-semibold mb-4">Products</h3>
+        {/* Products Section */}
+        <motion.div variants={fadeUp}>
+          <h3 className="text-lg font-semibold mb-4 border-b border-gray-700 pb-2 inline-block">
+            Products
+          </h3>
           <ul className="space-y-2 text-gray-400">
-            <li><a href="/productdetail/team11" className="hover:text-white">Team11</a></li>
-            <li><a href="/productdetail/ionic-5-ui-component/" className="hover:text-white">Ionic 5 UI Starter Pack</a></li>
-            <li><a href="/productdetail/urbanclape-clone-framework-7-clap-app-v1/" className="hover:text-white">Clap App Framework 7</a></li>
-            <li><a href="/productdetail/driveease/" className="hover:text-white">Ionic 3 Cab Application Theme</a></li>
+            {[
+              ["Team11", "/productdetail/team11"],
+              ["Ionic 5 UI Starter Pack", "/productdetail/ionic-5-ui-component"],
+              ["Clap App Framework 7", "/productdetail/urbanclape-clone-framework-7-clap-app-v1"],
+              ["Ionic 3 Cab Application Theme", "/productdetail/driveease"],
+            ].map(([title, href]) => (
+              <li key={href}>
+                <Link
+                  href={href}
+                  className="hover:text-white transition-colors duration-300 hover:translate-x-1 inline-block"
+                >
+                  {title}
+                </Link>
+              </li>
+            ))}
           </ul>
-        </div>
+        </motion.div>
 
-        {/* Latest Products Section (50% width on mobile) */}
-        <div className="col-span-1 sm:col-span-1">
-          <h3 className="text-lg font-semibold mb-4">Latest Products</h3>
+        {/* Latest Products Section */}
+        <motion.div variants={fadeUp}>
+          <h3 className="text-lg font-semibold mb-4 border-b border-gray-700 pb-2 inline-block">
+            Latest Products
+          </h3>
           <ul className="space-y-2 text-gray-400">
-            <li><a href="/productdetail/get-by-travel/" className="hover:text-white">GetBus</a></li>
-            <li><a href="/productdetail/chatapp/" className="hover:text-white">Chat App</a></li>
-            <li><a href="/productdetail/fooddelivery-app/" className="hover:text-white">Delivery App</a></li>
-            <li><a href="/productdetail/ngo-deck/" className="hover:text-white">Donation App</a></li>
+            {[
+              ["GetBus", "/productdetail/get-by-travel"],
+              ["Chat App", "/productdetail/chatapp"],
+              ["Delivery App", "/productdetail/fooddelivery-app"],
+              ["Donation App", "/productdetail/ngo-deck"],
+            ].map(([title, href]) => (
+              <li key={href}>
+                <Link
+                  href={href}
+                  className="hover:text-white transition-all duration-300 hover:translate-x-1 inline-block"
+                >
+                  {title}
+                </Link>
+              </li>
+            ))}
           </ul>
-        </div>
+        </motion.div>
 
-        {/* Quick Links Section (50% width on mobile) */}
-        <div className="col-span-1 sm:col-span-1">
-          <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
+        {/* Quick Links Section */}
+        <motion.div variants={fadeUp}>
+          <h3 className="text-lg font-semibold mb-4 border-b border-gray-700 pb-2 inline-block">
+            Quick Links
+          </h3>
           <ul className="space-y-2 text-gray-400">
-            <li><a href="/contactus" className="hover:text-white">Contact Us</a></li>
-            <li><a href="/privacypolicy" className="hover:text-white">Privacy Policy</a></li>
-            <li><a href="/termsandconditions" className="hover:text-white">Terms and Conditions</a></li>
-            <li><a href="/cancellationpolicy" className="hover:text-white">Cancellation Policy</a></li>
-            <li><a href="/aboutus" className="hover:text-white">About Us</a></li>
+            {[
+              ["Contact Us", "/contactus"],
+              ["Privacy Policy", "/privacypolicy"],
+              ["Terms and Conditions", "/termsandconditions"],
+              ["Cancellation Policy", "/cancellationpolicy"],
+              ["About Us", "/aboutus"],
+            ].map(([title, href]) => (
+              <li key={href}>
+                <Link
+                  href={href}
+                  className="hover:text-white transition-all duration-300 hover:translate-x-1 inline-block"
+                >
+                  {title}
+                </Link>
+              </li>
+            ))}
           </ul>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
 
+      {/* Divider */}
+      <motion.hr
+        className="mt-12 border-gray-700 opacity-50"
+        initial={{ scaleX: 0 }}
+        whileInView={{ scaleX: 1 }}
+        transition={{ duration: 0.8 }}
+      />
 
+      {/* Footer Bottom */}
+      <motion.div
+        className="mt-8 text-gray-400 text-sm flex flex-col md:flex-row justify-between items-center text-center md:text-left relative z-10"
+        variants={fadeUp}
+      >
+        <p className="mb-3 md:mb-0">
+          © {year} <span className="text-white font-semibold">IThemes</span>. All rights reserved.
+        </p>
 
-      {/* Copyright Section */}
-
-      <div className="mt-8 pt-6 border-t border-gray-700 text-gray-400 text-sm flex flex-col md:flex-row justify-between items-center text-center md:text-left">
-        <p>&copy; {currentYear} IThemes. All rights reserved.</p>
-        <div className="mt-2 md:mt-0 flex flex-col md:flex-row gap-2 md:gap-4">
+        <div className="text-gray-400 text-sm">
           <p>
             Email:{" "}
-            <a
+            <Link
               href="mailto:info@ithemes.xyz"
-              className="text-grey-400 underline hover:text-white"
+              className="underline hover:text-white transition-colors"
             >
               info@ithemes.xyz
-            </a>
+            </Link>
           </p>
-          <p className="text-grey-400">Phone: (+91) 882 985 1547</p>
+          <p>Phone: (+91) 882 985 1547</p>
         </div>
-      </div>
-
+      </motion.div>
     </footer>
   );
 };

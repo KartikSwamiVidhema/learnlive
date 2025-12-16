@@ -15,7 +15,7 @@ export default function handler(req, res) {
         demoRequests.push({ phone, name, email, budget, businesstype, submittedAt: new Date() });
 
         console.log("Saved demo request:", demoRequests);
-
+        console.log(demoRequests)
         return res.status(200).json({ message: "Demo request saved." });
     } else {
         return res.status(405).json({ error: "Method not allowed" });

@@ -112,7 +112,7 @@ const ProductCard = ({ product }) => {
                 <div className="mt-4 border-t border-gray-200 pt-4 flex justify-between items-center gap-2">
                     <div>
                         <span className="text-lg font-semibold">{product.salePrice || "2,999"} $</span>
-                        <span className="text-xs text-gray-500 ml-1">/Month</span>
+
 
                     </div>
                     <Link href="/checkoutform">

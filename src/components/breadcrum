@@ -1,30 +1,45 @@
 import Link from "next/link";
 
-const Breadcrumb = ({ categories, productName }) => {
+const Breadcrumb = ({ categories = [], productName }) => {
     return (
-        <nav aria-label="breadcrumb" className="breadcrumb-container flex gap-1 text-sm mb-4">
-            <Link href="/">
-                <a className="breadcrumb-link text-blue-600 hover:underline">Home</a>
+        <nav
+            aria-label="breadcrumb"
+            className="breadcrumb-container flex gap-1 text-sm mb-4"
+        >
+            {/* Home Link */}
+            <Link href="/" className="text-blue-600 hover:underline">
+                Home
             </Link>
-            {categories && categories.length > 0 &&
-                categories.map((cat, index) => (
-                    <span key={cat._id} className="flex items-center">
-                        <span className="mx-1">{`>`}</span>
-                        {/* If last category, show plain text else clickable */}
-                        {index === categories.length - 1 ? (
-                            <span className="breadcrumb-current bg-blue-600 text-white px-2 py-1 rounded">
-                                {cat.name}
-                            </span>
-                        ) : (
-                            <Link href={`/product-category/${cat.slug}`}>
-                                <a className="breadcrumb-link text-blue-600 hover:underline">{cat.name}</a>
-                            </Link>
-                        )}
-                    </span>
-                ))}
+
+            {/* Loop categories */}
+            {categories.map((cat, index) => (
+                <span key={cat._id} className="flex items-center">
+                    <span className="mx-1">{">"}</span>
+
+                    {/* If last category, highlight */}
+                    {index === categories.length - 1 ? (
+                        <span className="bg-blue-600 text-white px-2 py-1 rounded">
+                            {cat.name}
+                        </span>
+                    ) : (
+                        <Link
+                            href={`/product-category/${cat.slug}`}
+                            className="text-blue-600 hover:underline"
+                        >
+                            {cat.name}
+                        </Link>
+                    )}
+                </span>
+            ))}
+            console.log(categories);
+
+            {/* Product Name */}
             <span className="flex items-center">
-                <span className="mx-1">{`>`}</span>
-                <span className="breadcrumb-current bg-blue-600 text-white px-2 py-1 rounded" aria-current="page">
+                <span className="mx-1">{">"}</span>
+                <span
+                    className="breadcrumb-current bg-blue-600 text-white px-2 py-1 rounded"
+                    aria-current="page"
+                >
                     {productName}
                 </span>
             </span>

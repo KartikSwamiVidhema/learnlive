@@ -43,7 +43,7 @@ const Register = () => {
         role,
       });
 
-      
+
 
       if (response.status === 201 || response.status === 200) {
         console.log("Register successfully:", response.data);
@@ -52,112 +52,112 @@ const Register = () => {
     } catch (error) {
       setErrorMessage(
         error.response?.data?.message ||
-          "Registration failed. Please try again."
+        "Registration failed. Please try again."
       );
     }
   };
 
   return (
     <>
-    <MetaTags
+      <MetaTags
         title={seo.title}
         description={seo.description}
         keywords={seo.keywords}
         canonical={seo.canonical}
       />
-        <div className="min-h-screen flex flex-col">
-    <main className="flex-grow bg-gray-100 flex items-center justify-center py-12">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="max-w-md mx-auto">
-          <Card className="w-full">
-            <CardHeader>
-              <CardTitle className="text-2xl font-bold text-center">
-                Create your account
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              {errorMessage && (
-                <div className="mb-4 text-red-500 text-sm text-center">
-                  {errorMessage}
-                </div>
-              )}
-              <form onSubmit={handleSubmit}>
-                <div className="space-y-4">
-                  <div>
-                    <Label htmlFor="username">Full name</Label>
-                    <Input
-                      id="username"
-                      type="text"
-                      placeholder="John Doe"
-                      value={username}
-                      onChange={(e) => setUsername(e.target.value)}
-                      required
-                    />
+      <div className="min-h-screen flex flex-col">
+        <main className="flex-grow bg-gray-100 flex items-center justify-center py-12">
+
+          <div className="max-w-md mx-auto ">
+            <Card className="w-full mx-10">
+              <CardHeader>
+                <CardTitle className="text-2xl font-bold text-center">
+                  Create your account
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                {errorMessage && (
+                  <div className="mb-4 text-red-500 text-sm text-center">
+                    {errorMessage}
                   </div>
-                  <div>
-                    <Label htmlFor="email">Email address</Label>
-                    <Input
-                      id="email"
-                      type="email"
-                      placeholder="john@example.com"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      required
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="password">Password</Label>
-                    <Input
-                      id="password"
-                      type="password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      required
-                    />
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <label className="flex items-center">
-                      <input
-                        type="checkbox"
-                        className="mr-2"
-                        checked={role === "USER"}
-                        onChange={() => setRole(role === "USER" ? "" : "USER")}
+                )}
+                <form onSubmit={handleSubmit}>
+                  <div className="space-y-4">
+                    <div>
+                      <Label htmlFor="username">Full name</Label>
+                      <Input
+                        id="username"
+                        type="text"
+                        placeholder="John Doe"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        required
                       />
-                      <span className="text-sm mr-4">User</span>
-  
-                      <input
-                        type="checkbox"
-                        className="mr-2"
-                        checked={role === "VENDOR"}
-                        onChange={() =>
-                          setRole(role === "VENDOR" ? "" : "VENDOR")
-                        }
+                    </div>
+                    <div>
+                      <Label htmlFor="email">Email address</Label>
+                      <Input
+                        id="email"
+                        type="email"
+                        placeholder="john@example.com"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
                       />
-                      <span className="text-sm">Vendor</span>
-                    </label>
+                    </div>
+                    <div>
+                      <Label htmlFor="password">Password</Label>
+                      <Input
+                        id="password"
+                        type="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                      />
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <label className="flex items-center">
+                        <input
+                          type="checkbox"
+                          className="mr-2"
+                          checked={role === "USER"}
+                          onChange={() => setRole(role === "USER" ? "" : "USER")}
+                        />
+                        <span className="text-sm mr-4">User</span>
+
+                        <input
+                          type="checkbox"
+                          className="mr-2"
+                          checked={role === "VENDOR"}
+                          onChange={() =>
+                            setRole(role === "VENDOR" ? "" : "VENDOR")
+                          }
+                        />
+                        <span className="text-sm">Vendor</span>
+                      </label>
+                    </div>
+
+                    <Button type="submit" className="w-full">
+                      Create account
+                    </Button>
                   </div>
-  
-                  <Button type="submit" className="w-full">
-                    Create account
-                  </Button>
-                </div>
-              </form>
-            </CardContent>
-            <CardFooter className="flex justify-center">
-              <p className="text-sm text-gray-600">
-                Already have an account?{" "}
-                <Link href="/login" className="text-blue-600 hover:underline">
-                  Log in
-                </Link>
-              </p>
-            </CardFooter>
-          </Card>
-        </div>
+                </form>
+              </CardContent>
+              <CardFooter className="flex justify-center">
+                <p className="text-sm text-gray-600">
+                  Already have an account?{" "}
+                  <Link href="/login" className="text-blue-600 hover:underline">
+                    Log in
+                  </Link>
+                </p>
+              </CardFooter>
+            </Card>
+          </div>
+
+        </main>
+        <Footer />
       </div>
-    </main>
-    <Footer />
-  </div>
-  </>
+    </>
 
   );
 };

@@ -1,135 +1,108 @@
-
-
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import MetaTags from "@/components/metaTags";
-import metadata from "../components/common/metadata.json"
+import metadata from "../components/common/metadata.json";
 
 const TermsAndConditions = () => {
   const seo = metadata.termsandconditions;
+
+  const sections = [
+    {
+      title: "1. Acceptance of Terms",
+      content: "You indicate that you have read, understood, and agree to abide by these Terms by using the Website and purchasing or downloading Themes. Please refrain from using our website or themes if you disagree with any aspect of these terms."
+    },
+    {
+      title: "2. Use of Themes",
+      content: "In line with the individual licensing conditions specified with each Theme, iThemes.xyz provides you a non-exclusive, non-transferable, and revocable license to use Themes solely for your personal or commercial use. Without express written consent from iThemes.xyz, Themes may not be resold, distributed, or used for unauthorized commercial purposes."
+    },
+    {
+      title: "3. Account Registration",
+      content: "You might need to register for an account to use some Website features and buy Themes. You are responsible for protecting your account information and actions taken with your account. During registration, provide accurate, current, and complete information, and update it as needed."
+    },
+    {
+      title: "4. Pricing and Payment",
+      content: "The prices for Themes are posted on the website and are subject to change at any time without notice. Payments are processed safely via our payment provider, and their rules apply."
+    },
+    {
+      title: "5. Refund Policy",
+      content: "Refunds for purchased Themes are subject to our refund policy, available on the Website. Please review before purchasing."
+    },
+    {
+      title: "6. Intellectual Property",
+      content: "All Themes, content, and materials on the Website are protected by copyright and other intellectual property laws. You may not reproduce, distribute, or create derivative works without written consent."
+    },
+    {
+      title: "7. Disclaimer of Warranties",
+      content: "Themes and content are provided “as is” and “as available.” We make no guarantees regarding reliability or fitness for purpose. Use is at your own risk."
+    },
+    {
+      title: "8. Limitation of Liability",
+      content: "iThemes.xyz disclaims all liability for any damages resulting from use or inability to use our website or themes. Total responsibility will not exceed the price paid for the disputed Themes."
+    },
+    {
+      title: "9. Privacy Policy",
+      content: "Our Privacy Policy governs how we collect, use, and safeguard your personal information."
+    },
+    {
+      title: "10. Termination",
+      content: "We may terminate your use of Themes or access to the Website at any time, with or without notice."
+    },
+    {
+      title: "11. Governing Law",
+      content: "These Terms are governed by the laws of Jurisdiction without regard to conflict of law principles."
+    },
+    {
+      title: "12. Contact Information",
+      content: "For questions or concerns, contact us at info@ithemes.xyz. By using the Website and Themes, you agree to these Terms. Periodically review for updates."
+    }
+  ];
+
   return (
     <>
-       <MetaTags
+      <MetaTags
         title={seo.title}
         description={seo.description}
         keywords={seo.keywords}
         canonical={seo.canonical}
       />
-      <div className="max-w-5xl mx-auto p-6">
-        <h1 className="text-3xl font-bold text-center">Terms and Conditions</h1>
-        <p className="text-gray-500 text-center mt-2">
-          Give your visitor a smooth online experience with a solid UX design.
+
+
+
+      <div className="max-w-6xl mx-auto p-6 md:p-12">
+        {/* Breadcrumb */}
+        <p className="text-medium text-black-800">
+          <a class="hover:underline" href="/">Home/</a> <span className="text-gray-400 font-sm">Terms and Conditions</span>
         </p>
 
-        <p className="mt-6 text-gray-700">
-          These General Terms and Conditions govern your use of the iThemes.xyz website 
-          https://ithemes.xyz/
-          and the purchase and use of website, iOS, and Android themes (“Themes”) provided by iThemes.xyz. 
-          By accessing the Website and using our services, you agree to abide by these Terms. Please read them carefully.
-        </p>
+        {/* Page Title */}
+        <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-8 text-center">
+          Terms and Conditions
+        </h1>
 
-        <section className="mt-6">
-          <h3 className="text-lg font-semibold">1. Acceptance of Terms</h3>
-          <p className="mt-2 text-gray-700">
-            You indicate that you have read, understood, and agree to abide by these Terms by using the Website 
-            and purchasing or downloading Themes. Please refrain from using our website or themes if you disagree 
-            with any aspect of these terms.
+        {/* Intro */}
+        <div className="bg-gray-50 rounded-lg p-6 mb-8 border border-gray-200 shadow-sm">
+          <p className="text-gray-700">
+            These General Terms and Conditions govern your use of the iThemes.xyz website
+            and the purchase and use of website, iOS, and Android themes (“Themes”) provided by iThemes.xyz.
+            By accessing the Website and using our services, you agree to abide by these Terms. Please read them carefully.
           </p>
-        </section>
+        </div>
 
-        <section className="mt-6">
-          <h3 className="text-lg font-semibold">2. Use of Themes</h3>
-          <p className="mt-2 text-gray-700">
-            In line with the individual licensing conditions specified with each Theme, iThemes.xyz thus provides 
-            you a non-exclusive, non-transferable, and revocable license to use Themes solely for your personal or 
-            commercial use. Without express written consent from iThemes.xyz, Themes may not be resold, distributed, 
-            or used for any unauthorized commercial purposes.
-          </p>
-        </section>
-
-        <section className="mt-6">
-          <h3 className="text-lg font-semibold">3. Account Registration</h3>
-          <p className="mt-2 text-gray-700">
-            You might need to register for an account in order to use some Website features and buy Themes. You are responsible 
-            for protecting the privacy of your account information and for any actions taken in connection with your account.
-            During the registration process, you promise to give accurate, current, and complete information. You also commit 
-            to update this information as necessary to keep it accurate, current, and complete.
-          </p>
-        </section>
-
-        <section className="mt-6">
-          <h3 className="text-lg font-semibold">4. Pricing and Payment</h3>
-          <p className="mt-2 text-gray-700">
-            The prices for Themes are posted on the website and are subject to change at any time without prior notice.
-            It is your responsibility to check the pricing range before making any purchases. Through our chosen payment provider, 
-            payments for Themes are performed safely. The rules and conditions of the payment processor apply to payment information.
-          </p>
-        </section>
-
-        <section className="mt-6">
-          <h3 className="text-lg font-semibold">5. Refund Policy</h3>
-          <p className="mt-2 text-gray-700">
-            Refunds for purchased Themes are subject to our refund policy, which is available on the Website.
-            Please review this policy before making a purchase.
-          </p>
-        </section>
-
-        <section className="mt-6">
-          <h3 className="text-lg font-semibold">6. Intellectual Property</h3>
-          <p className="mt-2 text-gray-700">
-            All Themes, content, and materials available on the Website are protected by copyright and other intellectual property laws.
-            You may not reproduce, distribute, or create derivative works based on our Themes or content without our prior written consent.
-          </p>
-        </section>
-
-        <section className="mt-6">
-          <h3 className="text-lg font-semibold">7. Disclaimer of Warranties</h3>
-          <p className="mt-2 text-gray-700">
-            Themes and content are provided “as is” and “as available” by iThemes.xyz. Regarding the truthfulness, dependability, 
-            or fitness of the themes or content for any purpose, we make no guarantees, either stated or implied. We do not promise 
-            that there won’t be any glitches, disruptions, or security flaws with the Website or Themes. At your own risk, you use 
-            our website and themes.
-          </p>
-        </section>
-
-        <section className="mt-6">
-          <h3 className="text-lg font-semibold">8. Limitation of Liability</h3>
-          <p className="mt-2 text-gray-700">
-            iThemes.xyz disclaims all liability for any direct, indirect, incidental, special, or consequential damages that may result 
-            from the use of or inability to use our website or themes. In no circumstances will our total responsibility exceed the price 
-            you paid for the disputed Themes or services.
-          </p>
-        </section>
-
-        <section className="mt-6">
-          <h3 className="text-lg font-semibold">9. Privacy Policy</h3>
-          <p className="mt-2 text-gray-700">
-            Our Privacy Policy, which outlines how we collect, use, and safeguard your personal information, also governs how you use 
-            the Website and Themes.
-          </p>
-        </section>
-
-        <section className="mt-6">
-        <h3 className="text-lg font-semibold"> 10. Termination</h3>
-         <p className="mt-2 text-gray-700">
-        We reserve the right to immediately stop or terminate your use of any Themes or your access to the Website, with or without cause, and with or without prior notice.
-         </p>
-       </section>
-
-       <section className="mt-6">
-         <h3 className="text-lg font-semibold"> 11. Governing Law</h3>
-         <p className="mt-2 text-gray-700">
-        These Terms shall be governed by and construed in accordance with the laws of Jurisdiction, without regard to its conflict of law principles.
-        </p>
-      </section>
-
-       <section className="mt-6">
-         <h3 className="text-lg font-semibold"> 12. Contact Information</h3>
-         <p className="mt-2 text-gray-700">
-         If you have any questions or concerns regarding these Terms, please contact us at info@ithemes.xyz. You accept that you have read, comprehended, and agreed to these Terms by using the iThemes.xyz Website and Themes. Periodically reviewing these Terms for any modifications is your obligation as they may be modified from time to time. Any updates to these Terms will be considered accepted if you continue to use the Website and Themes after they become available.
-        </p>
-       </section>
+        {/* Sections */}
+        <div className="space-y-6">
+          {sections.map((section, index) => (
+            <div
+              key={index}
+              className={`rounded-lg p-6 shadow-md ${index % 2 === 0 ? "bg-white border-l-4 border-primary" : "bg-gray-50 border border-gray-200"
+                }`}
+            >
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">{section.title}</h3>
+              <p className="text-gray-700">{section.content}</p>
+            </div>
+          ))}
+        </div>
       </div>
+
       <Footer />
     </>
   );
